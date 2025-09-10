@@ -59,7 +59,7 @@ const AboutPage = () => {
     <div className="pt-16 lg:pt-20">
       {/* Hero Section */}
       <section className="py-16 lg:py-24 bg-gradient-to-br from-green-50 to-yellow-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
           <div className="text-center">
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
@@ -85,7 +85,7 @@ const AboutPage = () => {
 
       {/* Company Story */}
       <section className="py-16 lg:py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
@@ -138,7 +138,7 @@ const AboutPage = () => {
 
       {/* Achievements */}
       <section className="py-16 lg:py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
               Our Achievements
@@ -178,7 +178,7 @@ const AboutPage = () => {
 
       {/* Mission, Vision, Values */}
       <section className="py-16 lg:py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -233,7 +233,7 @@ const AboutPage = () => {
 
       {/* Certifications */}
       <section className="py-16 lg:py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
               Certifications & Accreditations

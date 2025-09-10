@@ -13,7 +13,7 @@ const BlogPreview = () => {
 
   return (
     <section className="py-16 lg:py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
           <motion.span

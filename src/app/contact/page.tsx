@@ -56,7 +56,7 @@ const ContactPage = () => {
     <div className="pt-16 lg:pt-20">
       {/* Hero Section */}
       <section className="py-16 lg:py-24 bg-gradient-to-br from-green-50 to-yellow-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
           <div className="text-center">
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
@@ -82,7 +82,7 @@ const ContactPage = () => {
 
       {/* Contact Form & Info */}
       <section className="py-16 lg:py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
             {/* Contact Form */}
             <motion.div
@@ -91,12 +91,12 @@ const ContactPage = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
             >
-              <div className="bg-gray-50 rounded-2xl p-8">
+              <div className="bg-gray-50 rounded-2xl p-6 sm:p-8">
                 <h2 className="text-3xl font-bold text-gray-900 mb-6">
                   Get Your Free Quote
                 </h2>
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                     <div>
                       <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
                         Full Name *
@@ -129,7 +129,7 @@ const ContactPage = () => {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                     <div>
                       <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
                         Phone Number
@@ -254,7 +254,7 @@ const ContactPage = () => {
 
       {/* Map Section */}
       <section className="py-16 lg:py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
               Visit Our Showroom

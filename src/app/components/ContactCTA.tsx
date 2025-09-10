@@ -48,7 +48,7 @@ const ContactCTA = () => {
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-yellow-400 rounded-full blur-3xl"></div>
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
         {/* Main CTA Section */}
         <div className="text-center mb-16">
           <motion.div

@@ -70,7 +70,7 @@ const solutions: Solution[] = [
 const SolutionsCards = () => {
   return (
     <section className="py-16 lg:py-24 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
           <motion.span
@@ -106,7 +106,7 @@ const SolutionsCards = () => {
         </div>
 
         {/* Solutions Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {solutions.map((solution, index) => {
             const IconComponent = solution.icon;
             
@@ -121,7 +121,7 @@ const SolutionsCards = () => {
               >
                 <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden h-full">
                   {/* Image */}
-                  <div className="relative h-48 overflow-hidden">
+                  <div className="relative h-40 sm:h-48 overflow-hidden">
                     <img
                       src={solution.image}
                       alt={solution.title}
@@ -136,7 +136,7 @@ const SolutionsCards = () => {
                   </div>
 
                   {/* Content */}
-                  <div className="p-6">
+                  <div className="p-4 sm:p-6">
                     <div className="mb-4">
                       <h3 className="text-xl font-bold text-gray-900 mb-1">
                         {solution.title}

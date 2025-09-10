@@ -96,7 +96,7 @@ const CounterStats = () => {
 
   return (
     <section ref={sectionRef} className="py-16 lg:py-24 bg-gradient-to-br from-green-50 to-yellow-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
         <div className="text-center mb-16">
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
@@ -117,7 +117,7 @@ const CounterStats = () => {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8">
           {stats.map((stat, index) => {
             const IconComponent = stat.icon;
             const currentValue = counters[stat.id] || 0;
@@ -130,20 +130,20 @@ const CounterStats = () => {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="text-center group"
               >
-                <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-500 to-yellow-500 rounded-full mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <IconComponent className="w-8 h-8 text-white" />
+                <div className="bg-white rounded-2xl p-4 sm:p-6 lg:p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                  <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-green-500 to-yellow-500 rounded-full mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <IconComponent className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
                   </div>
                   
                   <div className="mb-4">
-                    <div className="text-4xl lg:text-5xl font-bold text-gray-900 mb-2">
+                    <div className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 mb-2">
                       {currentValue.toLocaleString()}
                       <span className="text-green-600">{stat.suffix}</span>
                     </div>
-                    <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                    <h3 className="text-sm sm:text-base lg:text-xl font-semibold text-gray-800 mb-2">
                       {stat.label}
                     </h3>
-                    <p className="text-gray-600 text-sm">
+                    <p className="text-gray-600 text-xs sm:text-sm leading-tight">
                       {stat.description}
                     </p>
                   </div>

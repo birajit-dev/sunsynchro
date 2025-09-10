@@ -98,7 +98,7 @@ const HeroSlider = () => {
   };
 
   return (
-    <section className="relative h-screen min-h-[600px] overflow-hidden">
+    <section className="relative h-screen min-h-[500px] sm:min-h-[600px] overflow-hidden">
       <AnimatePresence mode="wait">
         <motion.div
           key={currentSlide}
@@ -131,8 +131,8 @@ const HeroSlider = () => {
 
       {/* Content */}
       <div className="relative z-10 h-full flex items-center">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="max-w-4xl">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 w-full">
+          <div className="max-w-4xl text-center sm:text-left">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentSlide}
@@ -143,7 +143,7 @@ const HeroSlider = () => {
                 className="text-white"
               >
                 <motion.h1 
-                  className="text-4xl md:text-5xl lg:text-7xl font-bold mb-4 leading-tight"
+                  className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 leading-tight"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2, duration: 0.8 }}
@@ -152,7 +152,7 @@ const HeroSlider = () => {
                 </motion.h1>
                 
                 <motion.h2 
-                  className="text-2xl md:text-3xl lg:text-4xl font-semibold mb-6 text-yellow-400"
+                  className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold mb-6 text-yellow-400"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4, duration: 0.8 }}
@@ -161,7 +161,7 @@ const HeroSlider = () => {
                 </motion.h2>
                 
                 <motion.p 
-                  className="text-lg md:text-xl lg:text-2xl mb-8 max-w-3xl leading-relaxed text-gray-100"
+                  className="text-base sm:text-lg md:text-xl lg:text-2xl mb-8 max-w-3xl leading-relaxed text-gray-100"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.6, duration: 0.8 }}
@@ -177,13 +177,13 @@ const HeroSlider = () => {
                 >
                   <a
                     href={slides[currentSlide].cta.primary.href}
-                    className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-green-500 to-yellow-500 rounded-full hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+                    className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold text-white bg-gradient-to-r from-green-500 to-yellow-500 rounded-full hover:shadow-2xl transform hover:scale-105 transition-all duration-300 min-h-[44px]"
                   >
                     {slides[currentSlide].cta.primary.text}
                   </a>
                   <a
                     href={slides[currentSlide].cta.secondary.href}
-                    className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white border-2 border-white/50 rounded-full hover:bg-white hover:text-gray-900 transition-all duration-300"
+                    className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold text-white border-2 border-white/50 rounded-full hover:bg-white hover:text-gray-900 transition-all duration-300 min-h-[44px]"
                   >
                     {slides[currentSlide].cta.secondary.text}
                   </a>
@@ -197,18 +197,18 @@ const HeroSlider = () => {
       {/* Navigation Arrows */}
       <button
         onClick={prevSlide}
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:scale-110 transition-all duration-200"
+        className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:scale-110 transition-all duration-200"
         aria-label="Previous slide"
       >
-        <HiChevronLeft className="w-6 h-6" />
+        <HiChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
       </button>
 
       <button
         onClick={nextSlide}
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:scale-110 transition-all duration-200"
+        className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:scale-110 transition-all duration-200"
         aria-label="Next slide"
       >
-        <HiChevronRight className="w-6 h-6" />
+        <HiChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
       </button>
 
       {/* Slide Indicators */}

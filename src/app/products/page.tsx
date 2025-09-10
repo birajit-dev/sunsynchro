@@ -19,7 +19,7 @@ const ProductsPage = () => {
     <div className="pt-16 lg:pt-20">
       {/* Hero Section */}
       <section className="py-12 lg:py-16 bg-gradient-to-br from-green-50 to-yellow-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
           <div className="text-center">
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
@@ -44,8 +44,8 @@ const ProductsPage = () => {
 
       {/* Products List */}
       <section className="py-12 lg:py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
+           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {products.map((product, index) => (
               <motion.div
                 key={product.id}
@@ -80,8 +80,8 @@ const ProductsPage = () => {
                   </div>
                 </div>
 
-                {/* Product Details */}
-                <div className="p-5">
+                 {/* Product Details */}
+                 <div className="p-4 sm:p-5">
                   {/* Product Header */}
                   <div className="mb-4">
                     <h3 className="text-lg font-bold text-gray-900 mb-1">
