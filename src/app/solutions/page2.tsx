@@ -8,21 +8,21 @@ const SolutionsPage = () => {
     {
       id: "distribution",
       icon: HiTruck,
-      title: "Premium Components Supply Chain",
-      subtitle: "Reliable distribution of high-quality solar components",
-      description: "Sunsynchro Energy Pvt. Ltd. is not only an EPC provider but also a trusted solar distributor in Tripura. We supply solar panels, inverters, batteries, mounting structures, and accessories to dealers, contractors, and installers. Our distribution network ensures competitive pricing and access to global-standard products.",
+      title: "Solar Distribution",
+      subtitle: "Premium Components Supply Chain",
+      description: "Comprehensive distribution network providing high-quality solar components from world-leading manufacturers to installers and contractors nationwide.",
       features: [
-        "Global brand partnerships with leading solar manufacturers",
-        "Bulk pricing advantages for volume purchases", 
-        "Technical support and product training for dealers",
-        "Fast nationwide delivery and strong logistics support",
-        "Inventory management and forecasting services",
-        "Product warranties and quality assurance"
+        "Global brand partnerships with tier-1 manufacturers",
+        "Bulk pricing advantages for volume purchases",
+        "Technical support and product training included",
+        "Fast nationwide delivery and logistics",
+        "Inventory management and forecasting",
+        "Quality assurance and product warranties"
       ],
       benefits: [
         "Access to premium solar components",
         "Competitive wholesale pricing",
-        "Reliable supply chain management", 
+        "Reliable supply chain management",
         "Expert technical consultation"
       ]
     },
@@ -30,41 +30,42 @@ const SolutionsPage = () => {
       id: "epc",
       icon: HiCog,
       title: "Solar EPC Services",
-      subtitle: "Engineering, Procurement & Construction (EPC)",
-      description: "As a professional solar EPC company in Tripura, Sunsynchro delivers turnkey solar solutions. From initial site assessment and system design to installation and post-commissioning support, we manage projects from start to finish with precision and care.",
+      subtitle: "Engineering, Procurement & Construction",
+      description: "Complete turnkey solar solutions from initial site assessment and system design through procurement, installation, and commissioning for residential and commercial projects.",
       features: [
         "Custom system design and engineering",
         "Professional installation by certified technicians",
-        "Complete project management from concept to commissioning",
-        "Performance optimization and ongoing monitoring",
-        "Assistance with permitting, net metering, and subsidy applications",
-        "Long-term operation and maintenance support"
+        "Complete project management from start to finish",
+        "Performance optimization and system commissioning",
+        "Permitting and interconnection assistance",
+        "Post-installation monitoring and support"
       ],
       benefits: [
-        "Single source responsibility for the entire project",
-        "Streamlined project delivery and on-time completion",
+        "Single-source responsibility",
+        "Streamlined project delivery",
         "Quality installation guarantee",
-        "Ongoing monitoring and performance assurance"
+        "Ongoing performance monitoring"
       ]
     },
     {
       id: "components",
       icon: HiCube,
       title: "Solar Components",
-      subtitle: "Individual component sales & support",
-      description: "Apart from turnkey EPC solutions, Sunsynchro also offers solar components and accessories for retail and DIY installations. Customers can purchase panels, inverters, batteries, structures, and wiring solutions, with full technical support and warranty coverage.",
+      subtitle: "Individual Component Sales & Support",
+      description: "Individual solar components and accessories for DIY installations, system maintenance, repairs, and expansions with comprehensive technical documentation and support.",
       features: [
-        "Component sales suitable for projects of all sizes",
-        "Detailed product specifications and datasheets provided",
-        "Installation guidance and technical documentation included",
-        "Compatibility consulting for system matching",
-        "Replacement parts and upgrade options available"
+        "Individual component sales for any project size",
+        "Detailed technical specifications and datasheets",
+        "Installation guides and technical documentation",
+        "Comprehensive warranty support and service",
+        "Compatibility consulting and system matching",
+        "Replacement parts and upgrade components"
       ],
       benefits: [
         "Flexible purchasing options",
-        "Expert component matching assistance",
-        "Comprehensive documentation for easy setup",
-        "Warranty and after-sales support coverage"
+        "Expert component matching",
+        "Technical documentation included",
+        "Warranty and support coverage"
       ]
     }
   ];
@@ -90,7 +91,7 @@ const SolutionsPage = () => {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed"
             >
-              At Sunsynchro Energy Pvt. Ltd., we provide end-to-end solar EPC services as well as a complete distribution network for high-quality solar components. From individual accessories to complete turnkey rooftop installations, we deliver solutions designed for long-term savings, performance, and sustainability.
+              Comprehensive solar services tailored to meet your specific needs, from individual components to complete turnkey installations.
             </motion.p>
           </div>
         </div>
@@ -198,7 +199,7 @@ const SolutionsPage = () => {
               Ready to Choose Your Solar Solution?
             </h2>
             <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto">
-              Our expert team will help you find the perfect solar solution that matches your energy needs, budget, and goals. Whether you want a full EPC project or just solar products, Sunsynchro Pvt. Ltd. is your trusted partner.
+              Our expert team will help you select the perfect solar solution for your specific needs, budget, and goals.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a

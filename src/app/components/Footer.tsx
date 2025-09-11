@@ -75,17 +75,15 @@ const Footer = () => {
                   <HiSun className="w-7 h-7 text-white" />
                 </div>
                 <div className="flex flex-col">
-                  <span className="font-bold text-2xl">Sunsynchro</span>
-                  <span className="text-sm text-green-400">
+                  <span className="font-bold text-2xl">Sunsynchro Pvt. Ltd.</span>
+                  {/* <span className="text-sm text-green-400">
                     Clean Energy Solutions
-                  </span>
+                  </span> */}
                 </div>
               </Link>
               
               <p className="text-gray-300 mb-6 leading-relaxed">
-                Leading provider of solar distribution and installation services. 
-                We deliver clean, renewable energy solutions for residential and 
-                commercial clients worldwide.
+              A solar EPC cum distribution startup in Tripura, delivering turnkey rooftop installations and high-quality solar components.
               </p>
 
               {/* Contact Info */}
@@ -100,7 +98,7 @@ const Footer = () => {
                 </div>
                 <div className="flex items-center space-x-3 text-gray-300">
                   <HiLocationMarker className="w-5 h-5 text-green-400" />
-                  <span>66, Ward No. 12, Ramnagar, West Tripura, 799002</span>
+                  <span>GE, Ward No. 12, Ramnagar, West Tripura, 799002</span>
                 </div>
               </div>
             </div>
