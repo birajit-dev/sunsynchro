@@ -41,16 +41,7 @@ const Footer = () => {
         { name: "About Us", href: "/about" },
         { name: "Our Brands", href: "/brands" },
         { name: "Blog", href: "/blogs" },
-        { name: "Careers", href: "/careers" },
-      ],
-    },
-    {
-      title: "Support",
-      links: [
         { name: "Contact Us", href: "/contact" },
-        { name: "Technical Support", href: "/support" },
-        { name: "Warranty", href: "/warranty" },
-        { name: "Documentation", href: "/docs" },
       ],
     },
   ];
@@ -67,13 +58,15 @@ const Footer = () => {
         <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
         {/* Main Footer Content */}
         <div className="py-12 lg:py-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
             {/* Company Info */}
             <div className="lg:col-span-2">
               <Link href="/" className="flex items-center space-x-3 mb-6">
-                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-yellow-500 rounded-xl flex items-center justify-center">
-                  <HiSun className="w-7 h-7 text-white" />
-                </div>
+                <img 
+                  src="/gallery/logo2.png" 
+                  alt="Sunsynchro Logo" 
+                  className="w-12 h-12 object-contain"
+                />
                 <div className="flex flex-col">
                   <span className="font-bold text-2xl">Sunsynchro Pvt. Ltd.</span>
                   {/* <span className="text-sm text-green-400">

@@ -16,373 +16,250 @@ export interface BlogPost {
 export const blogPosts: BlogPost[] = [
   {
     id: "1",
-    title: "The Future of Solar Energy: Trends and Innovations for 2024",
-    slug: "future-of-solar-energy-2024",
-    excerpt: "Discover the latest trends and technological innovations shaping the solar energy industry in 2024 and beyond.",
+    title: "How Rooftop Solar Can Cut Your Electricity Bills by 80% in Tripura",
+    slug: "rooftop-solar-cut-electricity-bills-tripura",
+    excerpt: "Discover how households and businesses in Tripura can achieve massive savings on electricity bills through rooftop solar systems.",
     content: `
-# The Future of Solar Energy: Trends and Innovations for 2024
+      <div class="prose prose-lg max-w-none">
+        <h1 class="text-3xl font-bold text-gray-900 mb-6">How Rooftop Solar Can Cut Your Electricity Bills by 80% in Tripura</h1>
 
-The solar energy industry continues to evolve at a rapid pace, with groundbreaking innovations and emerging trends that promise to reshape how we harness the power of the sun. As we move through 2024, several key developments are driving the industry forward.
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">Electricity bills are rising every year, especially in Northeast India. Households and businesses in Tripura are searching for sustainable, long-term solutions to reduce costs. Rooftop solar systems have emerged as the most effective way to cut power bills while ensuring energy independence.</p>
 
-## Perovskite Solar Cells: The Next Generation
+        <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">How Rooftop Solar Works</h2>
 
-One of the most exciting developments in solar technology is the advancement of perovskite solar cells. These next-generation photovoltaic cells offer several advantages over traditional silicon panels:
+        <p class="text-gray-700 leading-relaxed mb-6">Rooftop solar systems capture sunlight using photovoltaic (PV) panels and convert it into usable electricity. The power can be used instantly or exported to the grid under the net-metering policy, which credits excess generation against your consumption.</p>
 
-- **Higher Efficiency**: Perovskite cells have achieved efficiency rates exceeding 25% in laboratory conditions
-- **Lower Cost**: Manufacturing costs are significantly lower than traditional silicon cells
-- **Flexibility**: Can be produced on flexible substrates, opening new application possibilities
+        <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">Massive Savings Potential</h2>
 
-## Floating Solar Farms
+        <p class="text-gray-700 leading-relaxed mb-6">On average, a 5 kW solar rooftop system can generate around 600–700 units per month in Tripura's climate. At a tariff of ₹8 per unit, this translates into savings of ₹4,800–₹5,600 per month—or nearly ₹60,000 per year. Over 25 years, households can save up to ₹15–20 lakhs.</p>
 
-Floating photovoltaic (FPV) systems are gaining traction worldwide. These installations offer unique benefits:
+        <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">Government Support Makes It Affordable</h2>
 
-- **Land Conservation**: Utilizes water surfaces instead of valuable land
-- **Improved Efficiency**: Water cooling effect increases panel efficiency
-- **Reduced Evaporation**: Helps conserve water in reservoirs
+        <p class="text-gray-700 leading-relaxed mb-6">With government subsidies like the PM Surya Ghar Muft Bijli Yojana, the upfront cost of solar is reduced by 30–40%. Most households recover their investment in 3–5 years, after which electricity is practically free.</p>
 
-## Energy Storage Integration
+        <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">Environmental Benefits</h2>
 
-The integration of advanced battery storage systems with solar installations is becoming standard practice. Key developments include:
+        <p class="text-gray-700 leading-relaxed mb-6">Switching to solar also means reducing carbon emissions by up to 6 tons annually for a 5 kW system. This makes solar a win-win for both your pocket and the planet.</p>
 
-- **Grid-Scale Storage**: Massive battery installations supporting renewable energy integration
-- **Home Energy Systems**: Comprehensive residential solutions combining solar and storage
-- **Smart Grid Technology**: Intelligent systems optimizing energy distribution
+        <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">Take Action Today</h2>
 
-## Conclusion
-
-The solar energy landscape in 2024 is marked by innovation, efficiency improvements, and expanding applications. As technology continues to advance and costs decrease, solar energy is positioned to play an increasingly important role in our global energy mix.
+        <p class="text-gray-700 leading-relaxed mb-6"><strong class="text-green-600">👉 Ready to save?</strong> Contact Sunsynchro Pvt. Ltd. to calculate your rooftop solar savings.</p>
+      </div>
     `,
-    image: "/blog/future-solar-2024.jpg",
-    author: "Dr. Sarah Chen",
-    publishDate: "2024-01-15",
-    readTime: "8 min read",
-    category: "Technology",
-    tags: ["Innovation", "Solar Technology", "Future Trends"],
+    image: "/blog/solar-1.webp",
+    author: "Sunsynchro Team",
+    publishDate: "2025-09-14",
+    readTime: "6 min read",
+    category: "Residential",
+    tags: ["Tripura", "Rooftop Solar", "Electricity Bills", "Savings"],
     featured: true
   },
   {
     id: "2",
-    title: "Commercial Solar Installation: A Complete Guide for Businesses",
-    slug: "commercial-solar-installation-guide",
-    excerpt: "Everything businesses need to know about installing solar systems, from planning and permits to financing and maintenance.",
+    title: "Step-by-Step Guide to PM Surya Ghar Muft Bijli Yojana in Tripura",
+    slug: "pm-surya-ghar-guide-tripura",
+    excerpt: "Complete guide to applying for the PM Surya Ghar Muft Bijli Yojana subsidy scheme in Tripura with step-by-step instructions.",
     content: `
-# Commercial Solar Installation: A Complete Guide for Businesses
+      <div class="prose prose-lg max-w-none">
+        <h1 class="text-3xl font-bold text-gray-900 mb-6">Step-by-Step Guide to PM Surya Ghar Muft Bijli Yojana in Tripura</h1>
 
-Installing a commercial solar system is a significant investment that can provide substantial long-term benefits for businesses. This comprehensive guide walks you through every step of the process.
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">The Government of India launched the PM Surya Ghar Muft Bijli Yojana to accelerate the adoption of rooftop solar. Families in Tripura can now install solar systems at a reduced cost with subsidy support.</p>
 
-## Planning Your Commercial Solar Project
+        <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">Eligibility:</h2>
+        <ul class="list-disc list-inside text-gray-700 mb-6 space-y-2">
+          <li>Indian households with grid connection</li>
+          <li>Rooftop space available for installation</li>
+          <li>Preference given to families with monthly electricity bills over ₹1,000</li>
+        </ul>
 
-### Site Assessment
-Before beginning any solar project, a thorough site assessment is essential:
-- **Roof Condition**: Ensure your roof can support the additional weight
-- **Shading Analysis**: Identify potential obstructions that could affect performance
-- **Electrical Infrastructure**: Assess current electrical systems and upgrade requirements
+        <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">Subsidy:</h2>
+        <ul class="list-disc list-inside text-gray-700 mb-6 space-y-2">
+          <li><strong>3 kW-10kW:</strong> ₹85,500 subsidy</li>
+          <li><strong>Group Housing Society/Resident Welfare Association:</strong> ₹18,000 subsidy per kilowatt</li>
+        </ul>
 
-### Financial Considerations
-Understanding the financial aspects is crucial:
-- **Initial Investment**: Typical costs range from $2-4 per watt installed
-- **Tax Incentives**: Federal tax credits and local rebates can significantly reduce costs
-- **ROI Timeline**: Most commercial installations pay for themselves within 5-7 years
+        <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">Application Process in Tripura:</h2>
+        <ol class="list-decimal list-inside text-gray-700 mb-6 space-y-3">
+          <li>Visit the National Portal for Rooftop Solar (solarrooftop.gov.in)</li>
+          <li>Register with your electricity consumer number</li>
+          <li>Select a vendor (Sunsynchro Pvt. Ltd. is a registered EPC provider)</li>
+          <li>Submit documents and get feasibility approval from TSECL</li>
+          <li>Install solar with vendor support</li>
+          <li>Get system inspected and subsidy credited directly to your bank account</li>
+        </ol>
 
-## Installation Process
-
-### 1. Design and Engineering
-Professional design ensures optimal system performance and compliance with local codes.
-
-### 2. Permitting
-Obtaining necessary permits from local authorities and utility companies.
-
-### 3. Installation
-Professional installation typically takes 1-3 days depending on system size.
-
-### 4. Commissioning
-System testing and connection to the electrical grid.
-
-## Maintenance and Monitoring
-
-Regular maintenance ensures optimal performance:
-- **Cleaning**: Periodic panel cleaning to maintain efficiency
-- **Monitoring**: Real-time performance tracking
-- **Professional Inspections**: Annual system checkups
-
-## Conclusion
-
-Commercial solar installation offers businesses a path to energy independence, cost savings, and environmental responsibility. With proper planning and professional installation, solar systems provide reliable, clean energy for decades.
+        <p class="text-gray-700 leading-relaxed mb-6"><strong class="text-green-600">👉</strong> Sunsynchro helps customers with the complete process—from application to subsidy release.</p>
+      </div>
     `,
-    image: "/blog/commercial-solar-guide.jpg",
-    author: "Mike Rodriguez",
-    publishDate: "2024-01-10",
-    readTime: "12 min read",
-    category: "Commercial",
-    tags: ["Commercial Solar", "Installation", "Business"],
+    image: "/blog/solar-2.jpeg",
+    author: "Sunsynchro Team",
+    publishDate: "2025-09-14",
+    readTime: "8 min read",
+    category: "Policy",
+    tags: ["PM Surya Ghar", "Subsidy", "Tripura", "Government Scheme"],
     featured: true
   },
   {
     id: "3",
-    title: "Solar Panel Maintenance: Best Practices for Maximum Efficiency",
-    slug: "solar-panel-maintenance-best-practices",
-    excerpt: "Learn essential maintenance practices to keep your solar panels operating at peak efficiency and extend their lifespan.",
+    title: "Panasonic vs. SunPower vs. Novasys: Which Solar Panel is Right for You?",
+    slug: "panasonic-sunpower-novasys-solar-panel-comparison",
+    excerpt: "Detailed comparison of Panasonic, SunPower, and Novasys solar panels to help you choose the best option for your needs.",
     content: `
-# Solar Panel Maintenance: Best Practices for Maximum Efficiency
+      <div class="prose prose-lg max-w-none">
+        <h1 class="text-3xl font-bold text-gray-900 mb-6">Panasonic vs. SunPower vs. Novasys: Which Solar Panel is Right for You?</h1>
 
-Proper maintenance is key to ensuring your solar panel system operates at peak efficiency throughout its 25+ year lifespan. While solar panels are generally low-maintenance, following these best practices will maximize your investment.
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">Choosing the right solar panel is crucial for efficiency and long-term returns. Here's a detailed comparison to help you make an informed decision:</p>
 
-## Regular Cleaning
+        <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">Panasonic Solar Panels:</h2>
+        <ul class="list-disc list-inside text-gray-700 mb-6 space-y-2">
+          <li><strong>Efficiency:</strong> Up to 21.6%</li>
+          <li><strong>Strength:</strong> Robust HIT® technology, excellent in humid and high-temperature climates like Tripura</li>
+          <li><strong>Warranty:</strong> 25 years</li>
+        </ul>
 
-### Why Cleaning Matters
-Dust, dirt, bird droppings, and other debris can significantly reduce panel efficiency:
-- **Performance Impact**: Dirty panels can lose 15-25% of their efficiency
-- **Hot Spots**: Debris can cause uneven heating and potential damage
+        <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">SunPower (Maxeon) Solar Panels:</h2>
+        <ul class="list-disc list-inside text-gray-700 mb-6 space-y-2">
+          <li><strong>Efficiency:</strong> Up to 22.8%</li>
+          <li><strong>Strength:</strong> Maximum energy yield and durability</li>
+          <li><strong>Warranty:</strong> 40 years</li>
+        </ul>
 
-### Cleaning Best Practices
-- **Frequency**: Clean panels 2-4 times per year, more in dusty environments
-- **Method**: Use soft brushes and mild soap with deionized water
-- **Safety**: Always prioritize safety - consider professional cleaning for roof-mounted systems
+        <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">Novasys Solar Panels:</h2>
+        <ul class="list-disc list-inside text-gray-700 mb-6 space-y-2">
+          <li><strong>Efficiency:</strong> 18–21%</li>
+          <li><strong>Strength:</strong> Affordable, reliable, designed for Indian weather</li>
+          <li><strong>Warranty:</strong> 25 years</li>
+        </ul>
 
-## Performance Monitoring
+        <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">Which to Choose?</h2>
+        <ul class="list-disc list-inside text-gray-700 mb-6 space-y-2">
+          <li><strong>Budget-conscious customers:</strong> Novasys</li>
+          <li><strong>Long-term investors:</strong> SunPower</li>
+          <li><strong>Balanced choice for Tripura's climate:</strong> Panasonic</li>
+        </ul>
 
-### System Monitoring Tools
-Modern solar systems include monitoring capabilities:
-- **Production Tracking**: Monitor daily, monthly, and annual energy production
-- **Performance Alerts**: Receive notifications when system performance drops
-- **Component Monitoring**: Track individual panel and inverter performance
-
-### What to Watch For
-- **Sudden Production Drops**: May indicate equipment failure or shading issues
-- **Gradual Decline**: Normal aging vs. maintenance issues
-- **Weather Impact**: Understanding how weather affects performance
-
-## Professional Inspections
-
-### Annual Inspections Should Include:
-- **Electrical Connections**: Check for loose or corroded connections
-- **Physical Condition**: Inspect panels for cracks, chips, or damage
-- **Mounting System**: Ensure rails and hardware remain secure
-- **Inverter Performance**: Verify proper operation of all system components
-
-## Common Issues and Solutions
-
-### Shading Problems
-- **Tree Growth**: Trim branches that cast shadows on panels
-- **New Construction**: Monitor for new buildings or structures causing shade
-
-### Equipment Failures
-- **Inverter Issues**: Most common failure point in solar systems
-- **Panel Degradation**: Normal aging vs. premature failure
-
-## Conclusion
-
-With proper maintenance, solar panel systems provide reliable, clean energy for decades. Regular cleaning, monitoring, and professional inspections ensure optimal performance and protect your investment.
+        <p class="text-gray-700 leading-relaxed mb-6"><strong class="text-green-600">👉</strong> Sunsynchro supplies all three—helping you choose based on budget, space, and energy goals.</p>
+      </div>
     `,
-    image: "/blog/solar-maintenance.jpg",
-    author: "Jennifer Park",
-    publishDate: "2024-01-05",
-    readTime: "10 min read",
-    category: "Maintenance",
-    tags: ["Maintenance", "Solar Panels", "Efficiency"]
+    image: "/blog/slolar-6.png",
+    author: "Sunsynchro Team",
+    publishDate: "2025-09-14",
+    readTime: "7 min read",
+    category: "Technology",
+    tags: ["Solar Panels", "Panasonic", "SunPower", "Novasys", "Comparison"],
+    featured: false
   },
   {
     id: "4",
-    title: "Understanding Solar Incentives and Tax Credits in 2024",
-    slug: "solar-incentives-tax-credits-2024",
-    excerpt: "Navigate the complex landscape of solar incentives, tax credits, and rebates available to homeowners and businesses.",
+    title: "Why Enphase Microinverters are a Game-Changer for Rooftop Solar Systems",
+    slug: "enphase-microinverters-game-changer-rooftop-solar",
+    excerpt: "Learn why Enphase microinverters offer superior performance, safety, and monitoring capabilities for rooftop solar installations.",
     content: `
-# Understanding Solar Incentives and Tax Credits in 2024
+      <div class="prose prose-lg max-w-none">
+        <h1 class="text-3xl font-bold text-gray-900 mb-6">Why Enphase Microinverters are a Game-Changer for Rooftop Solar Systems</h1>
 
-The financial incentives available for solar installations can significantly reduce the overall cost of your system. Understanding these programs is crucial for maximizing your solar investment.
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">Unlike traditional string inverters, microinverters are installed under each solar panel, converting DC to AC at the source. This revolutionary approach offers numerous advantages for solar installations.</p>
 
-## Federal Solar Investment Tax Credit (ITC)
+        <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">Key Advantages of Enphase:</h2>
+        <ul class="list-disc list-inside text-gray-700 mb-6 space-y-2">
+          <li><strong>Higher Efficiency:</strong> Each panel works independently, so shading on one panel doesn't affect others</li>
+          <li><strong>Safety:</strong> Low DC voltage reduces fire risks</li>
+          <li><strong>Monitoring:</strong> Real-time performance tracking for each panel</li>
+          <li><strong>Durability:</strong> 25-year warranty compared to 8–10 years for string inverters</li>
+        </ul>
 
-### Current Status
-- **Credit Amount**: 30% of system cost through 2032
-- **Eligibility**: Residential and commercial solar installations
-- **No Cap**: No maximum credit amount for residential systems
+        <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">Why Tripura Homes Benefit:</h2>
+        <p class="text-gray-700 leading-relaxed mb-6">Given frequent partial shading (trees, buildings) in Tripura's residential areas, Enphase microinverters ensure maximum power output even when some panels are shaded.</p>
 
-### How It Works
-The ITC allows you to deduct 30% of the cost of installing a solar energy system from your federal taxes.
-
-## State and Local Incentives
-
-### Types of State Programs
-- **Cash Rebates**: Direct payments for solar installations
-- **Performance Incentives**: Payments based on energy production
-- **Property Tax Exemptions**: Exclude solar system value from property taxes
-- **Sales Tax Exemptions**: Eliminate sales tax on solar equipment
-
-### Net Metering
-Most states offer net metering programs:
-- **Credit for Excess Power**: Sell excess energy back to the grid
-- **1:1 Credit**: Receive full retail rate for exported energy
-- **Time-of-Use Rates**: Variable pricing based on demand
-
-## Utility Programs
-
-### Utility Rebates
-Many utilities offer rebates for solar installations:
-- **Capacity-Based**: Rebates per kW installed
-- **Performance-Based**: Payments based on energy production
-- **Time-Limited**: Programs with expiration dates or funding limits
-
-## Financing Options
-
-### Solar Loans
-- **Low Interest Rates**: Often 2-7% APR
-- **No Down Payment**: 100% financing available
-- **Tax Credit Assignment**: Use tax credit to reduce loan balance
-
-### Power Purchase Agreements (PPAs)
-- **No Upfront Cost**: Third-party owns the system
-- **Fixed Energy Rates**: Predictable electricity costs
-- **Maintenance Included**: No maintenance responsibilities
-
-## Maximizing Your Savings
-
-### Strategic Timing
-- **Install Before Year-End**: Ensure eligibility for current year's tax credit
-- **Combine Incentives**: Stack federal, state, and local programs
-- **Energy Efficiency First**: Reduce energy needs before sizing solar system
-
-## Conclusion
-
-The combination of federal tax credits, state incentives, and utility programs can reduce solar system costs by 50% or more. Working with experienced solar professionals ensures you take advantage of all available incentives.
+        <p class="text-gray-700 leading-relaxed mb-6"><strong class="text-green-600">👉</strong> With Sunsynchro, you can upgrade to Enphase microinverters for smarter, safer solar systems.</p>
+      </div>
     `,
-    image: "/blog/solar-incentives.jpg",
-    author: "David Thompson",
-    publishDate: "2023-12-28",
-    readTime: "15 min read",
-    category: "Finance",
-    tags: ["Tax Credits", "Incentives", "Solar Finance"]
+    image: "/blog/solar-4.png",
+    author: "Sunsynchro Team",
+    publishDate: "2025-09-14",
+    readTime: "5 min read",
+    category: "Technology",
+    tags: ["Enphase", "Microinverters", "Solar Technology", "Efficiency"],
+    featured: false
   },
   {
     id: "5",
-    title: "Residential vs Commercial Solar: Key Differences and Considerations",
-    slug: "residential-vs-commercial-solar-differences",
-    excerpt: "Explore the key differences between residential and commercial solar installations, from system design to financing options.",
+    title: "Success Story: A Small Business in Agartala Saves ₹1.2 Lakhs Annually with Solar",
+    slug: "agartala-business-saves-solar-success-story",
+    excerpt: "Real success story of how a small business in Agartala reduced annual electricity costs by ₹1.2 lakhs with rooftop solar.",
     content: `
-# Residential vs Commercial Solar: Key Differences and Considerations
+      <div class="prose prose-lg max-w-none">
+        <h1 class="text-3xl font-bold text-gray-900 mb-6">Success Story: A Small Business in Agartala Saves ₹1.2 Lakhs Annually with Solar</h1>
 
-While both residential and commercial solar installations harness the same renewable energy source, there are significant differences in system design, installation process, and financial considerations.
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">Rising electricity bills are a challenge for small businesses in Tripura. Here's how one shop owner in Agartala slashed annual costs by going solar with Sunsynchro.</p>
 
-## System Scale and Design
+        <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">The Challenge:</h2>
+        <p class="text-gray-700 leading-relaxed mb-6">Monthly power bills of ₹15,000–₹20,000 cut into profits. The owner needed a cost-effective, reliable solution to reduce operational expenses.</p>
 
-### Residential Solar Systems
-- **Size Range**: Typically 3-10 kW systems
-- **Panel Count**: 10-40 panels on average
-- **Installation Location**: Primarily rooftop installations
-- **Design Constraints**: Limited by roof size and orientation
+        <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">The Solution:</h2>
+        <p class="text-gray-700 leading-relaxed mb-6">Sunsynchro installed a 15 kW rooftop solar system with Panasonic panels and Enphase microinverters, perfectly suited for the business's energy requirements.</p>
 
-### Commercial Solar Systems
-- **Size Range**: 25 kW to multi-megawatt installations
-- **Panel Count**: Hundreds to thousands of panels
-- **Installation Options**: Rooftop, ground-mount, or carport systems
-- **Design Flexibility**: More options for optimal system design
+        <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">The Results:</h2>
+        <ul class="list-disc list-inside text-gray-700 mb-6 space-y-2">
+          <li><strong>Monthly savings:</strong> ₹10,000+</li>
+          <li><strong>Annual savings:</strong> ₹1.2 lakhs</li>
+          <li><strong>Payback:</strong> 4 years (with subsidy)</li>
+          <li><strong>Carbon savings:</strong> ~18 tons annually</li>
+        </ul>
 
-## Equipment Differences
-
-### Inverter Technology
-**Residential Systems:**
-- String inverters or microinverters
-- Simpler monitoring systems
-- Standard warranty periods
-
-**Commercial Systems:**
-- Central inverters or power optimizers
-- Advanced monitoring and control systems
-- Extended warranty options
-
-### Panel Selection
-**Residential:**
-- Focus on aesthetics and efficiency
-- Standard panel sizes
-- Residential-grade mounting systems
-
-**Commercial:**
-- Emphasis on cost per watt and durability
-- Larger panel formats available
-- Industrial-grade mounting solutions
-
-## Financial Considerations
-
-### Initial Investment
-**Residential:**
-- $15,000-$30,000 typical system cost
-- Cost per watt: $2.50-$4.00
-- Financing through solar loans or leases
-
-**Commercial:**
-- $50,000-$500,000+ typical range
-- Cost per watt: $1.50-$3.00 (economies of scale)
-- Various financing options including PPAs
-
-### Return on Investment
-**Residential:**
-- Payback period: 6-10 years
-- 25-year savings: $20,000-$50,000
-- Focus on electricity bill reduction
-
-**Commercial:**
-- Payback period: 4-7 years
-- Significant operational cost reduction
-- Enhanced corporate sustainability profile
-
-## Installation Process
-
-### Permitting and Approvals
-**Residential:**
-- Simpler permitting process
-- Faster approval times
-- Standard interconnection procedures
-
-**Commercial:**
-- Complex permitting requirements
-- Engineering studies may be required
-- Extended approval timelines
-
-### Installation Timeline
-**Residential:**
-- 1-3 days for installation
-- 2-8 weeks total project timeline
-- Minimal business disruption
-
-**Commercial:**
-- 1-4 weeks for installation
-- 3-12 months total project timeline
-- Careful coordination to minimize disruption
-
-## Maintenance and Operations
-
-### Monitoring Systems
-**Residential:**
-- Basic production monitoring
-- Mobile app access
-- Annual performance reports
-
-**Commercial:**
-- Comprehensive monitoring platforms
-- Real-time alerts and diagnostics
-- Detailed performance analytics
-
-### Maintenance Requirements
-**Residential:**
-- Minimal maintenance needs
-- Occasional cleaning and inspection
-- 25-year system warranties
-
-**Commercial:**
-- Preventive maintenance programs
-- Professional monitoring services
-- Operations and maintenance contracts
-
-## Conclusion
-
-Both residential and commercial solar installations offer significant benefits, but the approach, scale, and considerations differ substantially. Understanding these differences helps in making informed decisions about solar investments.
+        <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">Owner's Testimonial:</h2>
+        <blockquote class="border-l-4 border-green-500 pl-4 italic text-gray-700 mb-6">
+          "Switching to solar with Sunsynchro was the best business decision. My profits are higher, and I'm proud to run a green business."
+        </blockquote>
+      </div>
     `,
-    image: "/blog/residential-vs-commercial.jpg",
-    author: "Lisa Wang",
-    publishDate: "2023-12-20",
-    readTime: "11 min read",
-    category: "Comparison",
-    tags: ["Residential Solar", "Commercial Solar", "Comparison"]
+    image: "/blog/solar-3.jpeg",
+    author: "Sunsynchro Team",
+    publishDate: "2025-09-14",
+    readTime: "4 min read",
+    category: "Case Studies",
+    tags: ["Success Story", "Agartala", "Commercial Solar", "Small Business"],
+    featured: true
+  },
+  {
+    id: "6",
+    title: "5 Tips to Maintain Your Solar Panels During Monsoon in Tripura",
+    slug: "solar-panel-maintenance-monsoon-tripura",
+    excerpt: "Essential maintenance tips to keep your solar panels performing optimally during Tripura's heavy monsoon season.",
+    content: `
+      <div class="prose prose-lg max-w-none">
+        <h1 class="text-3xl font-bold text-gray-900 mb-6">5 Tips to Maintain Your Solar Panels During Monsoon in Tripura</h1>
+
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">Tripura's heavy monsoon can reduce solar output if systems aren't maintained properly. Here are 5 practical tips to ensure optimal performance during the rainy season:</p>
+
+        <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">1. Regular Cleaning</h2>
+        <p class="text-gray-700 leading-relaxed mb-6">Remove dust, leaves, and bird droppings that can accumulate on panels and reduce efficiency. Clean panels can improve output by up to 15%.</p>
+
+        <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">2. Check Drainage</h2>
+        <p class="text-gray-700 leading-relaxed mb-6">Ensure rainwater doesn't stagnate on panels. Proper drainage prevents water damage and maintains panel efficiency.</p>
+
+        <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">3. Inspect Wiring</h2>
+        <p class="text-gray-700 leading-relaxed mb-6">Moisture can damage cables and connections. Get professional checks to prevent electrical issues and ensure safety.</p>
+
+        <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">4. Trim Surrounding Trees</h2>
+        <p class="text-gray-700 leading-relaxed mb-6">Prevent shading and leaf accumulation by keeping vegetation around your solar installation well-maintained.</p>
+
+        <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">5. Professional AMC</h2>
+        <p class="text-gray-700 leading-relaxed mb-6">Annual Maintenance Contracts ensure performance during challenging weather conditions with regular professional inspections.</p>
+
+        <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">Conclusion:</h2>
+        <p class="text-gray-700 leading-relaxed mb-6">A little care ensures your solar system continues to deliver maximum efficiency during the rainy season, protecting your investment and maximizing returns.</p>
+
+        <p class="text-gray-700 leading-relaxed mb-6"><strong class="text-green-600">👉</strong> Sunsynchro offers comprehensive maintenance packages for worry-free performance year-round.</p>
+      </div>
+    `,
+    image: "/blog/solar-5.jpg",
+    author: "Sunsynchro Team",
+    publishDate: "2025-09-14",
+    readTime: "6 min read",
+    category: "Maintenance",
+    tags: ["Maintenance", "Monsoon", "Tripura", "Solar Panels"],
+    featured: false
   }
 ];
 

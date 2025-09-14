@@ -21,52 +21,48 @@ const slides: Slide[] = [
     id: 1,
     type: "image",
     src: "/hero/h1.webp",
-    title: "Power Your Future",
-    subtitle: "With Clean Solar Energy",
-    description: "Leading provider of solar distribution and installation services. Transform your energy consumption with our cutting-edge solar solutions.",
+    title: "Your Trusted Solar EPC & Distribution Partner",
+    subtitle: "in Tripura",
+    description: "Sunsynchro Energy Pvt. Ltd. is a new-age solar EPC and distribution company committed to delivering rooftop solar installations and supplying premium solar components across Tripura.",
     cta: {
-      primary: { text: "Get Free Quote", href: "/contact" },
-      secondary: { text: "View Solutions", href: "/solutions" }
+      primary: { text: "Get a Free Solar Quote", href: "/contact" },
+      secondary: { text: "Explore Our Products", href: "/products" }
     }
   },
   {
     id: 2,
-    // The original code had type: "video" and src: "/hero/h2.webp"
-    // If you want to show a webp image, type should be "image"
-    // If you want to show a video, src should be a video file (mp4/webm)
-    // Let's assume you want to show a webp image, so change type to "image"
     type: "image",
-    src: "/hero/h2.jpg",
-    title: "Professional Installation",
-    subtitle: "Expert EPC Services",
-    description: "From engineering to procurement and construction, our certified team delivers complete solar solutions for residential and commercial projects.",
+    src: "/hero/h1.webp",
+    title: "Your Trusted Solar EPC & Distribution Partner",
+    subtitle: "in Tripura",
+    description: "Sunsynchro Energy Pvt. Ltd. is a new-age solar EPC and distribution company committed to delivering rooftop solar installations and supplying premium solar components across Tripura.",
     cta: {
-      primary: { text: "Our Services", href: "/solutions" },
-      secondary: { text: "View Portfolio", href: "/projects" }
+      primary: { text: "Get a Free Solar Quote", href: "/contact" },
+      secondary: { text: "Explore Our Products", href: "/products" }
     }
   },
   {
     id: 3,
     type: "image",
-    src: "/hero/h3.jpg",
-    title: "Commercial Solutions",
-    subtitle: "Scale Your Business",
-    description: "Reduce operational costs and enhance sustainability with our commercial solar solutions. Custom designs for maximum efficiency and ROI.",
+    src: "/hero/h1.webp",
+    title: "Your Trusted Solar EPC & Distribution Partner",
+    subtitle: "in Tripura",
+    description: "Sunsynchro Energy Pvt. Ltd. is a new-age solar EPC and distribution company committed to delivering rooftop solar installations and supplying premium solar components across Tripura.",
     cta: {
-      primary: { text: "Commercial Solar", href: "/solutions#commercial" },
-      secondary: { text: "Calculate Savings", href: "/calculator" }
+      primary: { text: "Get a Free Solar Quote", href: "/contact" },
+      secondary: { text: "Explore Our Products", href: "/products" }
     }
   },
   {
     id: 4,
     type: "image",
-    src: "/hero/h4.jpg",
-    title: "Premium Components",
-    subtitle: "Top-Tier Solar Products",
-    description: "Distributor of world-class solar panels, inverters, and energy storage systems from leading manufacturers worldwide.",
+    src: "/hero/h1.webp",
+    title: "Your Trusted Solar EPC & Distribution Partner",
+    subtitle: "in Tripura",
+    description: "Sunsynchro Energy Pvt. Ltd. is a new-age solar EPC and distribution company committed to delivering rooftop solar installations and supplying premium solar components across Tripura.",
     cta: {
-      primary: { text: "Browse Products", href: "/products" },
-      secondary: { text: "Our Brands", href: "/brands" }
+      primary: { text: "Get a Free Solar Quote", href: "/contact" },
+      secondary: { text: "Explore Our Products", href: "/products" }
     }
   }
 ];
@@ -80,7 +76,7 @@ const HeroSlider = () => {
 
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 6000);
+    }, 20000);
 
     return () => clearInterval(interval);
   }, [isPlaying]);
@@ -143,7 +139,7 @@ const HeroSlider = () => {
                 className="text-white"
               >
                 <motion.h1 
-                  className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 leading-tight"
+                  className="text-4xl sm:text-4xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2, duration: 0.8 }}

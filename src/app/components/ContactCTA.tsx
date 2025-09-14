@@ -140,31 +140,7 @@ const ContactCTA = () => {
           </div>
         </motion.div> */}
 
-        {/* Testimonial Quote */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="text-center"
-        >
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 max-w-4xl mx-auto">
-            <blockquote className="text-xl md:text-2xl font-light italic mb-6 text-gray-200">
-              &quot;Sunsynchro exceeded our expectations. From the initial consultation to the final 
-              installation, their team was professional, knowledgeable, and efficient. Our energy 
-              bills have dropped by 90% and we couldn&apos;t be happier!&quot;
-            </blockquote>
-            <div className="flex items-center justify-center space-x-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-yellow-400 rounded-full flex items-center justify-center">
-                <span className="text-white font-bold">MJ</span>
-              </div>
-              <div className="text-left">
-                <div className="font-semibold">Michael Johnson</div>
-                <div className="text-gray-300 text-sm">Homeowner, California</div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
+        
 
         {/* Final CTA */}
         <motion.div

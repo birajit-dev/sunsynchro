@@ -88,7 +88,7 @@ const LogoCarousel = () => {
         </div>
 
         {/* Brand Categories */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -136,10 +136,10 @@ const LogoCarousel = () => {
               </p>
             </div>
           </div> */}
-        </motion.div>
+        {/* </motion.div> */}
 
         {/* Partnership Benefits */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -172,7 +172,7 @@ const LogoCarousel = () => {
               </div>
             </div>
           </div>
-        </motion.div>
+        </motion.div> */}
 
         {/* CTA */}
         {/* <motion.div

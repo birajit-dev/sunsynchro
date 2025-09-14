@@ -2,109 +2,9 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { HiCalendar, HiUser, HiClock, HiArrowRight, HiChevronLeft, HiChevronRight } from "react-icons/hi";
-
-// Example blog data - will be replaced with API data later
-const blogPosts = [
-  {
-    id: "1",
-    title: "The Future of Solar Energy: Trends and Innovations for 2024",
-    excerpt: "Explore the latest developments in solar technology, from perovskite cells to floating solar farms, and how they're shaping the renewable energy landscape.",
-    author: "Sarah Johnson",
-    date: "2024-01-15",
-    readTime: "5 min read",
-    category: "Technology",
-    image: "/blogs/solar-future.jpg",
-    slug: "future-of-solar-energy-2024"
-  },
-  {
-    id: "2",
-    title: "Solar Panel Maintenance: Essential Tips for Maximum Efficiency",
-    excerpt: "Learn how to properly maintain your solar panels to ensure optimal performance and extend their lifespan with these expert maintenance tips.",
-    author: "Mike Chen",
-    date: "2024-01-12",
-    readTime: "7 min read",
-    category: "Maintenance",
-    image: "/blogs/solar-maintenance.jpg",
-    slug: "solar-panel-maintenance-tips"
-  },
-  {
-    id: "3",
-    title: "Understanding Solar Inverters: Types and Selection Guide",
-    excerpt: "A comprehensive guide to different types of solar inverters, their pros and cons, and how to choose the right one for your solar installation.",
-    author: "David Rodriguez",
-    date: "2024-01-10",
-    readTime: "6 min read",
-    category: "Education",
-    image: "/blogs/solar-inverters.jpg",
-    slug: "understanding-solar-inverters-guide"
-  },
-  {
-    id: "4",
-    title: "Commercial Solar Installation: ROI and Business Benefits",
-    excerpt: "Discover how commercial solar installations can reduce operating costs, improve sustainability credentials, and provide long-term financial benefits.",
-    author: "Lisa Thompson",
-    date: "2024-01-08",
-    readTime: "8 min read",
-    category: "Business",
-    image: "/blogs/commercial-solar.jpg",
-    slug: "commercial-solar-roi-benefits"
-  },
-  {
-    id: "5",
-    title: "Energy Storage Solutions: Batteries for Solar Systems",
-    excerpt: "Compare different battery technologies for solar energy storage, including lithium-ion, lead-acid, and emerging alternatives.",
-    author: "Alex Kumar",
-    date: "2024-01-05",
-    readTime: "6 min read",
-    category: "Technology",
-    image: "/blogs/energy-storage.jpg",
-    slug: "energy-storage-solar-batteries"
-  },
-  {
-    id: "6",
-    title: "Solar Panel Efficiency: Factors That Affect Performance",
-    excerpt: "Understanding the various factors that impact solar panel efficiency, from weather conditions to installation angles and shading effects.",
-    author: "Emma Wilson",
-    date: "2024-01-03",
-    readTime: "5 min read",
-    category: "Education",
-    image: "/blogs/panel-efficiency.jpg",
-    slug: "solar-panel-efficiency-factors"
-  },
-  {
-    id: "7",
-    title: "Grid-Tie vs Off-Grid Solar Systems: Which is Right for You?",
-    excerpt: "Compare grid-tied and off-grid solar systems to determine which option best suits your energy needs, budget, and lifestyle requirements.",
-    author: "Robert Martinez",
-    date: "2024-01-01",
-    readTime: "7 min read",
-    category: "Planning",
-    image: "/blogs/grid-tie-vs-off-grid.jpg",
-    slug: "grid-tie-vs-off-grid-solar-systems"
-  },
-  {
-    id: "8",
-    title: "Solar Financing Options: Making Solar Affordable",
-    excerpt: "Explore various financing options for solar installations, including loans, leases, PPAs, and government incentives to make solar more accessible.",
-    author: "Jennifer Lee",
-    date: "2023-12-28",
-    readTime: "6 min read",
-    category: "Finance",
-    image: "/blogs/solar-financing.jpg",
-    slug: "solar-financing-options-guide"
-  },
-  {
-    id: "9",
-    title: "Environmental Impact of Solar Energy: Beyond Carbon Reduction",
-    excerpt: "Examine the comprehensive environmental benefits of solar energy, including reduced water usage, land conservation, and ecosystem protection.",
-    author: "Dr. Michael Green",
-    date: "2023-12-25",
-    readTime: "8 min read",
-    category: "Environment",
-    image: "/blogs/environmental-impact.jpg",
-    slug: "environmental-impact-solar-energy"
-  }
-];
+import Link from "next/link";
+import { blogPosts } from "../../data/blogs";
+import Image from "next/image";
 
 const BlogsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -169,64 +69,75 @@ const BlogsPage = () => {
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 group cursor-pointer"
+                  className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 group"
                 >
-                  {/* Blog Image */}
-                  <div className="relative h-48 bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-center p-4">
-                        <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-yellow-500 rounded-xl flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform duration-300">
-                          <span className="text-white font-bold text-lg">
-                            {post.title.charAt(0)}
-                          </span>
+                  <Link href={`/blogs/${post.slug}`} className="block">
+                    {/* Blog Image */}
+                    <div className="relative h-48 overflow-hidden">
+                      {post.image ? (
+                        <Image
+                          src={post.image}
+                          alt={post.title}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      ) : (
+                        <div className="h-full bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+                          <div className="text-center p-4">
+                            <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-yellow-500 rounded-xl flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform duration-300">
+                              <span className="text-white font-bold text-lg">
+                                {post.title.charAt(0)}
+                              </span>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                    
-                    {/* Category Badge */}
-                    <div className="absolute top-4 left-4">
-                      <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-xs font-medium text-gray-700 rounded-full">
-                        {post.category}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Blog Content */}
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-green-600 transition-colors line-clamp-2">
-                      {post.title}
-                    </h3>
-                    
-                    <p className="text-gray-600 mb-4 line-clamp-3">
-                      {post.excerpt}
-                    </p>
-
-                    {/* Meta Information */}
-                    <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
-                      <div className="flex items-center space-x-4">
-                        <div className="flex items-center">
-                          <HiUser className="w-4 h-4 mr-1" />
-                          {post.author}
-                        </div>
-                        <div className="flex items-center">
-                          <HiClock className="w-4 h-4 mr-1" />
-                          {post.readTime}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center text-sm text-gray-500">
-                        <HiCalendar className="w-4 h-4 mr-1" />
-                        {formatDate(post.date)}
-                      </div>
+                      )}
                       
-                      <div className="flex items-center text-green-600 font-medium group-hover:text-green-700 transition-colors">
-                        Read More
-                        <HiArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                      {/* Category Badge */}
+                      <div className="absolute top-4 left-4">
+                        <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-xs font-medium text-gray-700 rounded-full">
+                          {post.category}
+                        </span>
                       </div>
                     </div>
-                  </div>
+
+                    {/* Blog Content */}
+                    <div className="p-6">
+                      <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-green-600 transition-colors line-clamp-2">
+                        {post.title}
+                      </h3>
+                      
+                      <p className="text-gray-600 mb-4 line-clamp-3">
+                        {post.excerpt}
+                      </p>
+
+                      {/* Meta Information */}
+                      <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
+                        <div className="flex items-center space-x-4">
+                          <div className="flex items-center">
+                            <HiUser className="w-4 h-4 mr-1" />
+                            {post.author}
+                          </div>
+                          <div className="flex items-center">
+                            <HiClock className="w-4 h-4 mr-1" />
+                            {post.readTime}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center text-sm text-gray-500">
+                          <HiCalendar className="w-4 h-4 mr-1" />
+                          {formatDate(post.publishDate)}
+                        </div>
+                        
+                        <div className="flex items-center text-green-600 font-medium group-hover:text-green-700 transition-colors">
+                          Read More
+                          <HiArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
                 </motion.article>
               ))}
             </motion.div>

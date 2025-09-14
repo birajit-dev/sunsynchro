@@ -160,7 +160,7 @@ const MapEmbed = () => {
           </motion.div>
         </div>
 
-        {/* Coverage Area */}
+        {/* Coverage Area
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -191,7 +191,7 @@ const MapEmbed = () => {
               </div>
             </div>
           </div>
-        </motion.div>
+        </motion.div> */}
       </div>
     </section>
   );

@@ -11,11 +11,112 @@ const ContactPage = () => {
     projectType: "",
     message: ""
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log("Form submitted:", formData);
+    
+    // Validate required fields
+    if (!formData.name.trim()) {
+      alert('Please enter your name');
+      return;
+    }
+    if (!formData.email.trim()) {
+      alert('Please enter your email');
+      return;
+    }
+    
+    setIsSubmitting(true);
+
+    try {
+      // Method 1: Try with fetch and FormData
+      const submitData = new FormData();
+      submitData.append('name', formData.name);
+      submitData.append('email', formData.email);
+      submitData.append('phone', formData.phone);
+      submitData.append('service', formData.projectType);
+      submitData.append('message', formData.message);
+      submitData.append('timestamp', new Date().toISOString());
+      submitData.append('source', 'website_contact_form');
+
+      try {
+        await fetch('https://script.google.com/macros/s/AKfycbwpbzTRgwZ56p--mz4zrLbEiRO4imzT3owUjH81i4xXpie_ZAG4h3xLFxuyDVy6ug1Y1Q/exec', {
+          method: 'POST',
+          body: submitData,
+          mode: 'no-cors' // Add this back for Google Apps Script
+        });
+        console.log('Form submitted successfully via fetch');
+      } catch (fetchError) {
+        console.log('Fetch failed, trying alternative method:', fetchError);
+        
+        // Method 2: Fallback using URL parameters
+        const params = new URLSearchParams();
+        params.append('name', formData.name);
+        params.append('email', formData.email);
+        params.append('phone', formData.phone);
+        params.append('service', formData.projectType);
+        params.append('message', formData.message);
+        params.append('timestamp', new Date().toISOString());
+        params.append('source', 'website_contact_form');
+
+        const scriptUrl = `https://script.google.com/macros/s/AKfycbwpbzTRgwZ56p--mz4zrLbEiRO4imzT3owUjH81i4xXpie_ZAG4h3xLFxuyDVy6ug1Y1Q/exec?${params.toString()}`;
+        
+        // Use an invisible iframe as fallback
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = scriptUrl;
+        document.body.appendChild(iframe);
+        
+        // Remove iframe after 3 seconds
+        setTimeout(() => {
+          document.body.removeChild(iframe);
+        }, 3000);
+        
+        console.log('Form submitted via iframe fallback');
+      }
+
+      console.log('Contact form submitted to Google Sheets:', formData);
+      console.log('Name field value:', formData.name);
+      console.log('Full data being sent:', {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        service: formData.projectType,
+        message: formData.message,
+        timestamp: new Date().toISOString(),
+        source: 'website_contact_form'
+      });
+      setIsSubmitted(true);
+      
+      // Reset form after 3 seconds
+      setTimeout(() => {
+        setIsSubmitted(false);
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          projectType: "",
+          message: ""
+        });
+      }, 3000);
+    } catch (error) {
+      console.error('Form submission error:', error);
+      // Still show success to user even if there's a CORS error
+      setIsSubmitted(true);
+      setTimeout(() => {
+        setIsSubmitted(false);
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          projectType: "",
+          message: ""
+        });
+      }, 3000);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -182,9 +283,27 @@ const ContactPage = () => {
 
                   <button
                     type="submit"
-                    className="w-full bg-gradient-to-r from-green-500 to-yellow-500 text-white font-bold py-4 px-8 rounded-lg hover:shadow-lg transform hover:scale-105 transition-all duration-200"
+                    disabled={isSubmitting}
+                    className="w-full bg-gradient-to-r from-green-500 to-yellow-500 disabled:from-gray-400 disabled:to-gray-500 text-white font-bold py-4 px-8 rounded-lg hover:shadow-lg transform hover:scale-105 disabled:hover:scale-100 transition-all duration-200 flex items-center justify-center"
                   >
-                    Send Message & Get Free Quote
+                    {isSubmitting ? (
+                      <>
+                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Submitting...
+                      </>
+                    ) : isSubmitted ? (
+                      <>
+                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        Message Sent Successfully!
+                      </>
+                    ) : (
+                      'Send Message & Get Free Quote'
+                    )}
                   </button>
                 </form>
               </div>

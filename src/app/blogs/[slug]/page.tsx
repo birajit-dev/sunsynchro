@@ -18,115 +18,7 @@ import {
 } from "react-icons/hi";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-
-// Example blog data - will be replaced with API data later
-const blogPosts = [
-  {
-    id: "1",
-    title: "The Future of Solar Energy: Trends and Innovations for 2024",
-    excerpt: "Explore the latest developments in solar technology, from perovskite cells to floating solar farms, and how they're shaping the renewable energy landscape.",
-    author: "Sarah Johnson",
-    authorTitle: "Senior Solar Technology Analyst",
-    authorBio: "Leading solar technology researcher with 12+ years of experience in renewable energy innovation and market analysis.",
-    authorImage: "/team/sarah-johnson.jpg",
-    date: "2024-01-15",
-    readTime: "5 min read",
-    category: "Technology",
-    tags: ["Innovation", "Solar Tech", "Future Energy", "Sustainability"],
-    image: "/blogs/solar-future.jpg",
-    slug: "future-of-solar-energy-2024",
-    views: "2.4k",
-    likes: 156,
-    bookmarks: 89,
-    content: `
-      <p>The solar energy industry continues to evolve at an unprecedented pace, with 2024 marking a pivotal year for technological breakthroughs and market expansion. As we stand at the forefront of the renewable energy revolution, several key trends and innovations are reshaping how we harness the power of the sun.</p>
-
-      <h2>Perovskite Solar Cells: The Next Generation</h2>
-      <p>One of the most exciting developments in solar technology is the advancement of perovskite solar cells. These next-generation photovoltaic devices promise higher efficiency rates and lower manufacturing costs compared to traditional silicon cells. Recent laboratory tests have achieved efficiency rates exceeding 25%, with commercial applications expected within the next few years.</p>
-
-      <h2>Floating Solar Farms: Maximizing Space and Efficiency</h2>
-      <p>Floating photovoltaic (FPV) systems are gaining traction worldwide as a solution to land scarcity issues. These innovative installations not only maximize available space but also benefit from the cooling effect of water, which can increase panel efficiency by up to 10-15%. Countries like China, Japan, and the Netherlands are leading the way in floating solar deployment.</p>
-
-      <h2>Energy Storage Integration</h2>
-      <p>The integration of advanced battery storage systems with solar installations is becoming increasingly sophisticated. New lithium-ion technologies and emerging alternatives like solid-state batteries are making solar-plus-storage solutions more viable for both residential and commercial applications.</p>
-
-      <h2>Smart Grid Integration</h2>
-      <p>The development of smart grid technologies is enabling better integration of solar power into existing electrical infrastructure. Advanced inverters, predictive analytics, and AI-driven energy management systems are optimizing solar energy distribution and consumption patterns.</p>
-
-      <h2>Looking Ahead</h2>
-      <p>As we progress through 2024, the solar industry continues to break new ground in efficiency, affordability, and accessibility. These innovations are not just technological achievements; they represent crucial steps toward a sustainable energy future that benefits both the environment and the global economy.</p>
-    `
-  },
-  {
-    id: "2",
-    title: "Solar Panel Maintenance: Essential Tips for Maximum Efficiency",
-    excerpt: "Learn how to properly maintain your solar panels to ensure optimal performance and extend their lifespan with these expert maintenance tips.",
-    author: "Mike Chen",
-    authorTitle: "Solar Installation Specialist",
-    authorBio: "Certified solar installation expert with extensive experience in residential and commercial solar systems.",
-    authorImage: "/team/mike-chen.jpg",
-    date: "2024-01-12",
-    readTime: "7 min read",
-    category: "Maintenance",
-    tags: ["Maintenance", "Solar Panels", "Efficiency", "Tips"],
-    image: "/blogs/solar-maintenance.jpg",
-    slug: "solar-panel-maintenance-tips",
-    views: "1.8k",
-    likes: 124,
-    bookmarks: 67,
-    content: `
-      <p>Proper maintenance of your solar panel system is crucial for ensuring optimal performance and maximizing your return on investment. With the right care and attention, solar panels can operate efficiently for 25-30 years or more.</p>
-
-      <h2>Regular Cleaning and Inspection</h2>
-      <p>Dust, debris, and bird droppings can significantly reduce your solar panels' efficiency. Regular cleaning with water and a soft brush or squeegee can help maintain peak performance. Inspect panels monthly for any visible damage, loose connections, or shading issues.</p>
-
-      <h2>Monitoring System Performance</h2>
-      <p>Keep track of your system's energy production through monitoring apps or displays. Sudden drops in performance may indicate maintenance needs or equipment issues that require professional attention.</p>
-
-      <h2>Professional Maintenance Services</h2>
-      <p>While basic cleaning can be done by homeowners, annual professional inspections are recommended to check electrical connections, inverter performance, and overall system health. Professional technicians can identify potential issues before they become costly problems.</p>
-
-      <h2>Seasonal Considerations</h2>
-      <p>Different seasons present unique maintenance challenges. Winter may require snow removal, while summer heat can affect system performance. Understanding these seasonal factors helps optimize your maintenance schedule.</p>
-    `
-  },
-  {
-    id: "3",
-    title: "Understanding Solar Inverters: Types and Selection Guide",
-    excerpt: "A comprehensive guide to different types of solar inverters, their pros and cons, and how to choose the right one for your solar installation.",
-    author: "David Rodriguez",
-    authorTitle: "Electrical Engineering Consultant",
-    authorBio: "Licensed electrical engineer specializing in renewable energy systems and grid integration technologies.",
-    authorImage: "/team/david-rodriguez.jpg",
-    date: "2024-01-10",
-    readTime: "6 min read",
-    category: "Education",
-    tags: ["Inverters", "Solar Components", "Education", "Technology"],
-    image: "/blogs/solar-inverters.jpg",
-    slug: "understanding-solar-inverters-guide",
-    views: "3.1k",
-    likes: 198,
-    bookmarks: 145,
-    content: `
-      <p>Solar inverters are the heart of any photovoltaic system, converting the direct current (DC) electricity generated by solar panels into alternating current (AC) electricity that can be used in your home or fed into the grid.</p>
-
-      <h2>Types of Solar Inverters</h2>
-      <p>There are three main types of solar inverters: string inverters, power optimizers, and microinverters. Each has its own advantages and is suitable for different installation scenarios.</p>
-
-      <h2>String Inverters</h2>
-      <p>String inverters are the most common and cost-effective option for residential installations. They connect multiple panels in series and convert the combined DC output to AC power. However, the performance of the entire string can be affected by shading on individual panels.</p>
-
-      <h2>Power Optimizers</h2>
-      <p>Power optimizers combine the cost benefits of string inverters with panel-level optimization. They maximize the power output of each panel individually while still using a central inverter for DC to AC conversion.</p>
-
-      <h2>Microinverters</h2>
-      <p>Microinverters are installed on each individual panel, providing maximum flexibility and performance optimization. While more expensive, they offer superior performance in partially shaded conditions and easier system expansion.</p>
-
-      <h2>Choosing the Right Inverter</h2>
-      <p>The best inverter choice depends on your specific installation conditions, budget, and performance requirements. Consider factors such as shading, roof orientation, system size, and future expansion plans when making your decision.</p>
-    `
-  }
-];
+import { blogPosts } from "../../../data/blogs";
 
 interface BlogPostPageProps {
   params: {
@@ -315,14 +207,14 @@ const BlogPostPage = ({ params }: BlogPostPageProps) => {
                 </div>
                 <div className="text-left">
                   <div className="font-bold text-slate-900 text-lg">{post.author}</div>
-                  <div className="text-slate-600 font-medium">{post.authorTitle}</div>
+                  <div className="text-slate-600 font-medium">Solar Energy Expert</div>
                 </div>
               </div>
               
               <div className="flex items-center space-x-8 text-slate-500">
                 <div className="flex items-center space-x-2">
                   <HiCalendar className="w-5 h-5" />
-                  <span className="font-medium">{new Date(post.date).toLocaleDateString('en-US', { 
+                  <span className="font-medium">{new Date(post.publishDate).toLocaleDateString('en-US', { 
                     year: 'numeric', 
                     month: 'long', 
                     day: 'numeric' 
@@ -334,7 +226,7 @@ const BlogPostPage = ({ params }: BlogPostPageProps) => {
                 </div>
                 <div className="flex items-center space-x-2">
                   <HiEye className="w-5 h-5" />
-                  <span className="font-medium">{post.views} views</span>
+                  <span className="font-medium">2.4k views</span>
                 </div>
               </div>
             </motion.div>
@@ -375,7 +267,7 @@ const BlogPostPage = ({ params }: BlogPostPageProps) => {
                   }`}
                 >
                   {isLiked ? <HiHeart className="w-5 h-5" /> : <HiOutlineHeart className="w-5 h-5" />}
-                  <span className="font-medium text-sm">{post.likes + (isLiked ? 1 : 0)}</span>
+                  <span className="font-medium text-sm">{156 + (isLiked ? 1 : 0)}</span>
                 </motion.button>
                 
                 <div className="w-px h-6 bg-slate-200"></div>
@@ -391,7 +283,7 @@ const BlogPostPage = ({ params }: BlogPostPageProps) => {
                   }`}
                 >
                   {isBookmarked ? <HiBookmark className="w-5 h-5" /> : <HiOutlineBookmark className="w-5 h-5" />}
-                  <span className="font-medium text-sm">{post.bookmarks + (isBookmarked ? 1 : 0)}</span>
+                  <span className="font-medium text-sm">{89 + (isBookmarked ? 1 : 0)}</span>
                 </motion.button>
                 
                 <div className="w-px h-6 bg-slate-200"></div>
@@ -433,41 +325,21 @@ const BlogPostPage = ({ params }: BlogPostPageProps) => {
             />
           </motion.article>
 
-          {/* Enhanced Author Bio Section */}
+          {/* Author Bio Section */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="bg-gradient-to-r from-slate-50 to-green-50/50 border border-slate-200/50 rounded-2xl p-8 mb-20"
+            className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-20"
           >
-            <div className="flex flex-col md:flex-row md:items-center gap-6">
-              <div className="relative">
-                <div className="w-24 h-24 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center text-white font-bold text-2xl shadow-lg">
-                  {post.author.split(' ').map(name => name[0]).join('')}
-                </div>
-                <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center shadow-lg">
-                  <div className="w-3 h-3 bg-white rounded-full"></div>
-                </div>
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                {post.author.split(' ').map(name => name[0]).join('')}
               </div>
               
               <div className="flex-1">
-                <h3 className="text-2xl font-bold text-slate-900 mb-2">{post.author}</h3>
-                <p className="text-green-600 font-semibold mb-3">{post.authorTitle}</p>
-                <p className="text-slate-600 leading-relaxed">
-                  {post.authorBio || "Renewable energy specialist with 10+ years of industry experience"}
-                </p>
-              </div>
-              
-              <div className="flex flex-col items-end space-y-3">
-                <div className="flex items-center space-x-4 text-sm text-slate-500">
-                  <div className="flex items-center space-x-1">
-                    <HiTrendingUp className="w-4 h-4" />
-                    <span>Expert</span>
-                  </div>
-                </div>
-                <button className="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-200">
-                  Follow Author
-                </button>
+                <h3 className="text-xl font-bold text-slate-900 mb-1">{post.author}</h3>
+                <p className="text-slate-600">Solar Energy Expert</p>
               </div>
             </div>
           </motion.div>
@@ -535,13 +407,13 @@ const BlogPostPage = ({ params }: BlogPostPageProps) => {
                             </div>
                             <div>
                               <div className="font-semibold text-slate-900 text-sm">{relatedPost.author}</div>
-                              <div className="text-xs text-slate-500">{relatedPost.authorTitle}</div>
+                              <div className="text-xs text-slate-500">Solar Energy Expert</div>
                             </div>
                           </div>
                           <div className="flex items-center space-x-4 text-xs text-slate-500">
                             <div className="flex items-center space-x-1">
                               <HiEye className="w-3 h-3" />
-                              <span>{relatedPost.views}</span>
+                              <span>2.1k</span>
                             </div>
                             <div className="flex items-center space-x-1">
                               <HiClock className="w-3 h-3" />

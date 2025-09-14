@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { HiExternalLink, HiInformationCircle, HiCheckCircle, HiShieldCheck, HiSun, HiChip, HiLightningBolt, HiCube } from "react-icons/hi";
+import { HiExternalLink, HiCheckCircle, HiShieldCheck, HiSun, HiChip, HiLightningBolt, HiCube } from "react-icons/hi";
 
 const BrandsPage = () => {
   const brandCategories = ["All", "Solar Panels", "Inverters", "Energy Meters", "Storage & Accessories"];
@@ -289,7 +289,7 @@ const BrandsPage = () => {
             Ready to Work with the Best Brands in Solar?
           </h2>
           <p className="text-lg text-slate-300 mb-8 max-w-2xl mx-auto">
-            Whether you're installing a solar system or sourcing components,
+            Whether you&apos;re installing a solar system or sourcing components,
             our partnerships with trusted brands guarantee the best results.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">

@@ -28,29 +28,23 @@ const AboutSection = () => {
           >
             <div className="mb-6">
               <span className="inline-block px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm font-semibold mb-4">
-                About Sunsynchro
               </span>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-                Leading the Solar Revolution with 
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-yellow-600"> Innovation</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-yellow-600">Who We Are?</span>
               </h2>
             </div>
 
             <div className="space-y-6 mb-8">
-              <p className="text-lg text-gray-600 leading-relaxed">
-                At Sunsynchro, we&apos;re more than just a solar company – we&apos;re your partners in building 
-                a sustainable future. With over 15 years of experience in solar distribution and 
-                installation, we&apos;ve helped thousands of clients harness the power of the sun.
+              <p className="text-lg text-gray-600 leading-relaxed text-justify">
+                Sunsynchro is a young and ambitious EPC cum distribution company based in Tripura. Our strength lies in combining engineering expertise with reliable product distribution to make solar energy adoption smooth and affordable.
               </p>
               
-              <p className="text-lg text-gray-600 leading-relaxed">
-                Our comprehensive approach combines cutting-edge technology, premium components, 
-                and expert installation services to deliver solar solutions that exceed expectations. 
-                From residential rooftops to large commercial installations, we make clean energy accessible to everyone.
+              <p className="text-lg text-gray-600 leading-relaxed text-justify">
+                We support customers with complete design, procurement, and installation of rooftop solar projects, while also supplying high-quality solar products to dealers, installers, and project developers.
               </p>
             </div>
 
-            {/* Features Grid */}
+            {/* Features Grid
             <div className="grid grid-cols-1 gap-3 sm:gap-4 mb-8">
               {features.map((feature, index) => (
                 <motion.div
@@ -65,7 +59,7 @@ const AboutSection = () => {
                   <span className="text-gray-700 font-medium">{feature}</span>
                 </motion.div>
               ))}
-            </div>
+            </div> */}
 
             {/* CTA Buttons */}
             <motion.div
@@ -104,7 +98,7 @@ const AboutSection = () => {
               {/* Main Image */}
               <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                 <img
-                  src="/about/solar-team.jpg"
+                  src="/gallery/logo.png"
                   alt="Sunsynchro professional team"
                   className="w-full h-[500px] object-cover"
                 />
@@ -149,22 +143,25 @@ const AboutSection = () => {
             <div>
               <h3 className="text-2xl font-bold text-gray-900 mb-2">Our Mission</h3>
               <p className="text-gray-600">
-                To accelerate the world&apos;s transition to sustainable energy through 
-                innovative solar solutions and exceptional service.
+                To provide comprehensive solar EPC and distribution services across 
+                Northeast India, delivering reliable renewable energy solutions that 
+                reduce costs and environmental impact.
               </p>
             </div>
             <div>
               <h3 className="text-2xl font-bold text-gray-900 mb-2">Our Vision</h3>
               <p className="text-gray-600">
-                A world powered by clean, renewable energy where every building 
-                contributes to a sustainable future.
+                To be the leading solar EPC and distribution company in Northeast India, 
+                empowering homes, businesses, and solar professionals with world-class 
+                products and services.
               </p>
             </div>
             <div>
               <h3 className="text-2xl font-bold text-gray-900 mb-2">Our Values</h3>
               <p className="text-gray-600">
-                Quality, integrity, innovation, and sustainability guide everything 
-                we do in our commitment to our clients and the planet.
+                Excellence in engineering, transparency in business, innovation in 
+                solutions, and commitment to empowering our regional community with 
+                sustainable energy.
               </p>
             </div>
           </div>
