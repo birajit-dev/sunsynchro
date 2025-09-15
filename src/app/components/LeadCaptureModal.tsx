@@ -55,55 +55,68 @@ export default function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalPr
     setIsSubmitting(true);
 
     try {
-      // Method 1: Try with fetch and FormData
-      const submitData = new FormData();
-      submitData.append('name', formData.name);
-      submitData.append('email', formData.email);
-      submitData.append('phone', formData.phone);
-      submitData.append('service', formData.service);
-      submitData.append('message', formData.message);
-      submitData.append('timestamp', new Date().toISOString());
-      submitData.append('source', 'website_lead_modal');
+      // Method 1: Using URLSearchParams (works better with Google Apps Script)
+      const params = new URLSearchParams();
+      params.append('name', formData.name.trim());
+      params.append('email', formData.email.trim());
+      params.append('phone', formData.phone.trim());
+      params.append('service', formData.service || 'Not specified');
+      params.append('message', formData.message.trim() || 'No message');
+      params.append('timestamp', new Date().toISOString());
+      params.append('source', 'website_lead_modal');
 
+      const scriptUrl = 'https://script.google.com/macros/s/AKfycbxOqwPJCRc9lPQzhxzZECU0Vme_m2de2drEc_hc5YfDrIynbb0JfNgzN-Jx7SNxEJBypA/exec';
+      const getUrl = `${scriptUrl}?${params.toString()}`;
+
+      // Method 1: Try GET request with parameters
       try {
-        await fetch('https://script.google.com/macros/s/AKfycbwpbzTRgwZ56p--mz4zrLbEiRO4imzT3owUjH81i4xXpie_ZAG4h3xLFxuyDVy6ug1Y1Q/exec', {
-          method: 'POST',
-          body: submitData,
-          mode: 'no-cors' // Add this back for Google Apps Script
+        await fetch(getUrl, {
+          method: 'GET',
+          mode: 'no-cors'
         });
-        console.log('Modal form submitted successfully via fetch');
-      } catch (fetchError) {
-        console.log('Fetch failed, trying alternative method:', fetchError);
+        console.log('Form submitted successfully via GET request');
+      } catch (getError) {
+        console.log('GET request failed, trying POST:', getError);
         
-        // Method 2: Fallback using URL parameters
-        const params = new URLSearchParams();
-        params.append('name', formData.name);
-        params.append('email', formData.email);
-        params.append('phone', formData.phone);
-        params.append('service', formData.service);
-        params.append('message', formData.message);
-        params.append('timestamp', new Date().toISOString());
-        params.append('source', 'website_lead_modal');
+        // Method 2: Try POST with FormData
+        try {
+          const formDataObj = new FormData();
+          formDataObj.append('name', formData.name.trim());
+          formDataObj.append('email', formData.email.trim());
+          formDataObj.append('phone', formData.phone.trim());
+          formDataObj.append('service', formData.service || 'Not specified');
+          formDataObj.append('message', formData.message.trim() || 'No message');
+          formDataObj.append('timestamp', new Date().toISOString());
+          formDataObj.append('source', 'website_lead_modal');
 
-        const scriptUrl = `https://script.google.com/macros/s/AKfycbwpbzTRgwZ56p--mz4zrLbEiRO4imzT3owUjH81i4xXpie_ZAG4h3xLFxuyDVy6ug1Y1Q/exec?${params.toString()}`;
-        
-        // Use an invisible iframe as fallback
-        const iframe = document.createElement('iframe');
-        iframe.style.display = 'none';
-        iframe.src = scriptUrl;
-        document.body.appendChild(iframe);
-        
-        // Remove iframe after 3 seconds
-        setTimeout(() => {
-          document.body.removeChild(iframe);
-        }, 3000);
-        
-        console.log('Modal form submitted via iframe fallback');
+          await fetch(scriptUrl, {
+            method: 'POST',
+            body: formDataObj,
+            mode: 'no-cors'
+          });
+          console.log('Form submitted successfully via POST request');
+        } catch (postError) {
+          console.log('POST request failed, using iframe method:', postError);
+          
+          // Method 3: Fallback using iframe
+          const iframe = document.createElement('iframe');
+          iframe.style.display = 'none';
+          iframe.src = getUrl;
+          document.body.appendChild(iframe);
+          
+          // Remove iframe after 5 seconds
+          setTimeout(() => {
+            if (document.body.contains(iframe)) {
+              document.body.removeChild(iframe);
+            }
+          }, 5000);
+          
+          console.log('Form submitted via iframe fallback');
+        }
       }
 
-      console.log('Form submitted to Google Sheets:', formData);
-      console.log('Name field value:', formData.name);
-      console.log('Full data being sent:', {
+      // Log the data being sent for debugging
+      console.log('Form data being submitted:', {
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
@@ -112,9 +125,10 @@ export default function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalPr
         timestamp: new Date().toISOString(),
         source: 'website_lead_modal'
       });
+
       setIsSubmitted(true);
       
-      // Reset form after 2 seconds and close modal
+      // Reset form after 3 seconds and close modal
       setTimeout(() => {
         setIsSubmitted(false);
         setFormData({
@@ -125,10 +139,11 @@ export default function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalPr
           message: ''
         });
         onClose();
-      }, 2000);
+      }, 3000);
+
     } catch (error) {
       console.error('Form submission error:', error);
-      // Still show success to user even if there's a CORS error
+      // Still show success to user (due to CORS limitations we can't detect actual success/failure)
       setIsSubmitted(true);
       setTimeout(() => {
         setIsSubmitted(false);
@@ -140,7 +155,7 @@ export default function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalPr
           message: ''
         });
         onClose();
-      }, 2000);
+      }, 3000);
     } finally {
       setIsSubmitting(false);
     }
@@ -227,6 +242,19 @@ export default function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalPr
                   <option value="maintenance">Maintenance</option>
                   <option value="consultation">Consultation</option>
                 </select>
+              </div>
+
+              {/* Message (Optional) */}
+              <div>
+                <textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  rows={2}
+                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:border-transparent bg-white resize-none"
+                  placeholder="Additional message (optional)"
+                />
               </div>
 
               {/* Submit Button */}

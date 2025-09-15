@@ -30,66 +30,79 @@ const ContactPage = () => {
     setIsSubmitting(true);
 
     try {
-      // Method 1: Try with fetch and FormData
-      const submitData = new FormData();
-      submitData.append('name', formData.name);
-      submitData.append('email', formData.email);
-      submitData.append('phone', formData.phone);
-      submitData.append('service', formData.projectType);
-      submitData.append('message', formData.message);
-      submitData.append('timestamp', new Date().toISOString());
-      submitData.append('source', 'website_contact_form');
+      // Prepare data with trimming and fallbacks
+      const params = new URLSearchParams();
+      params.append('name', formData.name.trim());
+      params.append('email', formData.email.trim());
+      params.append('phone', formData.phone.trim() || 'Not provided');
+      params.append('service', formData.projectType || 'Not specified');
+      params.append('message', formData.message.trim() || 'No message');
+      params.append('timestamp', new Date().toISOString());
+      params.append('source', 'website_contact_form');
 
+      const scriptUrl = 'https://script.google.com/macros/s/AKfycbxOqwPJCRc9lPQzhxzZECU0Vme_m2de2drEc_hc5YfDrIynbb0JfNgzN-Jx7SNxEJBypA/exec';
+      const getUrl = `${scriptUrl}?${params.toString()}`;
+
+      // Method 1: Try GET request with parameters (often works better with Google Apps Script)
       try {
-        await fetch('https://script.google.com/macros/s/AKfycbwpbzTRgwZ56p--mz4zrLbEiRO4imzT3owUjH81i4xXpie_ZAG4h3xLFxuyDVy6ug1Y1Q/exec', {
-          method: 'POST',
-          body: submitData,
-          mode: 'no-cors' // Add this back for Google Apps Script
+        await fetch(getUrl, {
+          method: 'GET',
+          mode: 'no-cors'
         });
-        console.log('Form submitted successfully via fetch');
-      } catch (fetchError) {
-        console.log('Fetch failed, trying alternative method:', fetchError);
+        console.log('Contact form submitted successfully via GET request');
+      } catch (getError) {
+        console.log('GET request failed, trying POST:', getError);
         
-        // Method 2: Fallback using URL parameters
-        const params = new URLSearchParams();
-        params.append('name', formData.name);
-        params.append('email', formData.email);
-        params.append('phone', formData.phone);
-        params.append('service', formData.projectType);
-        params.append('message', formData.message);
-        params.append('timestamp', new Date().toISOString());
-        params.append('source', 'website_contact_form');
+        // Method 2: Try POST with FormData
+        try {
+          const formDataObj = new FormData();
+          formDataObj.append('name', formData.name.trim());
+          formDataObj.append('email', formData.email.trim());
+          formDataObj.append('phone', formData.phone.trim() || 'Not provided');
+          formDataObj.append('service', formData.projectType || 'Not specified');
+          formDataObj.append('message', formData.message.trim() || 'No message');
+          formDataObj.append('timestamp', new Date().toISOString());
+          formDataObj.append('source', 'website_contact_form');
 
-        const scriptUrl = `https://script.google.com/macros/s/AKfycbwpbzTRgwZ56p--mz4zrLbEiRO4imzT3owUjH81i4xXpie_ZAG4h3xLFxuyDVy6ug1Y1Q/exec?${params.toString()}`;
-        
-        // Use an invisible iframe as fallback
-        const iframe = document.createElement('iframe');
-        iframe.style.display = 'none';
-        iframe.src = scriptUrl;
-        document.body.appendChild(iframe);
-        
-        // Remove iframe after 3 seconds
-        setTimeout(() => {
-          document.body.removeChild(iframe);
-        }, 3000);
-        
-        console.log('Form submitted via iframe fallback');
+          await fetch(scriptUrl, {
+            method: 'POST',
+            body: formDataObj,
+            mode: 'no-cors'
+          });
+          console.log('Contact form submitted successfully via POST request');
+        } catch (postError) {
+          console.log('POST request failed, using iframe method:', postError);
+          
+          // Method 3: Fallback using iframe
+          const iframe = document.createElement('iframe');
+          iframe.style.display = 'none';
+          iframe.src = getUrl;
+          document.body.appendChild(iframe);
+          
+          // Remove iframe after 5 seconds
+          setTimeout(() => {
+            if (document.body.contains(iframe)) {
+              document.body.removeChild(iframe);
+            }
+          }, 5000);
+          
+          console.log('Contact form submitted via iframe fallback');
+        }
       }
 
-      console.log('Contact form submitted to Google Sheets:', formData);
-      console.log('Name field value:', formData.name);
-      console.log('Full data being sent:', {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
+      // Log the data being sent for debugging
+      console.log('Contact form data being submitted:', {
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
         service: formData.projectType,
-        message: formData.message,
-        timestamp: new Date().toISOString(),
+        message: formData.message.trim(),
         source: 'website_contact_form'
       });
+
       setIsSubmitted(true);
       
-      // Reset form after 3 seconds
+      // Reset form after 4 seconds
       setTimeout(() => {
         setIsSubmitted(false);
         setFormData({
@@ -99,10 +112,11 @@ const ContactPage = () => {
           projectType: "",
           message: ""
         });
-      }, 3000);
+      }, 4000);
+
     } catch (error) {
-      console.error('Form submission error:', error);
-      // Still show success to user even if there's a CORS error
+      console.error('Contact form submission error:', error);
+      // Still show success to user (due to CORS limitations we can't detect actual success/failure)
       setIsSubmitted(true);
       setTimeout(() => {
         setIsSubmitted(false);
@@ -113,7 +127,7 @@ const ContactPage = () => {
           projectType: "",
           message: ""
         });
-      }, 3000);
+      }, 4000);
     } finally {
       setIsSubmitting(false);
     }
@@ -257,9 +271,9 @@ const ContactPage = () => {
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                       >
                         <option value="">Select project type</option>
-                        <option value="residential">Residential Solar</option>
-                        <option value="commercial">Commercial Solar</option>
-                        <option value="industrial">Industrial Solar</option>
+                        <option value="residential-solar">Residential Solar</option>
+                        <option value="commercial-solar">Commercial Solar</option>
+                        <option value="industrial-solar">Industrial Solar</option>
                         <option value="maintenance">Maintenance Service</option>
                         <option value="consultation">Consultation Only</option>
                       </select>
@@ -358,7 +372,7 @@ const ContactPage = () => {
                 <h3 className="text-xl font-bold mb-4">Need Immediate Assistance?</h3>
                 <div className="space-y-3">
                   <a
-                    href="tel:+15551234567"
+                    href="tel:+919611548340"
                     className="flex items-center space-x-3 text-white hover:text-gray-200 transition-colors"
                   >
                     <HiPhone className="w-5 h-5" />
@@ -396,9 +410,15 @@ const ContactPage = () => {
                 <h3 className="text-xl font-semibold text-gray-800 mb-2">
                   Interactive Map Location
                 </h3>
-                <p className="text-gray-600">
+                <p className="text-gray-600 mb-4">
                   Google Maps integration showing our showroom location
                 </p>
+                <div className="bg-white rounded-lg p-4 inline-block shadow-sm">
+                  <p className="text-sm text-gray-700 font-medium">
+                    66, Ward No. 12, Ramnagar<br />
+                    West Tripura, 799002
+                  </p>
+                </div>
               </div>
             </div>
           </motion.div>
