@@ -83,11 +83,11 @@ const Footer = () => {
               <div className="space-y-3">
                 <div className="flex items-center space-x-3 text-gray-300">
                   <HiPhone className="w-5 h-5 text-green-400" />
-                  <span>+91 9742422340</span>
+                  <span>+91 9611548340</span>
                 </div>
                 <div className="flex items-center space-x-3 text-gray-300">
                   <HiMail className="w-5 h-5 text-green-400" />
-                  <span>sunsynchro1@gmail.com</span>
+                  <span>info@sunsynchro.com</span>
                 </div>
                 <div className="flex items-center space-x-3 text-gray-300">
                   <HiLocationMarker className="w-5 h-5 text-green-400" />

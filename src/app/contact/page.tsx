@@ -130,13 +130,13 @@ const ContactPage = () => {
     {
       icon: HiPhone,
       title: "Phone",
-      details: ["+91 9742422340"],
+      details: ["+91 9611548340"],
       color: "from-blue-500 to-blue-600"
     },
     {
       icon: HiMail,
       title: "Email",
-      details: ["sunsynchro1@gmail.com"],
+      details: ["info@sunsynchro.com"],
       color: "from-green-500 to-green-600"
     },
     {
@@ -148,7 +148,7 @@ const ContactPage = () => {
     {
       icon: HiClock,
       title: "Business Hours",
-      details: ["Mon-Fri: 8:00 AM - 6:00 PM", "Sat: 9:00 AM - 4:00 PM"],
+      details: ["Mon-Sat: 9:00 AM - 7:00 PM", "Sat: 10:00 AM - 2:00 PM"],
       color: "from-purple-500 to-purple-600"
     }
   ];
@@ -242,7 +242,7 @@ const ContactPage = () => {
                         value={formData.phone}
                         onChange={handleChange}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                        placeholder="+91 9742422340"
+                        placeholder="+91 9611548340"
                       />
                     </div>
                     <div>
@@ -362,7 +362,7 @@ const ContactPage = () => {
                     className="flex items-center space-x-3 text-white hover:text-gray-200 transition-colors"
                   >
                     <HiPhone className="w-5 h-5" />
-                    <span>Call us now: +91 9742422340</span>
+                    <span>Call us now: +91 9611548340</span>
                   </a>
                 </div>
               </div>

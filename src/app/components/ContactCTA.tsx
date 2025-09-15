@@ -10,16 +10,16 @@ const ContactCTA = () => {
       icon: HiPhone,
       title: "Call Us",
       description: "Speak directly with our experts",
-      action: "tel:+919742422340",
-      actionText: "+91 974242234",
+      action: "tel:+919611548340",
+      actionText: "+91 9611548340",
       color: "from-blue-500 to-blue-600"
     },
     {
       icon: HiMail,
       title: "Email Us",
       description: "Get detailed information via email",
-      action: "mailto:sunsynchro1@gmail.com",
-      actionText: "sunsynchro1@gmail.com",
+      action: "mailto:info@sunsynchro.com",
+      actionText: "info@sunsynchro.com",
       color: "from-green-500 to-green-600"
     },
     // {
@@ -159,7 +159,7 @@ const ContactCTA = () => {
               className="inline-flex items-center justify-center px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-full transition-colors"
             >
               <HiPhone className="w-5 h-5 mr-2" />
-              Call Now: +91 9742422340
+              Call Now: +91 9611548340
             </a>
             <Link
               href="/contact"

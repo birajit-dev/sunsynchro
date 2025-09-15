@@ -18,8 +18,8 @@ const locations: Location[] = [
     id: "hq",
     name: "SYNCHRONISING SOLAR SOLUTIONS",
     address: "66, WARD NO.12 RAMNAGAR, WEST TRIPURA, 799002",
-    phone: "+91 9742422340",
-    email: "sunsynchro1@gmail.com",
+    phone: "+91 ",
+    email: "info@sunsynchro.com",
     coordinates: { lat: 37.7749, lng: -122.4194 },
     type: "headquarters"
   },

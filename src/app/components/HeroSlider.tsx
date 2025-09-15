@@ -20,7 +20,7 @@ const slides: Slide[] = [
   {
     id: 1,
     type: "image",
-    src: "/hero/h1.webp",
+    src: "/hero/slider1.jpg",
     title: "Your Trusted Solar EPC & Distribution Partner",
     subtitle: "in Tripura",
     description: "Sunsynchro Energy Pvt. Ltd. is a new-age solar EPC and distribution company committed to delivering rooftop solar installations and supplying premium solar components across Tripura.",
@@ -32,31 +32,7 @@ const slides: Slide[] = [
   {
     id: 2,
     type: "image",
-    src: "/hero/h1.webp",
-    title: "Your Trusted Solar EPC & Distribution Partner",
-    subtitle: "in Tripura",
-    description: "Sunsynchro Energy Pvt. Ltd. is a new-age solar EPC and distribution company committed to delivering rooftop solar installations and supplying premium solar components across Tripura.",
-    cta: {
-      primary: { text: "Get a Free Solar Quote", href: "/contact" },
-      secondary: { text: "Explore Our Products", href: "/products" }
-    }
-  },
-  {
-    id: 3,
-    type: "image",
-    src: "/hero/h1.webp",
-    title: "Your Trusted Solar EPC & Distribution Partner",
-    subtitle: "in Tripura",
-    description: "Sunsynchro Energy Pvt. Ltd. is a new-age solar EPC and distribution company committed to delivering rooftop solar installations and supplying premium solar components across Tripura.",
-    cta: {
-      primary: { text: "Get a Free Solar Quote", href: "/contact" },
-      secondary: { text: "Explore Our Products", href: "/products" }
-    }
-  },
-  {
-    id: 4,
-    type: "image",
-    src: "/hero/h1.webp",
+    src: "/hero/slider1.jpg",
     title: "Your Trusted Solar EPC & Distribution Partner",
     subtitle: "in Tripura",
     description: "Sunsynchro Energy Pvt. Ltd. is a new-age solar EPC and distribution company committed to delivering rooftop solar installations and supplying premium solar components across Tripura.",
@@ -206,22 +182,22 @@ const HeroSlider = () => {
       >
         <HiChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
       </button>
+{/* Slide Indicators */}
+<div className="absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 z-20 flex space-x-1 sm:space-x-1.5">
+  {slides.map((_, index) => (
+    <button
+      key={index}
+      onClick={() => goToSlide(index)}
+      className={`w-0.5 h-0.5 sm:w-1 sm:h-1 rounded-full transition-all duration-300 ${
+        index === currentSlide
+          ? "bg-white scale-125"
+          : "bg-white/50 hover:bg-white/75"
+      }`}
+      aria-label={`Go to slide ${index + 1}`}
+    />
+  ))}
+</div>
 
-      {/* Slide Indicators */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex space-x-3">
-        {slides.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => goToSlide(index)}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              index === currentSlide
-                ? "bg-white scale-125"
-                : "bg-white/50 hover:bg-white/75"
-            }`}
-            aria-label={`Go to slide ${index + 1}`}
-          />
-        ))}
-      </div>
 
       {/* Play/Pause Button */}
       <button
