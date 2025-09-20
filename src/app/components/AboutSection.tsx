@@ -6,7 +6,6 @@ import { HiCheckCircle, HiArrowRight } from "react-icons/hi";
 
 const AboutSection = () => {
   const features = [
-    "15+ years of industry experience",
     "Certified installation professionals",
     "Premium quality components only",
     "Comprehensive warranty coverage",
@@ -92,21 +91,21 @@ const AboutSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="order-1 lg:order-2"
+            className="order-1 lg:order-2 px-4 sm:px-0"
           >
-            <div className="relative">
+            <div className="relative mx-auto max-w-lg lg:max-w-none">
               {/* Main Image */}
               <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                 <img
                   src="/gallery/logo.png"
                   alt="Sunsynchro professional team"
-                  className="w-full h-[500px] object-cover"
+                  className="w-full h-[300px] sm:h-[400px] lg:h-[500px] object-cover object-center"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
               </div>
 
               {/* Floating Card */}
-              <motion.div
+              {/* <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
@@ -122,11 +121,11 @@ const AboutSection = () => {
                     <p className="font-semibold text-gray-900">Excellence</p>
                   </div>
                 </div>
-              </motion.div>
+              </motion.div> */}
 
               {/* Decorative Elements */}
-              <div className="absolute -top-4 -right-4 w-24 h-24 bg-yellow-400/20 rounded-full blur-xl"></div>
-              <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-green-400/20 rounded-full blur-xl"></div>
+              <div className="absolute -top-2 -right-2 sm:-top-4 sm:-right-4 w-16 h-16 sm:w-24 sm:h-24 bg-yellow-400/20 rounded-full blur-xl"></div>
+              <div className="absolute -bottom-2 -right-2 sm:-bottom-4 sm:-right-4 w-20 h-20 sm:w-32 sm:h-32 bg-green-400/20 rounded-full blur-xl"></div>
             </div>
           </motion.div>
         </div>

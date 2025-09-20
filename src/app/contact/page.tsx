@@ -2,9 +2,18 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { HiPhone, HiMail, HiLocationMarker, HiClock } from "react-icons/hi";
+import emailjs from '@emailjs/browser';
+
+interface FormData {
+  name: string;
+  email: string;
+  phone: string;
+  projectType: string;
+  message: string;
+}
 
 const ContactPage = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     phone: "",
@@ -13,6 +22,39 @@ const ContactPage = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const sendEmailAlert = async (formData: FormData) => {
+    try {
+      // Initialize EmailJS (you need to call this once in your app)
+      emailjs.init('zKip-4kLgSFyNmZLH'); // Replace with your EmailJS public key
+
+      const templateParams = {
+        name: 'Sunsynchro Private Limited', // Recipient name
+        reply_to: 'sunsynchro1@gmail.com', // Your company email
+        from_name: formData.name,
+        from_email: formData.email,
+        customer_name: formData.name,
+        customer_email: formData.email,
+        customer_phone: formData.phone,
+        service_interest: formData.projectType || 'Not specified',
+        customer_message: formData.message || 'No message provided',
+        submission_date: new Date().toLocaleString(),
+        source: 'Website Contact Form'
+      };
+
+      const response = await emailjs.send(
+        'service_h8dcvda',    // Replace with your EmailJS service ID
+        'template_mt5dqkk',   // Replace with your EmailJS template ID
+        templateParams
+      );
+
+      console.log('Email alert sent successfully:', response);
+      return true;
+    } catch (error) {
+      console.error('Error sending email alert:', error);
+      return false;
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,6 +72,12 @@ const ContactPage = () => {
     setIsSubmitting(true);
 
     try {
+      // Send email alert first
+      const emailSent = await sendEmailAlert(formData);
+      if (emailSent) {
+        console.log('Email notification sent successfully');
+      }
+
       // Prepare data with trimming and fallbacks
       const params = new URLSearchParams();
       params.append('name', formData.name.trim());
@@ -390,7 +438,7 @@ const ContactPage = () => {
           <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-              Visit Our Showroom
+              Visit Our Office
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               See our solar solutions in person and speak with our experts face-to-face.
@@ -411,7 +459,7 @@ const ContactPage = () => {
                   Interactive Map Location
                 </h3>
                 <p className="text-gray-600 mb-4">
-                  Google Maps integration showing our showroom location
+                  Google Maps integration showing our office location
                 </p>
                 <div className="bg-white rounded-lg p-4 inline-block shadow-sm">
                   <p className="text-sm text-gray-700 font-medium">

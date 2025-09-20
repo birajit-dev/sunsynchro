@@ -16,20 +16,38 @@ export interface Product {
 export const products: Product[] = [
   {
     id: "1",
-    name: "Panasonic HIT N330",
+    name: "Solar Kit 3kW",
     category: "Solar Panels",
     brand: "Panasonic",
-    image: "/products/panasonic-hit-n330.jpg",
-    description: "High-efficiency heterojunction solar panels with industry-leading performance and 25-year warranty.",
+    image: "/products/solar-kit-3kw.jpg",
+    description: "Complete 3kW solar kit with panels, inverter, and mounting accessories for residential installations.",
     specifications: {
-      "Power Output": "330W",
-      "Efficiency": "19.7%",
-      "Cell Technology": "HIT (Heterojunction)",
-      "Dimensions": "1590 x 1053 x 35mm",
-      "Weight": "19 kg",
+      "Power Output": "3kW",
+      "Panel Type": "Monocrystalline",
+      "Inverter": "3kW Grid-tie",
+      "Panels Included": "8 x 375W",
+      "Efficiency": "20.5%",
       "Warranty": "25 years"
     },
-    datasheet: "/datasheets/panasonic-hit-n330.pdf",
+    datasheet: "/datasheets/solar-kit-3kw.pdf",
+    featured: true
+  },
+  {
+    id: "1a",
+    name: "Solar Kit 5kW",
+    category: "Solar Panels",
+    brand: "Panasonic",
+    image: "/products/solar-kit-5kw.jpg",
+    description: "Complete 5kW solar kit with panels, inverter, and mounting accessories for residential and small commercial installations.",
+    specifications: {
+      "Power Output": "5kW",
+      "Panel Type": "Monocrystalline",
+      "Inverter": "5kW Grid-tie",
+      "Panels Included": "12 x 415W",
+      "Efficiency": "21.0%",
+      "Warranty": "25 years"
+    },
+    datasheet: "/datasheets/solar-kit-5kw.pdf",
     featured: true
   },
   {
@@ -51,58 +69,6 @@ export const products: Product[] = [
     featured: true
   },
   {
-    id: "3",
-    name: "Adani Solar Mono 445W",
-    category: "Solar Panels",
-    brand: "Adani",
-    image: "/products/adani-solar-mono-445.jpg",
-    description: "Premium monocrystalline solar panels with excellent performance and durability.",
-    specifications: {
-      "Power Output": "445W",
-      "Efficiency": "20.8%",
-      "Cell Technology": "Monocrystalline",
-      "Dimensions": "2094 x 1038 x 35mm",
-      "Weight": "22.5 kg",
-      "Warranty": "25 years"
-    },
-    datasheet: "/datasheets/adani-solar-mono-445.pdf"
-  },
-  {
-    id: "4",
-    name: "FIMER-ABB PVS-50-TL",
-    category: "Solar Inverters",
-    brand: "FIMER-ABB",
-    image: "/products/fimer-abb-pvs-50-tl.jpg",
-    description: "Three-phase string inverter with advanced grid management and monitoring capabilities.",
-    specifications: {
-      "Max AC Power": "50kW",
-      "Max Efficiency": "98.6%",
-      "Operating Temp": "-25°C to +60°C",
-      "Dimensions": "665 x 431 x 264mm",
-      "Weight": "61 kg",
-      "Warranty": "10 years"
-    },
-    datasheet: "/datasheets/fimer-abb-pvs-50-tl.pdf",
-    featured: true
-  },
-  {
-    id: "5",
-    name: "Deye SUN-12K-SG04LP3",
-    category: "Solar Inverters",
-    brand: "Deye",
-    image: "/products/deye-sun-12k-sg04lp3.jpg",
-    description: "Hybrid solar inverter with battery storage capability for residential applications.",
-    specifications: {
-      "Max AC Power": "12kW",
-      "Max Efficiency": "97.6%",
-      "Operating Temp": "-25°C to +60°C",
-      "Dimensions": "410 x 670 x 240mm",
-      "Weight": "35 kg",
-      "Warranty": "10 years"
-    },
-    datasheet: "/datasheets/deye-sun-12k-sg04lp3.pdf"
-  },
-  {
     id: "6",
     name: "Fuji Electric PVP800",
     category: "Solar Inverters",
@@ -118,6 +84,41 @@ export const products: Product[] = [
       "Warranty": "10 years"
     },
     datasheet: "/datasheets/fuji-electric-pvp800.pdf"
+  },
+  {
+    id: "8",
+    name: "Feston FS-5000TL",
+    category: "Solar Inverters",
+    brand: "Feston",
+    image: "/products/feston-fs-5000tl.jpg",
+    description: "Grid-tie string inverter with advanced MPPT technology for optimal energy harvest.",
+    specifications: {
+      "Max AC Power": "5kW",
+      "Max Efficiency": "97.8%",
+      "Operating Temp": "-25°C to +60°C",
+      "Dimensions": "340 x 470 x 180mm",
+      "Weight": "18 kg",
+      "Warranty": "10 years"
+    },
+    datasheet: "/datasheets/feston-fs-5000tl.pdf"
+  },
+  {
+    id: "8a",
+    name: "Feston Lithium Battery 100Ah",
+    category: "Storage Systems",
+    brand: "Feston",
+    image: "/products/feston-lithium-battery-100ah.jpg",
+    description: "High-performance lithium-ion battery with advanced BMS for residential and commercial energy storage.",
+    specifications: {
+      "Capacity": "100Ah (5.12kWh)",
+      "Voltage": "51.2V",
+      "Cycle Life": "6000+ cycles",
+      "Efficiency": "95%",
+      "Dimensions": "483 x 170 x 240mm",
+      "Weight": "45 kg",
+      "Warranty": "10 years"
+    },
+    datasheet: "/datasheets/feston-lithium-battery-100ah.pdf"
   },
   {
     id: "7",
@@ -137,21 +138,22 @@ export const products: Product[] = [
     datasheet: "/datasheets/sunpower-sph6000.pdf"
   },
   {
-    id: "8",
-    name: "Feston FS-5000TL",
-    category: "Solar Inverters",
-    brand: "Feston",
-    image: "/products/feston-fs-5000tl.jpg",
-    description: "Grid-tie string inverter with advanced MPPT technology for optimal energy harvest.",
+    id: "7a",
+    name: "Sunpower Energy Storage Battery 200Ah",
+    category: "Storage Systems",
+    brand: "Sunpower",
+    image: "/products/sunpower-battery-200ah.jpg",
+    description: "Premium lithium-ion battery system with intelligent energy management for residential and commercial applications.",
     specifications: {
-      "Max AC Power": "5kW",
-      "Max Efficiency": "97.8%",
-      "Operating Temp": "-25°C to +60°C",
-      "Dimensions": "340 x 470 x 180mm",
-      "Weight": "18 kg",
-      "Warranty": "10 years"
+      "Capacity": "200Ah (10.24kWh)",
+      "Voltage": "51.2V",
+      "Cycle Life": "8000+ cycles",
+      "Efficiency": "96%",
+      "Dimensions": "600 x 300 x 280mm",
+      "Weight": "85 kg",
+      "Warranty": "12 years"
     },
-    datasheet: "/datasheets/feston-fs-5000tl.pdf"
+    datasheet: "/datasheets/sunpower-battery-200ah.pdf"
   },
   {
     id: "9",

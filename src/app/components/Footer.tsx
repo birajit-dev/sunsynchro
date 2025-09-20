@@ -91,7 +91,7 @@ const Footer = () => {
                 </div>
                 <div className="flex items-center space-x-3 text-gray-300">
                   <HiLocationMarker className="w-5 h-5 text-green-400" />
-                  <span>GE, Ward No. 12, Ramnagar, West Tripura, 799002</span>
+                  <span>66, Ward No. 12, Ramnagar, West Tripura, 799002</span>
                 </div>
               </div>
             </div>

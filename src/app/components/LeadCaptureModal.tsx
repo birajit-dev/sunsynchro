@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import emailjs from '@emailjs/browser';
 import Modal from './Modal';
 
 interface LeadCaptureModalProps {
@@ -35,6 +36,39 @@ export default function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalPr
     }));
   };
 
+  const sendEmailAlert = async (formData: FormData) => {
+    try {
+      // Initialize EmailJS (you need to call this once in your app)
+      emailjs.init('zKip-4kLgSFyNmZLH'); // Replace with your EmailJS public key
+
+      const templateParams = {
+        name: 'Sunsynchro Private Limited', // Recipient name
+        reply_to: 'sunsynchro1@gmail.com', // Your company email
+        from_name: formData.name,
+        from_email: formData.email,
+        customer_name: formData.name,
+        customer_email: formData.email,
+        customer_phone: formData.phone,
+        service_interest: formData.service || 'Not specified',
+        customer_message: formData.message || 'No message provided',
+        submission_date: new Date().toLocaleString(),
+        source: 'Website Lead Modal'
+      };
+
+      const response = await emailjs.send(
+        'service_h8dcvda',    // Replace with your EmailJS service ID
+        'template_mt5dqkk',   // Replace with your EmailJS template ID
+        templateParams
+      );
+
+      console.log('Email alert sent successfully:', response);
+      return true;
+    } catch (error) {
+      console.error('Error sending email alert:', error);
+      return false;
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -55,6 +89,12 @@ export default function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalPr
     setIsSubmitting(true);
 
     try {
+      // Send email alert first
+      const emailSent = await sendEmailAlert(formData);
+      if (emailSent) {
+        console.log('Email notification sent successfully');
+      }
+
       // Method 1: Using URLSearchParams (works better with Google Apps Script)
       const params = new URLSearchParams();
       params.append('name', formData.name.trim());

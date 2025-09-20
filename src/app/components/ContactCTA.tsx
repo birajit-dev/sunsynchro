@@ -33,7 +33,7 @@ const ContactCTA = () => {
     {
       icon: HiLocationMarker,
       title: "Visit Us",
-      description: "Come to our showroom",
+      description: "Come to our office",
       action: "/contact#locations",
       actionText: "Find Locations",
       color: "from-orange-500 to-orange-600"

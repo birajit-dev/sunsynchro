@@ -179,7 +179,7 @@ const AboutPage = () => {
             className="text-center mb-20"
           >
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-              Our Focus & Early <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-yellow-600">Achievements</span>
+              Our Focus
             </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-green-500 to-yellow-500 mx-auto rounded-full"></div>
           </motion.div>

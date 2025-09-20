@@ -16,9 +16,9 @@ interface Location {
 const locations: Location[] = [
   {
     id: "hq",
-    name: "SYNCHRONISING SOLAR SOLUTIONS",
+    name: "SUNSYNCHRO PRIVATE LIMITED",
     address: "66, WARD NO.12 RAMNAGAR, WEST TRIPURA, 799002",
-    phone: "+91 ",
+    phone: "+91 9611548340",
     email: "info@sunsynchro.com",
     coordinates: { lat: 37.7749, lng: -122.4194 },
     type: "headquarters"
@@ -48,7 +48,7 @@ const MapEmbed = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6"
           >
-            Serving Communities Nationwide
+            Serving Communities
           </motion.h2>
           
           <motion.p
