@@ -16,7 +16,7 @@ export default function Home() {
       <WhyWe />
       <SolutionsCards />
       <MapEmbed />
-      <Gallery />
+      {/* <Gallery /> */}
       <LogoCarousel />
       <BlogPreview />
       <ContactCTA />

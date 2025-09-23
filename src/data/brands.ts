@@ -57,22 +57,6 @@ export const brands: Brand[] = [
     category: "Inverters"
   },
   {
-    id: "7",
-    name: "lg",
-    logo: "/brands/fimer-abb-1.png",
-    description: "Premium solar panels and advanced energy storage systems.",
-    website: "https://www.lg.com/global/business/solar",
-    category: "Solar Panels"
-  },
-  {
-    id: "8",
-    name: "luminous",
-    logo: "/brands/fujielectric.jpg",
-    description: "Trusted brand for solar batteries, inverters, and power solutions.",
-    website: "https://www.luminousindia.com",
-    category: "Energy Storage"
-  },
-  {
     id: "9",
     name: "microtek",
     logo: "/brands/nova.png",
