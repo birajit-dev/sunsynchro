@@ -23,7 +23,7 @@ const slides: Slide[] = [
     src: "/hero/slider1.jpg",
     title: "Your Trusted Solar EPC & Distribution Partner",
     subtitle: "in Tripura",
-    description: "Sunsynchro Energy Pvt. Ltd. is a new-age solar EPC and distribution company committed to delivering rooftop solar installations and supplying premium solar components across Tripura.",
+    description: "Sunsynchro is a new-age solar EPC and distribution service provider committed to delivering rooftop solar installations and supplying premium solar components across Tripura.",
     cta: {
       primary: { text: "Get a Free Solar Quote", href: "/contact" },
       secondary: { text: "Explore Our Products", href: "/products" }
@@ -35,7 +35,7 @@ const slides: Slide[] = [
     src: "/hero/slider1.jpg",
     title: "Your Trusted Solar EPC & Distribution Partner",
     subtitle: "in Tripura",
-    description: "Sunsynchro Energy Pvt. Ltd. is a new-age solar EPC and distribution company committed to delivering rooftop solar installations and supplying premium solar components across Tripura.",
+    description: "Sunsynchro is a new-age solar EPC and distribution service provider committed to delivering rooftop solar installations and supplying premium solar components across Tripura.",
     cta: {
       primary: { text: "Get a Free Solar Quote", href: "/contact" },
       secondary: { text: "Explore Our Products", href: "/products" }
