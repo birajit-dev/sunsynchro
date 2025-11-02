@@ -51,7 +51,7 @@ const Navbar = () => {
                 SunSynchro
               </span>
               <span className="text-xs text-green-600 font-medium -mt-1">
-                Clean Energy Solutions
+                Synchronizing Solar Solutions
               </span>
             </div>
           </Link>

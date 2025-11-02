@@ -20,7 +20,7 @@ const locations: Location[] = [
     address: "66, WARD NO.12 RAMNAGAR, WEST TRIPURA, 799002",
     phone: "+91 9611548340",
     email: "info@sunsynchro.com",
-    coordinates: { lat: 37.7749, lng: -122.4194 },
+    coordinates: { lat: 23.840036400223568, lng: 91.27001106022641 },
     type: "headquarters"
   },
 ];
@@ -74,32 +74,17 @@ const MapEmbed = () => {
             className="lg:col-span-6"
           >
             <div className="relative rounded-2xl overflow-hidden shadow-2xl h-96 lg:h-[500px]">
-              {/* Placeholder for Google Maps */}
-              <div className="w-full h-full bg-gradient-to-br from-green-100 to-blue-100 flex items-center justify-center">
-                <div className="text-center p-8">
-                  <HiLocationMarker className="w-16 h-16 text-green-500 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                    Interactive Map
-                  </h3>
-                  <p className="text-gray-600 mb-4">
-                    Google Maps integration will show our locations with interactive pins
-                  </p>
-                  <div className="bg-white/80 backdrop-blur-sm rounded-lg p-4 inline-block">
-                    <p className="text-sm text-gray-500">
-                      Map will display: Headquarters, Branch offices, Service centers
-                    </p>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Overlay with location pins simulation */}
-              <div className="absolute inset-0 pointer-events-none">
-                {/* Simulated location pins */}
-                <div className="absolute top-1/4 left-1/3 w-4 h-4 bg-red-500 rounded-full border-2 border-white shadow-lg animate-pulse"></div>
-                <div className="absolute top-1/2 left-1/4 w-4 h-4 bg-blue-500 rounded-full border-2 border-white shadow-lg animate-pulse"></div>
-                <div className="absolute top-1/3 right-1/4 w-4 h-4 bg-green-500 rounded-full border-2 border-white shadow-lg animate-pulse"></div>
-                <div className="absolute bottom-1/3 left-1/2 w-4 h-4 bg-yellow-500 rounded-full border-2 border-white shadow-lg animate-pulse"></div>
-              </div>
+              {/* Google Maps Embed */}
+              <iframe
+                src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3651.234567890123!2d${locations[0].coordinates.lng}!3d${locations[0].coordinates.lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjPCsDUwJzI0LjEiTiA5McKwMTYnMTIuMCJF!5e0!3m2!1sen!2sin!4v1234567890123!5m2!1sen!2sin`}
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="SUNSYNCHRO Location Map"
+              ></iframe>
             </div>
           </motion.div>
 
