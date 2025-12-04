@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import {
-  HiSun,
   HiMail,
   HiPhone,
   HiLocationMarker,
@@ -62,10 +62,12 @@ const Footer = () => {
             {/* Company Info */}
             <div className="lg:col-span-2">
               <Link href="/" className="flex items-center space-x-3 mb-6">
-                <img 
+                <Image 
                   src="/gallery/logo2.png" 
                   alt="Sunsynchro Logo" 
-                  className="w-12 h-12 object-contain"
+                  width={48}
+                  height={48}
+                  className="object-contain"
                 />
                 <div className="flex flex-col">
                   <span className="font-bold text-2xl">Sunsynchro Pvt. Ltd.</span>

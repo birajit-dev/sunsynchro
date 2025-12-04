@@ -25,14 +25,6 @@ export const brands: Brand[] = [
     category: "Energy Storage"
   },
   {
-    id: "3",
-    name: "canadian solar",
-    logo: "/brands/deye.webp",
-    description: "One of the world's largest solar technology and renewable energy companies.",
-    website: "https://canadiansolar.com",
-    category: "Solar Panels"
-  },
-  {
     id: "4",
     name: "enphase",
     logo: "/brands/DEIFlogo.avif",

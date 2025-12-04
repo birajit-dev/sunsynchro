@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { HiMenu, HiX } from "react-icons/hi";
 
@@ -41,10 +42,13 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3">
-            <img 
+            <Image 
               src="/gallery/logo2.png" 
               alt="Sunsynchro Logo" 
+              width={48}
+              height={48}
               className="w-10 h-10 lg:w-12 lg:h-12 object-contain"
+              priority
             />
             <div className="flex flex-col">
               <span className="font-bold text-xl lg:text-2xl text-gray-900">
@@ -70,8 +74,14 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* CTA Button - Desktop */}
+          {/* CTA Buttons - Desktop */}
           <div className="hidden lg:flex items-center space-x-4">
+            <Link
+              href="/calculator"
+              className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-2.5 rounded-full font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-200"
+            >
+              Calculator
+            </Link>
             <Link
               href="/contact"
               className="bg-gradient-to-r from-green-500 to-yellow-500 text-white px-6 py-2.5 rounded-full font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-200"
@@ -125,8 +135,15 @@ const Navbar = () => {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: navItems.length * 0.1 }}
-                className="pt-4 border-t border-gray-200"
+                className="pt-4 border-t border-gray-200 space-y-2"
               >
+                <Link
+                  href="/calculator"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="block bg-gradient-to-r from-green-500 to-yellow-500 text-white px-4 py-3 rounded-lg font-semibold text-center hover:shadow-lg transition-all duration-200"
+                >
+                  Calculator
+                </Link>
                 <Link
                   href="/contact"
                   onClick={() => setIsMenuOpen(false)}

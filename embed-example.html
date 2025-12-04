@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sunsynchro — Embed example</title>
+  <style>body{font-family:Inter,system-ui,Arial;padding:18px;background:#fff;color:#0f172a} .container{max-width:900px;margin:0 auto}</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Sunsynchro Calculator — Embed Example</h1>
+    <p>This page shows how to embed the calculator and automatically resize the iframe using postMessage.</p>
+
+    <!-- Replace the src below with the actual hosted URL of calculator.html -->
+    <iframe data-sunsynchro src="calculator.html" title="Sunsynchro Solar Savings Calculator" style="width:100%;max-width:760px;height:500px;border:0;border-radius:12px;box-shadow:0 6px 18px rgba(15,23,42,0.06);" loading="lazy"></iframe>
+
+    <h3>Host page script (listening for height)</h3>
+    <pre style="background:#f6f8fa;padding:12px;border-radius:8px;border:1px solid #e6e9ef;">&lt;script&gt;
+function receiveMessage(e){
+  // If you host calculator.html on a different origin, replace '*' with the calculator origin and verify e.origin
+  if(!e.data || typeof e.data.sunsynchroHeight === 'undefined') return;
+  const iframe = document.querySelector('iframe[data-sunsynchro]');
+  if(iframe) iframe.style.height = e.data.sunsynchroHeight + 'px';
+}
+window.addEventListener('message', receiveMessage, false);
+&lt;/script&gt;</pre>
+
+    <p>That's it — when the calculator loads or changes size it will post its height to this host page and the iframe will resize.</p>
+  </div>
+</body>
+</html>

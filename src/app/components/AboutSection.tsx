@@ -2,16 +2,10 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { HiCheckCircle, HiArrowRight } from "react-icons/hi";
+import Image from "next/image";
+import { HiArrowRight } from "react-icons/hi";
 
 const AboutSection = () => {
-  const features = [
-    "Certified installation professionals",
-    "Premium quality components only",
-    "Comprehensive warranty coverage",
-    "24/7 monitoring and support",
-    "Custom solutions for every need"
-  ];
 
   return (
     <section className="py-16 lg:py-24 bg-white">
@@ -35,11 +29,11 @@ const AboutSection = () => {
 
             <div className="space-y-6 mb-8">
               <p className="text-lg text-gray-600 leading-relaxed text-justify">
-                Sunsynchro is a young and ambitious EPC cum distribution company based in Tripura. Our strength lies in combining engineering expertise with reliable product distribution to make solar energy adoption smooth and affordable.
+                Sunsynchro is Tripura&apos;s leading solar company, specializing in rooftop solar installation and distribution across the state. Based in Agartala, we serve homes and businesses throughout Tripura with expert solar solutions.
               </p>
               
               <p className="text-lg text-gray-600 leading-relaxed text-justify">
-                We support customers with complete design, procurement, and installation of rooftop solar projects, while also supplying high-quality solar products to dealers, installers, and project developers.
+                As a trusted solar company in Tripura, we provide complete design, procurement, and installation of rooftop solar projects. We also supply premium solar panels, inverters, and components to dealers, installers, and project developers across Tripura.
               </p>
             </div>
 
@@ -95,14 +89,33 @@ const AboutSection = () => {
           >
             <div className="relative mx-auto max-w-lg lg:max-w-none">
               {/* Main Image */}
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-                <img
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl h-[300px] sm:h-[400px] lg:h-[500px]">
+                <Image
                   src="/gallery/logo.png"
                   alt="Sunsynchro professional team"
-                  className="w-full h-[300px] sm:h-[400px] lg:h-[500px] object-cover object-center"
+                  fill
+                  className="object-cover object-center"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  quality={85}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
               </div>
+
+              {/* Company Details */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+                className="mt-6 space-y-3"
+              >
+                <div className="bg-white rounded-xl p-4 shadow-lg border border-gray-100">
+                  <p className="text-lg text-gray-600 font-medium">CIN: <span className="font-bold">U35105TR2025PTC014623</span></p>
+                </div>
+                <div className="bg-white rounded-xl p-4 shadow-lg border border-gray-100">
+                  <p className="text-lg text-gray-600 font-medium">GSTIN: <span className="font-bold">16ABQCS9864C1ZR</span></p>
+                </div>
+              </motion.div>
 
               {/* Floating Card */}
               {/* <motion.div

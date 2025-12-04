@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import { HiX, HiChevronLeft, HiChevronRight } from "react-icons/hi";
 
 interface GalleryItem {
@@ -123,11 +124,15 @@ const Gallery = () => {
                 onClick={() => openLightbox(item)}
               >
                 <div className="relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-                  <div className="h-64 sm:h-80 lg:h-96 w-full">
-                    <img
+                  <div className="relative h-64 sm:h-80 lg:h-96 w-full">
+                    <Image
                       src={item.src}
                       alt={item.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-300"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      loading="lazy"
+                      quality={85}
                     />
                   </div>
                   
@@ -192,11 +197,14 @@ const Gallery = () => {
                 </button>
 
                 {/* Image */}
-                <div className="relative">
-                  <img
+                <div className="relative w-full h-[80vh]">
+                  <Image
                     src={lightboxImage.src}
                     alt={lightboxImage.title}
-                    className="max-w-full max-h-[80vh] object-contain rounded-lg"
+                    fill
+                    className="object-contain rounded-lg"
+                    quality={90}
+                    priority
                   />
                   
                   {/* Image Info */}

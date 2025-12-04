@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { HiChevronLeft, HiChevronRight, HiPlay } from "react-icons/hi";
+import Image from "next/image";
 
 interface Slide {
   id: number;
@@ -21,24 +22,24 @@ const slides: Slide[] = [
     id: 1,
     type: "image",
     src: "/hero/slider1.jpg",
-    title: "Your Trusted Solar EPC & Distribution Partner",
-    subtitle: "in Tripura",
-    description: "Sunsynchro is a new-age solar EPC and distribution service provider committed to delivering rooftop solar installations and supplying premium solar components across Tripura.",
+    title: "Tripura's #1 Solar Company",
+    subtitle: "Solar Panels & Installation Services",
+    description: "Leading solar company in Tripura offering expert solar panel installation, EPC services, and premium solar components. Trusted by hundreds of homes and businesses across Tripura.",
     cta: {
-      primary: { text: "Get a Free Solar Quote", href: "/contact" },
-      secondary: { text: "Explore Our Products", href: "/products" }
+      primary: { text: "Get Free Solar Quote in Tripura", href: "/contact" },
+      secondary: { text: "Explore Solar Products", href: "/products" }
     }
   },
   {
     id: 2,
     type: "image",
     src: "/hero/slider1.jpg",
-    title: "Your Trusted Solar EPC & Distribution Partner",
-    subtitle: "in Tripura",
-    description: "Sunsynchro is a new-age solar EPC and distribution service provider committed to delivering rooftop solar installations and supplying premium solar components across Tripura.",
+    title: "Best Solar Solutions in Tripura",
+    subtitle: "Rooftop Solar Installation Experts",
+    description: "Professional solar installation and distribution services across Tripura. Cut your electricity bills by 80% with our premium rooftop solar systems. Serving Agartala and all of Tripura.",
     cta: {
-      primary: { text: "Get a Free Solar Quote", href: "/contact" },
-      secondary: { text: "Explore Our Products", href: "/products" }
+      primary: { text: "Calculate Your Solar Savings", href: "/calculator" },
+      secondary: { text: "View Our Services", href: "/solutions" }
     }
   }
 ];
@@ -81,9 +82,14 @@ const HeroSlider = () => {
           className="absolute inset-0"
         >
           {slides[currentSlide].type === "image" ? (
-            <div
-              className="w-full h-full bg-cover bg-center bg-no-repeat"
-              style={{ backgroundImage: `url(${slides[currentSlide].src})` }}
+            <Image
+              src={slides[currentSlide].src}
+              alt={slides[currentSlide].title}
+              fill
+              priority={currentSlide === 0}
+              className="object-cover"
+              sizes="100vw"
+              quality={85}
             />
           ) : (
             <video

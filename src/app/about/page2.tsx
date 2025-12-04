@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { HiCheckCircle, HiBadgeCheck, HiUsers, HiLightningBolt } from "react-icons/hi";
 
 const AboutPage = () => {
@@ -122,10 +123,13 @@ const AboutPage = () => {
               transition={{ duration: 0.8 }}
               className="relative"
             >
-              <img
+              <Image
                 src="/about/company-history.jpg"
                 alt="Sunsynchro company history"
+                width={800}
+                height={600}
                 className="w-full rounded-2xl shadow-2xl"
+                quality={85}
               />
               <div className="absolute -bottom-6 -left-6 bg-white rounded-xl p-6 shadow-xl">
                 <div className="text-3xl font-bold text-green-600">2009</div>

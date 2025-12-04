@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { brands } from "../../data/brands";
 
 const LogoCarousel = () => {
@@ -67,14 +68,17 @@ const LogoCarousel = () => {
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.2 }}
               >
-                <div className="h-24 flex items-center justify-center group">
+                <div className="h-24 flex items-center justify-center group relative w-full">
                   {/* Brand logo image or fallback to name */}
                   {brand.logo ? (
-                    <img
+                    <Image
                       src={brand.logo}
                       alt={brand.name}
-                      className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
+                      width={192}
+                      height={96}
+                      className="object-contain group-hover:scale-110 transition-transform duration-300"
                       loading="lazy"
+                      quality={75}
                     />
                   ) : (
                     <span className="text-gray-600 font-semibold text-sm md:text-base text-center px-2">

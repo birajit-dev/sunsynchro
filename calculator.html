@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>সানসিঙ্ক্রো — সোলার সেভিংস ক্যালকুলেটর</title>
+  <style>
+    :root{--accent:#0ea5a4;--muted:#6b7280;--card:#ffffff}
+    body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background:#f3f4f6; margin:0; padding:24px;color:#0f172a}
+    .wrap{max-width:960px;margin:0 auto}
+    header{display:flex;align-items:center;gap:12px}
+    header img{width:56px;height:56px;border-radius:8px}
+    h1{margin:0;font-size:20px}
+    p.lead{color:var(--muted);margin:6px 0 18px}
+    .grid{display:grid;grid-template-columns:1fr 360px;gap:18px}
+    .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(15,23,42,0.06)}
+    label{display:block;font-size:13px;margin-bottom:6px;color:#0f172a}
+    input[type="number"], select{width:100%;padding:10px;border-radius:8px;border:1px solid #e6e9ef;font-size:14px}
+    .row{display:flex;gap:12px}
+    .row > div{flex:1}
+    .muted{color:var(--muted);font-size:13px}
+    button{background:var(--accent);color:white;padding:10px 12px;border-radius:10px;border:0;cursor:pointer}
+    .result{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+    .stat{background:#f8fafb;padding:12px;border-radius:8px}
+    .small{font-size:13px;color:var(--muted)}
+    footer{margin-top:18px;color:var(--muted);font-size:13px}
+    .controls{display:flex;gap:8px;align-items:center}
+    .print-hide{display:inline-block}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}.print-hide{display:none}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect rx='12' width='100%' height='100%' fill='%230ea5a4'/><text x='50%' y='54%' font-size='30' text-anchor='middle' font-family='Arial' fill='white'>S</text></svg>" alt="Sunsynchro logo"/>
+      <div>
+        <h1>সানসিঙ্ক্রো — সোলার সেভিংস ক্যালকুলেটর</h1>
+        <p class="lead">রুফটপ সৌর সিস্টেমের বার্ষিক উৎপাদন, সাশ্রয়, পেয়ে-ব্যাক এবং CO₂ হ্রাসের অনুমান করুন। ডিফল্ট মান পরিবর্তন করে আপনার সাইট বা কোট অনুযায়ী কাস্টমাইজ করুন।</p>
+      </div>
+    </header>
+
+    <div class="grid">
+      <div class="card">
+        <h3>ইনপুট প্যারামিটার</h3>
+
+        <div style="margin-top:12px">
+          <label>ইনপুট মোড</label>
+          <select id="mode">
+            <option value="system">সিস্টেম আকার জানি (kW)</option>
+            <option value="consumption">আমার মাসিক খরচ জানি (kWh)</option>
+          </select>
+        </div>
+
+        <div id="systemInputs" style="margin-top:12px">
+          <label>সিস্টেম আকার (kW)</label>
+          <input id="systemSize" type="number" min="0" step="0.1" value="5">
+        </div>
+
+        <div id="consumptionInputs" style="display:none;margin-top:12px">
+          <label>মাসিক বিদ্যুৎ ব্যবহার (kWh)</label>
+          <input id="monthlyConsumption" type="number" min="0" step="1" value="350">
+
+          <div style="margin-top:10px">
+            <label>টার্গেট অফসেট (%) — আপনার বিলের কত অংশ সরিয়ে দিতে চান?</label>
+            <input id="targetOffset" type="number" min="1" max="100" step="1" value="80">
+          </div>
+        </div>
+
+        <div style="margin-top:12px" class="row">
+          <div>
+            <label>গড় সান-আওয়ার / kW / দিন (Tripura ডিফল্ট)</label>
+            <input id="sunHours" type="number" min="1" step="0.1" value="4.2">
+            <span class="small muted">({{kWh}}/kW/দিন — পরিবর্তনযোগ্য)</span>
+          </div>
+          <div>
+            <label>পারফরম্যান্স রেশিও</label>
+            <input id="perf" type="number" min="0.5" max="0.95" step="0.01" value="0.78">
+            <span class="small muted">(ক্ষতি: ইনভার্টার, ওয়্যারিং, ময়লা)</span>
+          </div>
+        </div>
+
+        <div style="margin-top:12px" class="row">
+          <div>
+            <label>বিদ্যুতের হার (₹ / kWh) — Tripura ডিফল্ট</label>
+            <input id="tariff" type="number" min="0" step="0.01" value="7.0">
+          </div>
+          <div>
+            <label>সিস্টেম খরচ (₹ / kW)</label>
+            <input id="costPerKw" type="number" min="0" step="1000" value="85000">
+          </div>
+        </div>
+
+        <div style="margin-top:12px" class="row">
+          <div>
+            <label>সেলফ-কনসাম্পশন (উৎপাদনের জায়গায় ব্যবহার অনুপাত)</label>
+            <input id="selfCons" type="number" min="0" max="1" step="0.01" value="0.8">
+            <span class="small muted">(0–1) উদাহরণ: 0.8 -> 80% অন-সাইট, 20% এক্সপোর্ট)</span>
+          </div>
+          <div>
+            <label>এক্সপোর্ট ক্রেডিট (₹ / kWh)</label>
+            <input id="exportRate" type="number" min="0" step="0.01" value="3">
+          </div>
+        </div>
+
+        <div style="margin-top:12px" class="row">
+          <div>
+            <label>বার্ষিক ট্যারিফ বৃদ্ধি (%)</label>
+            <input id="escalation" type="number" min="0" step="0.1" value="3">
+          </div>
+          <div>
+            <label>প্যানেল আয়ু (বছর)</label>
+            <input id="life" type="number" min="1" step="1" value="25">
+          </div>
+        </div>
+
+        <div style="margin-top:12px" class="row">
+          <div>
+            <label>CO₂ ফ্যাক্টর (kg CO₂ / kWh)</label>
+            <input id="co2factor" type="number" min="0" step="0.01" value="0.82">
+          </div>
+          <div>
+            <label>সিস্টেম ডিগ্রেডেশন (% প্রতি বছর)</label>
+            <input id="degrade" type="number" min="0" max="1" step="0.01" value="0.5">
+          </div>
+        </div>
+
+        <div style="margin-top:14px;display:flex;gap:8px;align-items:center">
+          <button id="calc">হিসাব করুন</button>
+          <button id="reset" style="background:#ef4444">রিসেট</button>
+          <div style="margin-left:auto" class="controls print-hide">
+            <button id="exportCsv">CSV এক্সপোর্ট</button>
+            <button id="print">প্রিন্ট</button>
+          </div>
+        </div>
+
+        <div id="notes" class="muted" style="margin-top:10px">টিপ: নির্দিষ্ট কোটের জন্য ডিফল্ট মান পরিবর্তন করুন (সিস্টেম খরচ, ট্যারিফ, সান-আওয়ার) — আরও সঠিক অনুমান পেতে।</div>
+      </div>
+
+      <div class="card">
+        <h3>ফলাফল</h3>
+        <div id="summary" style="margin-top:12px">
+          <div class="small muted">দ্রুত সারসংক্ষেপ</div>
+          <div class="result" id="quickStats">
+            <div class="stat"><b id="annGen">— kWh</b><div class="small">বার্ষিক আনুমানিক উৎপাদন</div></div>
+            <div class="stat"><b id="annSave">— ₹</b><div class="small">প্রথম বছরের আনুমানিক সাশ্রয়</div></div>
+            <div class="stat"><b id="payback">— years</b><div class="small">সিম্পল পে-ব্যাক</div></div>
+            <div class="stat"><b id="co2">— kg</b><div class="small">CO₂ এড়ানো (প্রথম বছর)</div></div>
+          </div>
+
+          <div style="margin-top:14px">
+            <label>25 বছরের ক্যাশফ্লো সারমারি</label>
+            <div id="cashflow" style="max-height:300px;overflow:auto;padding:8px;background:#fbfdff;border-radius:8px;margin-top:8px;font-family:monospace;font-size:13px">(হিসাব করতে 'হিসাব করুন' চাপুন)</div>
+          </div>
+        </div>
+
+        <footer>
+          <div><strong>সানসিঙ্ক্রো Pvt. Ltd.</strong> — যোগাযোগ: 9742422340 | ওয়েব: sunsynchro.com</div>
+          <div style="margin-top:6px" class="small muted">অনুমান: বার্ষিক উৎপাদন ≈ সিস্টেম আকার × সান-আওয়ার × 365 × পারফরম্যান্স রেশিও। সেলফ-কনসাম্পশন ট্যারিফকে প্রতিস্থাপন করে; এক্সপোর্ট ক্ষেত্রের জন্য এক্সপোর্ট রেট ব্যবহার করা হয়। এটি একটি আনুমানিক হিসাব, চূড়ান্ত ডিজাইন নয়।</div>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+<script>
+  function $(id){return document.getElementById(id)}
+
+  const mode = $('mode');
+  const systemInputs = $('systemInputs');
+  const consumptionInputs = $('consumptionInputs');
+
+  mode.addEventListener('change', ()=>{
+    if(mode.value==='system'){
+      systemInputs.style.display='block'; consumptionInputs.style.display='none';
+    } else { systemInputs.style.display='none'; consumptionInputs.style.display='block'; }
+    sendHeight();
+  });
+
+  function format(num, currency){
+    if(isNaN(num) || !isFinite(num)) return '—';
+    return currency ? '₹' + Number(num).toLocaleString('en-IN',{maximumFractionDigits:0}) : Number(num).toLocaleString('en-IN',{maximumFractionDigits:2});
+  }
+
+  function calculate(){
+    // read inputs
+    let systemSize = parseFloat($('systemSize').value) || 0;
+    const monthlyConsumption = parseFloat($('monthlyConsumption').value) || 0;
+    const targetOffset = parseFloat($('targetOffset').value)/100 || 0.8;
+    const sun = parseFloat($('sunHours').value) || 4.2;
+    const perf = parseFloat($('perf').value) || 0.78;
+    const tariff = parseFloat($('tariff').value) || 7.0;
+    const costPerKw = parseFloat($('costPerKw').value) || 85000;
+    const selfCons = parseFloat($('selfCons').value) || 0.8;
+    const exportRate = parseFloat($('exportRate').value) || 3;
+    const esc = parseFloat($('escalation').value)/100 || 0.03;
+    const life = parseInt($('life').value) || 25;
+    const co2 = parseFloat($('co2factor').value) || 0.82;
+    const degrade = parseFloat($('degrade').value)/100 || 0.005;
+
+    // estimate system size from consumption if needed
+    if(mode.value==='consumption'){
+      const annualCons = monthlyConsumption * 12;
+      const genPerKw = sun * 365 * perf;
+      const genNeeded = (targetOffset * annualCons) / Math.max(selfCons,0.01);
+      systemSize = genNeeded / genPerKw;
+    }
+
+    const genPerYear = systemSize * sun * 365 * perf; // kWh
+
+    const selfUsed = genPerYear * selfCons;
+    const exported = Math.max(0, genPerYear - selfUsed);
+    const firstYearSavings = (selfUsed * tariff) + (exported * exportRate);
+
+    const systemCost = systemSize * costPerKw;
+    const simplePayback = firstYearSavings > 0 ? (systemCost / firstYearSavings) : Infinity;
+
+    let rows = [];
+    let curTariff = tariff;
+    let curGen = genPerYear;
+    let cumSavings = 0;
+    for(let y=1;y<=life;y++){
+      if(y>1) curGen = curGen * (1 - degrade);
+      if(y>1) curTariff = curTariff * (1 + esc);
+      const selfUsedY = curGen * selfCons;
+      const exportedY = Math.max(0, curGen - selfUsedY);
+      const savingsY = (selfUsedY * curTariff) + (exportedY * exportRate);
+      cumSavings += savingsY;
+      rows.push({y, gen:curGen, savings:savingsY, cum:cumSavings});
+    }
+
+    $('annGen').innerText = format(genPerYear) + ' kWh';
+    $('annSave').innerText = format(firstYearSavings, true);
+    $('payback').innerText = simplePayback===Infinity ? '—' : (Number(simplePayback.toFixed(1)) + ' yrs');
+    $('co2').innerText = format(genPerYear * co2) + ' kg';
+
+    let txt = 'Year | Generation (kWh) | Year savings (₹) | Cumulative savings (₹)\\n';
+    txt += '-------------------------------------------------------------\\n';
+    rows.forEach(r=>{
+      txt += r.y.toString().padEnd(4) + ' | ' + r.gen.toFixed(0).padStart(9) + ' | ' + ('₹'+Math.round(r.savings).toLocaleString('en-IN')).padStart(14) + ' | ' + ('₹'+Math.round(r.cum).toLocaleString('en-IN')).padStart(17) + '\\n';
+    });
+    txt += '\\nSystem size: ' + systemSize.toFixed(2) + ' kW | System cost: ₹' + Math.round(systemCost).toLocaleString('en-IN');
+
+    $('cashflow').innerText = txt;
+
+    window._lastCalc = {systemSize, genPerYear, firstYearSavings, simplePayback, systemCost, rows};
+
+    // announce height to parent for auto-resize
+    sendHeight();
+  }
+
+  function sendHeight(){
+    try{
+      const h = document.body.scrollHeight;
+      if(window.parent && window.parent !== window){
+        window.parent.postMessage({sunsynchroHeight: h}, '*');
+      }
+    }catch(e){
+      // ignore
+    }
+  }
+
+  $('calc').addEventListener('click', calculate);
+  $('reset').addEventListener('click', ()=>{location.reload()});
+
+  $('print').addEventListener('click', ()=>{window.print()});
+
+  $('exportCsv').addEventListener('click', ()=>{
+    const d = window._lastCalc;
+    if(!d){alert('দয়া করে প্রথমে \"হিসাব করুন\" চাপুন');return}
+    let csv = 'Year,Generation_kWh,YearSavings_INR,CumulativeSavings_INR\\n';
+    d.rows.forEach(r=>{csv += `${r.y},${r.gen.toFixed(2)},${r.savings.toFixed(2)},${r.cum.toFixed(2)}\\n`});
+    csv += `\\nSystemSize_kW,${d.systemSize.toFixed(2)}\\nSystemCost_INR,${d.systemCost.toFixed(2)}\\nFirstYearSavings_INR,${d.firstYearSavings ? d.firstYearSavings.toFixed(2) : ''}`;
+    const blob = new Blob([csv], {type: 'text/csv'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = 'sunsynchro_cashflow.csv'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  });
+
+  document.querySelectorAll('input').forEach(i=>i.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ calculate(); }}));
+
+  // initial calc and announce
+  window.addEventListener('load', ()=>{ calculate(); setTimeout(sendHeight,300); });
+  // announce height on resize (e.g., when fonts load)
+  window.addEventListener('resize', sendHeight);
+</script>
+</body>
+</html>

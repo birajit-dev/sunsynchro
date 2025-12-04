@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { HiCheckCircle, HiBadgeCheck, HiUsers, HiLightningBolt, HiSparkles } from "react-icons/hi";
 
 const AboutPage = () => {
@@ -157,10 +158,13 @@ const AboutPage = () => {
               className="relative"
             >
               <div className="absolute -inset-4 bg-gradient-to-r from-green-500 to-yellow-500 rounded-3xl blur opacity-20"></div>
-              <img
+              <Image
                 src="/gallery/logo2.png"
                 alt="Our Story"
+                width={600}
+                height={400}
                 className="relative rounded-2xl shadow-2xl transform hover:scale-105 transition-transform duration-500"
+                quality={85}
               />
             </motion.div>
           </div>

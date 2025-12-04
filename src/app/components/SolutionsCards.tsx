@@ -2,6 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { HiHome, HiOfficeBuilding, HiCog, HiTruck, HiCurrencyDollar, HiArrowRight } from "react-icons/hi";
 
 interface Solution {
@@ -125,10 +126,13 @@ const SolutionsCards = () => {
                   <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden h-full flex flex-col">
                     {/* Image */}
                     <div className="relative h-48 sm:h-52 lg:h-56 overflow-hidden">
-                      <img
+                      <Image
                         src={solution.image}
                         alt={solution.title}
-                        className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-300"
+                        fill
+                        className="object-cover object-center group-hover:scale-110 transition-transform duration-300"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        quality={85}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                       
@@ -186,10 +190,13 @@ const SolutionsCards = () => {
                     <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden h-full flex flex-col">
                       {/* Image */}
                       <div className="relative h-48 sm:h-52 lg:h-56 overflow-hidden">
-                        <img
+                        <Image
                           src={solution.image}
                           alt={solution.title}
-                          className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-300"
+                          fill
+                          className="object-cover object-center group-hover:scale-110 transition-transform duration-300"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          quality={85}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                         

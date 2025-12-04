@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { products } from "../../data/products";
 import { HiDownload, HiStar, HiInformationCircle, HiMail, HiCheckCircle } from "react-icons/hi";
+import Image from "next/image";
 
 const ProductsPage = () => {
   const [selectedProduct, setSelectedProduct] = useState<typeof products[0] | null>(null);
@@ -56,24 +57,34 @@ const ProductsPage = () => {
               >
                 {/* Product Image */}
                 <div className="relative h-48 bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center p-4">
-                      <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-yellow-500 rounded-xl flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform duration-300">
-                        <span className="text-white font-bold text-lg">
-                          {product.name.charAt(0)}
-                        </span>
+                  {product.image ? (
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      fill
+                      className="object-contain group-hover:scale-105 transition-transform duration-300"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="text-center p-4">
+                        <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-yellow-500 rounded-xl flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform duration-300">
+                          <span className="text-white font-bold text-lg">
+                            {product.name.charAt(0)}
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  )}
                   {product.featured && (
-                    <div className="absolute top-3 left-3">
+                    <div className="absolute top-3 left-3 z-10">
                       <span className="inline-flex items-center px-2 py-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold rounded-full shadow-lg">
                         <HiStar className="w-3 h-3 mr-1" />
                         Featured
                       </span>
                     </div>
                   )}
-                  <div className="absolute top-3 right-3">
+                  <div className="absolute top-3 right-3 z-10">
                     <span className="inline-block px-2 py-1 bg-white/90 backdrop-blur-sm text-green-700 text-xs font-bold rounded-full shadow-lg border border-green-200">
                       {product.category}
                     </span>
@@ -179,17 +190,27 @@ const ProductsPage = () => {
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                   {/* Product Image */}
-                  <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl h-64 lg:h-80 flex items-center justify-center border border-gray-200">
-                    <div className="text-center">
-                      <div className="w-24 h-24 bg-gradient-to-br from-green-500 to-yellow-500 rounded-2xl flex items-center justify-center mx-auto mb-3">
-                        <span className="text-white font-bold text-3xl">
-                          {selectedProduct.name.charAt(0)}
+                  <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl h-64 lg:h-80 flex items-center justify-center border border-gray-200 relative overflow-hidden">
+                    {selectedProduct.image ? (
+                      <Image
+                        src={selectedProduct.image}
+                        alt={selectedProduct.name}
+                        fill
+                        className="object-contain p-4"
+                        sizes="(max-width: 1024px) 100vw, 50vw"
+                      />
+                    ) : (
+                      <div className="text-center">
+                        <div className="w-24 h-24 bg-gradient-to-br from-green-500 to-yellow-500 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                          <span className="text-white font-bold text-3xl">
+                            {selectedProduct.name.charAt(0)}
+                          </span>
+                        </div>
+                        <span className="text-gray-700 font-bold text-lg">
+                          {selectedProduct.name}
                         </span>
                       </div>
-                      <span className="text-gray-700 font-bold text-lg">
-                        {selectedProduct.name}
-                      </span>
-                    </div>
+                    )}
                   </div>
 
                   {/* Product Details */}
