@@ -8,6 +8,7 @@
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
+node_modules
 !.yarn/versions
 
 # testing
