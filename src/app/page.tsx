@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import HeroSlider from "./components/HeroSlider";
 import AboutSection from "./components/AboutSection";
+import StartupRecognition from "./components/StartupRecognition";
 import LocalSEO from "./components/LocalSEO";
 
 // Lazy load heavy components below the fold
@@ -29,6 +30,7 @@ export default function Home() {
       <HeroSlider />
       {/* <CounterStats /> */}
       <AboutSection />
+      <StartupRecognition />
       <LocalSEO />
       <WhyWe />
       <SolutionsCards />

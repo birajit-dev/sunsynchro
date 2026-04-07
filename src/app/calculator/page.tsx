@@ -1,39 +1,33 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 
-interface CashflowRow {
-  y: number;
-  gen: number;
-  savings: number;
-  cum: number;
-}
-
 interface CalculationResult {
-  systemSize: number;
-  genPerYear: number;
-  firstYearSavings: number;
-  simplePayback: number;
-  systemCost: number;
-  rows: CashflowRow[];
+  monthlySaving: number;
+  yearlySaving: number;
+  requiredKW: number;
+  yearlyGeneration: number;
+  co2ReducedKgPerYear: number;
+  simplePaybackYears: number;
 }
 
 export default function CalculatorPage() {
-  const [mode, setMode] = useState<"system" | "consumption">("system");
-  const [systemSize, setSystemSize] = useState(5);
-  const [monthlyConsumption, setMonthlyConsumption] = useState(350);
-  const [targetOffset, setTargetOffset] = useState(80);
-  const [sunHours, setSunHours] = useState(4.2);
-  const [perf, setPerf] = useState(0.78);
-  const [tariff, setTariff] = useState(7.0);
-  const [costPerKw, setCostPerKw] = useState(85000);
-  const [selfCons, setSelfCons] = useState(0.8);
-  const [exportRate, setExportRate] = useState(3);
-  const [escalation, setEscalation] = useState(3);
-  const [life, setLife] = useState(25);
-  const [co2factor, setCo2factor] = useState(0.82);
-  const [degrade, setDegrade] = useState(0.5);
+  // Use string state for better mobile input handling (allows "")
+  const [monthlyBill, setMonthlyBill] = useState("2000");
+  const [unitPrice, setUnitPrice] = useState("7.0");
+
   const [result, setResult] = useState<CalculationResult | null>(null);
+
+  const ASSUMPTIONS = {
+    // Typical India rooftop generation band is around 110-140 units/month/kW.
+    monthlyUnitsPerKw: 120,
+    // Not every generated unit offsets billed energy perfectly.
+    effectiveOffsetRatio: 0.9,
+    // Broad-market estimate used internally for payback.
+    systemCostPerKw: 55000,
+    // Approx grid emission factor for awareness estimate.
+    gridEmissionKgPerKwh: 0.736,
+  };
 
   const format = (num: number, currency: boolean = false): string => {
     if (isNaN(num) || !isFinite(num)) return "—";
@@ -43,98 +37,71 @@ export default function CalculatorPage() {
   };
 
   const calculate = () => {
-    let calculatedSystemSize = systemSize;
+    const monthlyBillNum = parseFloat(monthlyBill || "0");
+    const unitPriceNum = parseFloat(unitPrice || "0");
 
-    // Estimate system size from consumption if needed
-    if (mode === "consumption") {
-      const annualCons = monthlyConsumption * 12;
-      const genPerKw = sunHours * 365 * perf;
-      const genNeeded = (targetOffset / 100) * annualCons;
-      calculatedSystemSize = genNeeded / Math.max(selfCons, 0.01) / genPerKw;
-    }
-
-    const genPerYear = calculatedSystemSize * sunHours * 365 * perf; // kWh
-
-    const selfUsed = genPerYear * selfCons;
-    const exported = Math.max(0, genPerYear - selfUsed);
-    const firstYearSavings = selfUsed * tariff + exported * exportRate;
-
-    const systemCost = calculatedSystemSize * costPerKw;
-    const simplePayback =
-      firstYearSavings > 0 ? systemCost / firstYearSavings : Infinity;
-
-    const rows: CashflowRow[] = [];
-    let curTariff = tariff;
-    let curGen = genPerYear;
-    let cumSavings = 0;
-
-    for (let y = 1; y <= life; y++) {
-      if (y > 1) curGen = curGen * (1 - degrade / 100);
-      if (y > 1) curTariff = curTariff * (1 + escalation / 100);
-      const selfUsedY = curGen * selfCons;
-      const exportedY = Math.max(0, curGen - selfUsedY);
-      const savingsY = selfUsedY * curTariff + exportedY * exportRate;
-      cumSavings += savingsY;
-      rows.push({ y, gen: curGen, savings: savingsY, cum: cumSavings });
-    }
-
-    setResult({
-      systemSize: calculatedSystemSize,
-      genPerYear,
-      firstYearSavings,
-      simplePayback,
-      systemCost,
-      rows,
-    });
-  };
-
-  useEffect(() => {
-    calculate();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Only calculate on initial mount
-
-  const handleReset = () => {
-    setMode("system");
-    setSystemSize(5);
-    setMonthlyConsumption(350);
-    setTargetOffset(80);
-    setSunHours(4.2);
-    setPerf(0.78);
-    setTariff(7.0);
-    setCostPerKw(85000);
-    setSelfCons(0.8);
-    setExportRate(3);
-    setEscalation(3);
-    setLife(25);
-    setCo2factor(0.82);
-    setDegrade(0.5);
-  };
-
-  const handleExportCsv = () => {
-    if (!result) {
-      alert("দয়া করে প্রথমে \"হিসাব করুন\" চাপুন");
+    if (monthlyBillNum <= 0 || unitPriceNum <= 0) {
+      setResult(null);
       return;
     }
 
-    let csv = "Year,Generation_kWh,YearSavings_INR,CumulativeSavings_INR\n";
-    result.rows.forEach((r) => {
-      csv += `${r.y},${r.gen.toFixed(2)},${r.savings.toFixed(2)},${r.cum.toFixed(2)}\n`;
-    });
-    csv += `\nSystemSize_kW,${result.systemSize.toFixed(2)}\nSystemCost_INR,${result.systemCost.toFixed(2)}\nFirstYearSavings_INR,${result.firstYearSavings ? result.firstYearSavings.toFixed(2) : ""}`;
+    // Estimated monthly units consumed = monthly bill / per unit rate
+    const monthlyUnits = monthlyBillNum / unitPriceNum;
 
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "sunsynchro_cashflow.csv";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
+    // Size based on typical monthly generation per kW.
+    const rawRequiredKw = monthlyUnits / ASSUMPTIONS.monthlyUnitsPerKw;
+    // Round to nearest 0.5 kW (common market sizing).
+    const requiredKW = Math.max(0.5, Math.round(rawRequiredKw * 2) / 2);
+
+    const generatedMonthlyUnits = requiredKW * ASSUMPTIONS.monthlyUnitsPerKw;
+    const effectiveOffsetUnits = Math.min(
+      monthlyUnits,
+      generatedMonthlyUnits * ASSUMPTIONS.effectiveOffsetRatio
+    );
+    const monthlySaving = effectiveOffsetUnits * unitPriceNum;
+    const yearlySaving = monthlySaving * 12;
+    const yearlyGeneration = generatedMonthlyUnits * 12;
+    const estimatedSystemCost = requiredKW * ASSUMPTIONS.systemCostPerKw;
+    const simplePaybackYears =
+      yearlySaving > 0 ? estimatedSystemCost / yearlySaving : 0;
+    const co2ReducedKgPerYear =
+      yearlyGeneration * ASSUMPTIONS.gridEmissionKgPerKwh;
+
+    setResult({
+      monthlySaving,
+      yearlySaving,
+      requiredKW,
+      yearlyGeneration,
+      co2ReducedKgPerYear,
+      simplePaybackYears,
+    });
+  };
+
+  const handleReset = () => {
+    setMonthlyBill("2000");
+    setUnitPrice("7.0");
+    setResult(null);
   };
 
   const handlePrint = () => {
     window.print();
+  };
+
+  // Handler for input to allow true empty string and only allow numbers/decimal
+  const handleMonthlyBillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const v = e.target.value;
+    // Allow empty string (user deletes), or only digits
+    if (/^\d*$/.test(v) || /^\d+\.\d{0,2}$/.test(v) || v === "") {
+      setMonthlyBill(v);
+    }
+  };
+
+  const handleUnitPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const v = e.target.value;
+    // Allow empty string, or valid decimal
+    if (/^\d*\.?\d{0,2}$/.test(v) || v === "") {
+      setUnitPrice(v);
+    }
   };
 
   return (
@@ -149,12 +116,11 @@ export default function CalculatorPage() {
             </div>
             <div>
               <h1 className="text-2xl font-bold text-gray-900 bg-gradient-to-r from-[#0ea5a4] to-[#0d9493] bg-clip-text text-transparent">
-                সানসিঙ্ক্রো — সোলার সেভিংস ক্যালকুলেটর
+                Sunsynchro — Solar Calculator
               </h1>
               <p className="text-sm text-gray-600 mt-2 leading-relaxed">
-                রুফটপ সৌর সিস্টেমের বার্ষিক উৎপাদন, সাশ্রয়, পেয়ে-ব্যাক এবং CO₂
-                হ্রাসের অনুমান করুন। ডিফল্ট মান পরিবর্তন করে আপনার সাইট বা কোট
-                অনুযায়ী কাস্টমাইজ করুন।
+                Enter only your monthly average electricity bill and unit price
+                to estimate the right solar size, savings, payback, and impact.
               </p>
             </div>
           </header>
@@ -169,289 +135,42 @@ export default function CalculatorPage() {
                   </svg>
                 </div>
                 <h3 className="text-xl font-bold text-gray-900">
-                  ইনপুট প্যারামিটার
+                  Input (Only 2 fields)
                 </h3>
               </div>
-
-              {/* Input Mode */}
               <div className="mb-5">
                 <label className="block text-sm font-semibold text-gray-900 mb-2">
-                  ইনপুট মোড
+                  Average Monthly Electricity Bill (₹)
                 </label>
-                <select
-                  value={mode}
-                  onChange={(e) =>
-                    setMode(e.target.value as "system" | "consumption")
-                  }
+                <input
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  type="text"
+                  min="0"
+                  step="1"
+                  value={monthlyBill}
+                  onChange={handleMonthlyBillChange}
+                  onKeyDown={(e) => { if (e.key === "Enter") calculate(); }}
+                  placeholder="2000"
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0ea5a4] focus:border-transparent transition-all hover:border-gray-300"
-                >
-                  <option value="system">সিস্টেম আকার জানি (kW)</option>
-                  <option value="consumption">আমার মাসিক খরচ জানি (kWh)</option>
-                </select>
+                />
               </div>
-
-              {/* System Size Input */}
-              {mode === "system" && (
-                <div className="mb-5">
-                  <label className="block text-sm font-semibold text-gray-900 mb-2">
-                    সিস্টেম আকার (kW)
-                  </label>
-                  <input
-                    type="number"
-                    min="0"
-                    step="0.1"
-                    value={systemSize}
-                    onChange={(e) => setSystemSize(parseFloat(e.target.value) || 0)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") calculate();
-                    }}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0ea5a4] focus:border-transparent transition-all hover:border-gray-300"
-                  />
-                </div>
-              )}
-
-              {/* Consumption Input */}
-              {mode === "consumption" && (
-                <div className="mb-5 space-y-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-900 mb-2">
-                      মাসিক বিদ্যুৎ ব্যবহার (kWh)
-                    </label>
-                    <input
-                      type="number"
-                      min="0"
-                      step="1"
-                      value={monthlyConsumption}
-                      onChange={(e) =>
-                        setMonthlyConsumption(parseFloat(e.target.value) || 0)
-                      }
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") calculate();
-                      }}
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0ea5a4] focus:border-transparent transition-all hover:border-gray-300"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-900 mb-2">
-                      টার্গেট অফসেট (%) — আপনার বিলের কত অংশ সরিয়ে দিতে চান?
-                    </label>
-                    <input
-                      type="number"
-                      min="1"
-                      max="100"
-                      step="1"
-                      value={targetOffset}
-                      onChange={(e) =>
-                        setTargetOffset(parseFloat(e.target.value) || 80)
-                      }
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") calculate();
-                      }}
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0ea5a4] focus:border-transparent transition-all hover:border-gray-300"
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* Sun Hours and Performance Ratio */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-2">
-                    গড় সান-আওয়ার / kW / দিন
-                  </label>
-                  <input
-                    type="number"
-                    min="1"
-                    step="0.1"
-                    value={sunHours}
-                    onChange={(e) => setSunHours(parseFloat(e.target.value) || 4.2)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") calculate();
-                    }}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0ea5a4] focus:border-transparent transition-all hover:border-gray-300"
-                  />
-                  <span className="text-xs text-gray-500 mt-1 block">
-                    (Tripura ডিফল্ট: 4.2 kWh/kW/দিন)
-                  </span>
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-2">
-                    পারফরম্যান্স রেশিও
-                  </label>
-                  <input
-                    type="number"
-                    min="0.5"
-                    max="0.95"
-                    step="0.01"
-                    value={perf}
-                    onChange={(e) => setPerf(parseFloat(e.target.value) || 0.78)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") calculate();
-                    }}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0ea5a4] focus:border-transparent transition-all hover:border-gray-300"
-                  />
-                  <span className="text-xs text-gray-500 mt-1 block">
-                    (ক্ষতি: ইনভার্টার, ওয়্যারিং, ময়লা)
-                  </span>
-                </div>
-              </div>
-
-              {/* Tariff and Cost per kW */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-2">
-                    বিদ্যুতের হার (₹ / kWh)
-                  </label>
-                  <input
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    value={tariff}
-                    onChange={(e) => setTariff(parseFloat(e.target.value) || 7.0)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") calculate();
-                    }}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0ea5a4] focus:border-transparent transition-all hover:border-gray-300"
-                  />
-                  <span className="text-xs text-gray-500 mt-1 block">
-                    (Tripura ডিফল্ট: ₹7.0)
-                  </span>
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-2">
-                    সিস্টেম খরচ (₹ / kW)
-                  </label>
-                  <input
-                    type="number"
-                    min="0"
-                    step="1000"
-                    value={costPerKw}
-                    onChange={(e) =>
-                      setCostPerKw(parseFloat(e.target.value) || 85000)
-                    }
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") calculate();
-                    }}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0ea5a4] focus:border-transparent transition-all hover:border-gray-300"
-                  />
-                </div>
-              </div>
-
-              {/* Self Consumption and Export Rate */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-2">
-                    সেলফ-কনসাম্পশন
-                  </label>
-                  <input
-                    type="number"
-                    min="0"
-                    max="1"
-                    step="0.01"
-                    value={selfCons}
-                    onChange={(e) => setSelfCons(parseFloat(e.target.value) || 0.8)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") calculate();
-                    }}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0ea5a4] focus:border-transparent transition-all hover:border-gray-300"
-                  />
-                  <span className="text-xs text-gray-500 mt-1 block">
-                    (0–1) উদাহরণ: 0.8 → 80% অন-সাইট
-                  </span>
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-2">
-                    এক্সপোর্ট ক্রেডিট (₹ / kWh)
-                  </label>
-                  <input
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    value={exportRate}
-                    onChange={(e) => setExportRate(parseFloat(e.target.value) || 3)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") calculate();
-                    }}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0ea5a4] focus:border-transparent transition-all hover:border-gray-300"
-                  />
-                </div>
-              </div>
-
-              {/* Escalation and Life */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-2">
-                    বার্ষিক ট্যারিফ বৃদ্ধি (%)
-                  </label>
-                  <input
-                    type="number"
-                    min="0"
-                    step="0.1"
-                    value={escalation}
-                    onChange={(e) =>
-                      setEscalation(parseFloat(e.target.value) || 3)
-                    }
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") calculate();
-                    }}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0ea5a4] focus:border-transparent transition-all hover:border-gray-300"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-2">
-                    প্যানেল আয়ু (বছর)
-                  </label>
-                  <input
-                    type="number"
-                    min="1"
-                    step="1"
-                    value={life}
-                    onChange={(e) => setLife(parseInt(e.target.value) || 25)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") calculate();
-                    }}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0ea5a4] focus:border-transparent transition-all hover:border-gray-300"
-                  />
-                </div>
-              </div>
-
-              {/* CO2 Factor and Degradation */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-2">
-                    CO₂ ফ্যাক্টর (kg CO₂ / kWh)
-                  </label>
-                  <input
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    value={co2factor}
-                    onChange={(e) =>
-                      setCo2factor(parseFloat(e.target.value) || 0.82)
-                    }
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") calculate();
-                    }}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0ea5a4] focus:border-transparent transition-all hover:border-gray-300"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-2">
-                    সিস্টেম ডিগ্রেডেশন (% / বছর)
-                  </label>
-                  <input
-                    type="number"
-                    min="0"
-                    max="1"
-                    step="0.01"
-                    value={degrade}
-                    onChange={(e) => setDegrade(parseFloat(e.target.value) || 0.5)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") calculate();
-                    }}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0ea5a4] focus:border-transparent transition-all hover:border-gray-300"
-                  />
-                </div>
+              <div className="mb-6">
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  Price per Unit (₹ / kWh)
+                </label>
+                <input
+                  inputMode="decimal"
+                  pattern="[0-9]*\.?[0-9]*"
+                  type="text"
+                  min="0"
+                  step="0.01"
+                  value={unitPrice}
+                  onChange={handleUnitPriceChange}
+                  onKeyDown={(e) => { if (e.key === "Enter") calculate(); }}
+                  placeholder="7.0"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0ea5a4] focus:border-transparent transition-all hover:border-gray-300"
+                />
               </div>
 
               {/* Action Buttons */}
@@ -460,26 +179,20 @@ export default function CalculatorPage() {
                   onClick={calculate}
                   className="px-6 py-3 bg-gradient-to-r from-[#0ea5a4] to-[#0d9493] text-white rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all text-sm"
                 >
-                  হিসাব করুন
+                  Calculate
                 </button>
                 <button
                   onClick={handleReset}
                   className="px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all text-sm"
                 >
-                  রিসেট
+                  Reset
                 </button>
                 <div className="ml-auto flex gap-2 print:hidden">
-                  <button
-                    onClick={handleExportCsv}
-                    className="px-5 py-3 bg-gradient-to-r from-gray-600 to-gray-700 text-white rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all text-sm"
-                  >
-                    CSV এক্সপোর্ট
-                  </button>
                   <button
                     onClick={handlePrint}
                     className="px-5 py-3 bg-gradient-to-r from-gray-600 to-gray-700 text-white rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all text-sm"
                   >
-                    প্রিন্ট
+                    Print
                   </button>
                 </div>
               </div>
@@ -490,8 +203,12 @@ export default function CalculatorPage() {
                     <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                   </svg>
                   <p className="text-xs text-blue-800 leading-relaxed">
-                    <strong>টিপ:</strong> নির্দিষ্ট কোটের জন্য ডিফল্ট মান পরিবর্তন করুন (সিস্টেম খরচ,
-                    ট্যারিফ, সান-আওয়ার) — আরও সঠিক অনুমান পেতে।
+                    <strong>Tip:</strong> We estimate system size & savings based on average units per month.
+                    <br />
+                    Your bill is <b>NOT</b> directly your savings:
+                    <br />
+                    <span className="text-gray-700">Solar savings = offset units × per unit price.<br />
+                    System size = monthly units / 120 (units/month/kW in India typical).</span>
                   </p>
                 </div>
               </div>
@@ -506,87 +223,67 @@ export default function CalculatorPage() {
                   </svg>
                 </div>
                 <h3 className="text-xl font-bold text-gray-900">
-                  ফলাফল
+                  Results
                 </h3>
               </div>
 
               {result && (
-                <div className="space-y-6">
-                  <div>
-                    <div className="text-xs font-semibold text-gray-500 mb-3 uppercase tracking-wide">দ্রুত সারসংক্ষেপ</div>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl border border-blue-200">
-                        <div className="font-bold text-gray-900 text-lg">
-                          {format(result.genPerYear)} kWh
-                        </div>
-                        <div className="text-xs text-gray-600 mt-1 font-medium">
-                          বার্ষিক আনুমানিক উৎপাদন
-                        </div>
+                <div className="space-y-7">
+                  <div className="text-xs font-semibold text-gray-500 mb-3 uppercase tracking-wide">Quick Summary</div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-xl border border-green-200">
+                      <div className="font-bold text-gray-900 text-lg">
+                        {format(result.monthlySaving, true)}
                       </div>
-                      <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-xl border border-green-200">
-                        <div className="font-bold text-gray-900 text-lg">
-                          {format(result.firstYearSavings, true)}
-                        </div>
-                        <div className="text-xs text-gray-600 mt-1 font-medium">
-                          প্রথম বছরের সাশ্রয়
-                        </div>
+                      <div className="text-xs text-gray-600 mt-1 font-medium">
+                        Monthly Saving*
                       </div>
-                      <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-xl border border-purple-200">
-                        <div className="font-bold text-gray-900 text-lg">
-                          {result.simplePayback === Infinity
-                            ? "—"
-                            : `${Number(result.simplePayback.toFixed(1))} yrs`}
-                        </div>
-                        <div className="text-xs text-gray-600 mt-1 font-medium">
-                          সিম্পল পে-ব্যাক
-                        </div>
+                    </div>
+                    <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl border border-blue-200">
+                      <div className="font-bold text-gray-900 text-lg">
+                        {format(result.yearlySaving, true)}
                       </div>
-                      <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 p-4 rounded-xl border border-yellow-200">
-                        <div className="font-bold text-gray-900 text-lg">
-                          {format(result.genPerYear * co2factor)} kg
-                        </div>
-                        <div className="text-xs text-gray-600 mt-1 font-medium">
-                          CO₂ এড়ানো (প্রথম বছর)
-                        </div>
+                      <div className="text-xs text-gray-600 mt-1 font-medium">
+                        Yearly Saving*
+                      </div>
+                    </div>
+                    <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 p-4 rounded-xl border border-yellow-200 col-span-2 mt-2">
+                      <div className="font-bold text-gray-900 text-lg">
+                        {result.requiredKW > 0 ? result.requiredKW.toFixed(2) : "--"} kW
+                      </div>
+                      <div className="text-xs text-gray-600 mt-1 font-medium">
+                        Estimated Solar System Size Required
+                      </div>
+                    </div>
+                    <div className="bg-gradient-to-br from-teal-50 to-teal-100 p-4 rounded-xl border border-teal-200">
+                      <div className="font-bold text-gray-900 text-lg">
+                        {result.simplePaybackYears > 0
+                          ? `${result.simplePaybackYears.toFixed(1)} yrs`
+                          : "--"}
+                      </div>
+                      <div className="text-xs text-gray-600 mt-1 font-medium">
+                        Simple Payback
+                      </div>
+                    </div>
+                    <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 p-4 rounded-xl border border-emerald-200">
+                      <div className="font-bold text-gray-900 text-lg">
+                        {format(result.co2ReducedKgPerYear / 1000)} t/yr
+                      </div>
+                      <div className="text-xs text-gray-600 mt-1 font-medium">
+                        CO2 Reduced (Est.)
                       </div>
                     </div>
                   </div>
-
-                  <div>
-                    <label className="block text-sm font-bold text-gray-900 mb-3">
-                      25 বছরের ক্যাশফ্লো সারমারি
-                    </label>
-                    <div className="max-h-[400px] overflow-auto p-4 bg-gray-50 rounded-xl border-2 border-gray-200 font-mono text-xs">
-                      <div className="whitespace-pre-wrap">
-                        {(() => {
-                          let txt =
-                            "Year | Generation (kWh) | Year savings (₹) | Cumulative savings (₹)\n";
-                          txt +=
-                            "-------------------------------------------------------------\n";
-                          result.rows.forEach((r) => {
-                            txt +=
-                              r.y.toString().padEnd(4) +
-                              " | " +
-                              r.gen.toFixed(0).padStart(9) +
-                              " | " +
-                              ("₹" +
-                                Math.round(r.savings).toLocaleString("en-IN")
-                              ).padStart(14) +
-                              " | " +
-                              ("₹" +
-                                Math.round(r.cum).toLocaleString("en-IN")
-                              ).padStart(17) +
-                              "\n";
-                          });
-                          txt +=
-                            "\nSystem size: " +
-                            result.systemSize.toFixed(2) +
-                            " kW | System cost: ₹" +
-                            Math.round(result.systemCost).toLocaleString("en-IN");
-                          return txt;
-                        })()}
-                      </div>
-                    </div>
+                  <div className="text-xs text-gray-600 leading-relaxed bg-gray-50 p-3 rounded-lg">
+                    <ul className="list-disc pl-4 space-y-1">
+                      <li>Inputs are only monthly bill and unit price; all other values are estimated with standard assumptions.</li>
+                      <li>Your savings are based on effective units offset by solar multiplied by your per unit rate.</li>
+                      <li>Your savings do <b>not</b> always equal your bill due to export/consumption timing and tariff slabs.</li>
+                      <li>
+                        <b>Why saving can be lower than bill:</b> generation, usage timing, and billing slabs can vary month to month.
+                      </li>
+                      <li>Estimated annual generation: {format(result.yearlyGeneration)} units.</li>
+                    </ul>
                   </div>
                 </div>
               )}
@@ -599,23 +296,20 @@ export default function CalculatorPage() {
                     </svg>
                   </div>
                   <p className="text-sm text-gray-500 font-medium">
-                    হিসাব করতে &apos;হিসাব করুন&apos; চাপুন
+                    Press 'Calculate' to see your savings and recommended solar system size.
                   </p>
                 </div>
               )}
-
               <footer className="mt-8 pt-6 border-t-2 border-gray-200">
                 <div className="text-sm font-bold text-gray-900 mb-1">
-                  সানসিঙ্ক্রো Pvt. Ltd.
+                  Sunsynchro Pvt. Ltd.
                 </div>
                 <div className="text-xs text-gray-600 mb-3">
-                  যোগাযোগ: 9742422340 | ওয়েব: sunsynchro.com
+                  Contact: 9742422340 | Web: sunsynchro.com
                 </div>
                 <div className="text-xs text-gray-500 leading-relaxed bg-gray-50 p-3 rounded-lg">
-                  <strong>অনুমান:</strong> বার্ষিক উৎপাদন ≈ সিস্টেম আকার × সান-আওয়ার × 365 ×
-                  পারফরম্যান্স রেশিও। সেলফ-কনসাম্পশন ট্যারিফকে প্রতিস্থাপন করে;
-                  এক্সপোর্ট ক্ষেত্রের জন্য এক্সপোর্ট রেট ব্যবহার করা হয়। এটি একটি
-                  আনুমানিক হিসাব, চূড়ান্ত ডিজাইন নয়।
+                  <strong>Note:</strong> Calculator uses fixed assumptions (120 units/month/kW generation, 90% effective offset, and ₹55,000/kW benchmark cost).<br />
+                  Actual quote and savings vary with roof conditions, DISCOM net-metering policy, product quality, and usage pattern.
                 </div>
               </footer>
             </div>

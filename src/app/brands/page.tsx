@@ -51,26 +51,13 @@ const BrandsPage = () => {
       website: "https://fimer.com"
     },
     {
-      id: "deye",
-      name: "Deye",
-      category: "Inverters",
-      description: "Innovative hybrid and on-grid inverters with seamless energy storage integration capabilities.",
-      website: "https://deye.com"
-    },
-    {
       id: "fuji",
       name: "Fuji Electric",
       category: "Inverters",
       description: "High-performance inverters engineered specifically for demanding industrial applications.",
       website: "https://fujielectric.com"
     },
-    {
-      id: "livguard",
-      name: "Livguard",
-      category: "Inverters",
-      description: "Reliable solar inverters specially designed for Indian residential and commercial applications.",
-      website: "https://livguard.com"
-    },
+    
     {
       id: "secure",
       name: "Secure Energy Meters",
