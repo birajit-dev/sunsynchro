@@ -43,21 +43,17 @@ const Navbar = () => {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3">
             <Image 
-              src="/gallery/logo2.png" 
+              src="/gallery/sunsynchro-logo.png" 
               alt="Sunsynchro Logo" 
-              width={48}
+              width={100}
               height={48}
-              className="w-10 h-10 lg:w-12 lg:h-12 object-contain"
+              className="w-full h-10 lg:h-12 object-contain"
               priority
+              style={{ width: "100%" }}
             />
-            <div className="flex flex-col">
-              <span className="font-bold text-xl lg:text-2xl text-gray-900">
-                SunSynchro
-              </span>
-              <span className="text-xs text-green-600 font-medium -mt-1">
-                Synchronizing Solar Solutions
-              </span>
-            </div>
+      
+      
+           
           </Link>
 
           {/* Desktop Navigation */}
