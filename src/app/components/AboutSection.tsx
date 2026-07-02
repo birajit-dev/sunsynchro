@@ -89,16 +89,19 @@ const AboutSection = () => {
           >
             <div className="relative mx-auto max-w-lg lg:max-w-none">
               {/* Main Image */}
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl h-[300px] sm:h-[400px] lg:h-[500px]">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl h-[300px] sm:h-[400px] lg:h-[500px] flex items-center justify-center bg-white">
                 <Image
-                  src="/gallery/logo.png"
+                  src="/gallery/sunsynchro-logo.png"
                   alt="Sunsynchro professional team"
-                  fill
-                  className="object-cover object-center"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  fill={false}
+                  width={320}
+                  height={160}
+                  className="object-contain object-center w-full h-full"
+                  sizes="(max-width: 640px) 300px, (max-width: 1024px) 400px, 500px"
                   quality={85}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+          
               </div>
 
               {/* Company Details */}
