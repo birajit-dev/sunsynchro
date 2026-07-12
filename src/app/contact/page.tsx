@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { HiPhone, HiMail, HiLocationMarker, HiClock } from "react-icons/hi";
 import emailjs from '@emailjs/browser';
+import { submitLead } from "../../lib/leads";
 
 interface FormData {
   name: string;
@@ -22,44 +23,37 @@ const ContactPage = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
-  const sendEmailAlert = async (formData: FormData) => {
+  const sendEmailAlert = async (data: FormData) => {
     try {
-      // Initialize EmailJS (you need to call this once in your app)
-      emailjs.init('zKip-4kLgSFyNmZLH'); // Replace with your EmailJS public key
-
-      const templateParams = {
-        name: 'Sunsynchro Private Limited', // Recipient name
-        reply_to: 'sunsynchro1@gmail.com', // Your company email
-        from_name: formData.name,
-        from_email: formData.email,
-        customer_name: formData.name,
-        customer_email: formData.email,
-        customer_phone: formData.phone,
-        service_interest: formData.projectType || 'Not specified',
-        customer_message: formData.message || 'No message provided',
-        submission_date: new Date().toLocaleString(),
-        source: 'Website Contact Form'
-      };
-
-      const response = await emailjs.send(
-        'service_h8dcvda',    // Replace with your EmailJS service ID
-        'template_mt5dqkk',   // Replace with your EmailJS template ID
-        templateParams
+      emailjs.init('zKip-4kLgSFyNmZLH');
+      await emailjs.send(
+        'service_h8dcvda',
+        'template_mt5dqkk',
+        {
+          name: 'Sunsynchro Private Limited',
+          reply_to: 'sunsynchro1@gmail.com',
+          from_name: data.name,
+          from_email: data.email,
+          customer_name: data.name,
+          customer_email: data.email,
+          customer_phone: data.phone,
+          service_interest: data.projectType || 'Not specified',
+          customer_message: data.message || 'No message provided',
+          submission_date: new Date().toLocaleString(),
+          source: 'Website Contact Form'
+        }
       );
-
-      console.log('Email alert sent successfully:', response);
-      return true;
-    } catch (error) {
-      console.error('Error sending email alert:', error);
-      return false;
+    } catch {
+      /* email optional — lead already in Supabase */
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Validate required fields
+    setSubmitError("");
+
     if (!formData.name.trim()) {
       alert('Please enter your name');
       return;
@@ -68,103 +62,21 @@ const ContactPage = () => {
       alert('Please enter your email');
       return;
     }
-    
+
     setIsSubmitting(true);
 
     try {
-      // Send email alert first
-      const emailSent = await sendEmailAlert(formData);
-      if (emailSent) {
-        console.log('Email notification sent successfully');
-      }
-
-      // Prepare data with trimming and fallbacks
-      const params = new URLSearchParams();
-      params.append('name', formData.name.trim());
-      params.append('email', formData.email.trim());
-      params.append('phone', formData.phone.trim() || 'Not provided');
-      params.append('service', formData.projectType || 'Not specified');
-      params.append('message', formData.message.trim() || 'No message');
-      params.append('timestamp', new Date().toISOString());
-      params.append('source', 'website_contact_form');
-
-      const scriptUrl = 'https://script.google.com/macros/s/AKfycbxOqwPJCRc9lPQzhxzZECU0Vme_m2de2drEc_hc5YfDrIynbb0JfNgzN-Jx7SNxEJBypA/exec';
-      const getUrl = `${scriptUrl}?${params.toString()}`;
-
-      // Method 1: Try GET request with parameters (often works better with Google Apps Script)
-      try {
-        await fetch(getUrl, {
-          method: 'GET',
-          mode: 'no-cors'
-        });
-        console.log('Contact form submitted successfully via GET request');
-      } catch (getError) {
-        console.log('GET request failed, trying POST:', getError);
-        
-        // Method 2: Try POST with FormData
-        try {
-          const formDataObj = new FormData();
-          formDataObj.append('name', formData.name.trim());
-          formDataObj.append('email', formData.email.trim());
-          formDataObj.append('phone', formData.phone.trim() || 'Not provided');
-          formDataObj.append('service', formData.projectType || 'Not specified');
-          formDataObj.append('message', formData.message.trim() || 'No message');
-          formDataObj.append('timestamp', new Date().toISOString());
-          formDataObj.append('source', 'website_contact_form');
-
-          await fetch(scriptUrl, {
-            method: 'POST',
-            body: formDataObj,
-            mode: 'no-cors'
-          });
-          console.log('Contact form submitted successfully via POST request');
-        } catch (postError) {
-          console.log('POST request failed, using iframe method:', postError);
-          
-          // Method 3: Fallback using iframe
-          const iframe = document.createElement('iframe');
-          iframe.style.display = 'none';
-          iframe.src = getUrl;
-          document.body.appendChild(iframe);
-          
-          // Remove iframe after 5 seconds
-          setTimeout(() => {
-            if (document.body.contains(iframe)) {
-              document.body.removeChild(iframe);
-            }
-          }, 5000);
-          
-          console.log('Contact form submitted via iframe fallback');
-        }
-      }
-
-      // Log the data being sent for debugging
-      console.log('Contact form data being submitted:', {
-        name: formData.name.trim(),
-        email: formData.email.trim(),
-        phone: formData.phone.trim(),
+      await submitLead({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
         service: formData.projectType,
-        message: formData.message.trim(),
-        source: 'website_contact_form'
+        message: formData.message,
+        source: 'website_contact_form',
       });
 
-      setIsSubmitted(true);
-      
-      // Reset form after 4 seconds
-      setTimeout(() => {
-        setIsSubmitted(false);
-        setFormData({
-          name: "",
-          email: "",
-          phone: "",
-          projectType: "",
-          message: ""
-        });
-      }, 4000);
+      void sendEmailAlert(formData);
 
-    } catch (error) {
-      console.error('Contact form submission error:', error);
-      // Still show success to user (due to CORS limitations we can't detect actual success/failure)
       setIsSubmitted(true);
       setTimeout(() => {
         setIsSubmitted(false);
@@ -176,6 +88,8 @@ const ContactPage = () => {
           message: ""
         });
       }, 4000);
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : 'Could not submit. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -259,6 +173,11 @@ const ContactPage = () => {
                   Get Your Free Quote
                 </h2>
                 <form onSubmit={handleSubmit} className="space-y-6">
+                  {submitError && (
+                    <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+                      {submitError}
+                    </div>
+                  )}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                     <div>
                       <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">

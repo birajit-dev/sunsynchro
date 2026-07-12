@@ -1,14 +1,29 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { products } from "../../data/products";
+import { createClient } from "../../lib/supabase/client";
+import type { Product } from "../../lib/types";
 import { HiDownload, HiStar, HiInformationCircle, HiMail, HiCheckCircle } from "react-icons/hi";
 import Image from "next/image";
 
 const ProductsPage = () => {
-  const [selectedProduct, setSelectedProduct] = useState<typeof products[0] | null>(null);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loadingData, setLoadingData] = useState(true);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-  const openProductModal = (product: typeof products[0]) => {
+  useEffect(() => {
+    const supabase = createClient();
+    supabase
+      .from("products")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .then(({ data }) => {
+        if (data) setProducts(data);
+        setLoadingData(false);
+      });
+  }, []);
+
+  const openProductModal = (product: Product) => {
     setSelectedProduct(product);
   };
 
@@ -46,6 +61,9 @@ const ProductsPage = () => {
       {/* Products List */}
       <section className="py-12 lg:py-16 bg-gray-50">
           <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
+           {loadingData ? (
+             <div className="text-center py-20 text-gray-400">Loading products…</div>
+           ) : (
            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {products.map((product, index) => (
               <motion.div
@@ -143,6 +161,7 @@ const ProductsPage = () => {
               </motion.div>
             ))}
           </div>
+          )}
         </div>
       </section>
 

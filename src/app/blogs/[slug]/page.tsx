@@ -19,27 +19,59 @@ import {
 } from "react-icons/hi";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { blogPosts } from "../../../data/blogs";
+import { createClient } from "../../../lib/supabase/client";
+import type { BlogPost } from "../../../lib/types";
 
 interface BlogPostPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 const BlogPostPage = ({ params }: BlogPostPageProps) => {
-  const { slug } = params;
+  const [slug, setSlug] = useState<string>("");
+  const [post, setPost] = useState<BlogPost | null>(null);
+  const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [notFoundPage, setNotFoundPage] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [readingProgress, setReadingProgress] = useState(0);
-  
-  // Find the blog post by slug
-  const post = blogPosts.find(post => post.slug === slug);
-  
-  if (!post) {
-    notFound();
-  }
+
+  // Resolve params (Next.js 16 async params)
+  useEffect(() => {
+    params.then((p) => setSlug(p.slug));
+  }, [params]);
+
+  useEffect(() => {
+    if (!slug) return;
+    const supabase = createClient();
+    supabase
+      .from("blog_posts")
+      .select("*")
+      .eq("slug", slug)
+      .eq("published", true)
+      .single()
+      .then(({ data, error }) => {
+        if (error || !data) {
+          setNotFoundPage(true);
+        } else {
+          setPost(data as BlogPost);
+          // Fetch related posts
+          supabase
+            .from("blog_posts")
+            .select("id, title, slug, image, read_time, category, excerpt")
+            .eq("published", true)
+            .neq("slug", slug)
+            .limit(2)
+            .then(({ data: related }) => {
+              if (related) setRelatedPosts(related as BlogPost[]);
+            });
+        }
+        setLoading(false);
+      });
+  }, [slug]);
 
   // Handle scroll events for reading progress and scroll-to-top button
   useEffect(() => {
@@ -60,12 +92,24 @@ const BlogPostPage = ({ params }: BlogPostPageProps) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  if (loading) {
+    return (
+      <div className="pt-16 lg:pt-20 flex items-center justify-center min-h-[50vh] text-gray-400">
+        Loading…
+      </div>
+    );
+  }
+
+  if (notFoundPage || !post) {
+    notFound();
+  }
+
   const handleShare = async () => {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: post.title,
-          text: post.excerpt,
+          title: post!.title,
+          text: post!.excerpt,
           url: window.location.href,
         });
       } catch (err) {
@@ -215,7 +259,7 @@ const BlogPostPage = ({ params }: BlogPostPageProps) => {
               <div className="flex items-center space-x-8 text-slate-500">
                 <div className="flex items-center space-x-2">
                   <HiCalendar className="w-5 h-5" />
-                  <span className="font-medium">{new Date(post.publishDate).toLocaleDateString('en-US', { 
+                  <span className="font-medium">{new Date(post.publish_date).toLocaleDateString('en-US', { 
                     year: 'numeric', 
                     month: 'long', 
                     day: 'numeric' 
@@ -223,7 +267,7 @@ const BlogPostPage = ({ params }: BlogPostPageProps) => {
                 </div>
                 <div className="flex items-center space-x-2">
                   <HiClock className="w-5 h-5" />
-                  <span className="font-medium">{post.readTime}</span>
+                  <span className="font-medium">{post.read_time}</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <HiEye className="w-5 h-5" />
@@ -371,9 +415,7 @@ const BlogPostPage = ({ params }: BlogPostPageProps) => {
             </div>
             
             <div className="grid md:grid-cols-2 gap-8">
-              {blogPosts
-                .filter(relatedPost => relatedPost.id !== post.id)
-                .slice(0, 2)
+              {relatedPosts
                 .map((relatedPost, index) => (
                   <motion.div
                     key={relatedPost.id}
@@ -425,7 +467,7 @@ const BlogPostPage = ({ params }: BlogPostPageProps) => {
                             </div>
                             <div className="flex items-center space-x-1">
                               <HiClock className="w-3 h-3" />
-                              <span>{relatedPost.readTime}</span>
+                              <span>{relatedPost.read_time}</span>
                             </div>
                           </div>
                         </div>

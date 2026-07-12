@@ -1,10 +1,22 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { brands } from "../../data/brands";
+import { createClient } from "../../lib/supabase/client";
+import type { Brand } from "../../lib/types";
 
 const LogoCarousel = () => {
+  const [brands, setBrands] = useState<Brand[]>([]);
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase
+      .from("brands")
+      .select("id, name, logo")
+      .order("name", { ascending: true })
+      .then(({ data }) => { if (data) setBrands(data as Brand[]); });
+  }, []);
+
   // Duplicate brands for seamless infinite scroll
   const duplicatedBrands = [...brands, ...brands];
 

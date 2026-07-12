@@ -1,87 +1,31 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { HiExternalLink, HiCheckCircle, HiShieldCheck, HiSun, HiChip, HiLightningBolt, HiCube } from "react-icons/hi";
+import { createClient } from "../../lib/supabase/client";
+import type { Brand } from "../../lib/types";
 
 const BrandsPage = () => {
-  const brandCategories = ["All", "Solar Panels", "Inverters", "Energy Meters", "Storage & Accessories"];
+  const brandCategories = ["All", "Solar Panels", "Inverters", "Energy Storage", "Mounting Systems"];
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [brands, setBrands] = useState<Brand[]>([]);
+  const [loadingData, setLoadingData] = useState(true);
 
-  const brands = [
-    {
-      id: "panasonic",
-      name: "Panasonic",
-      category: "Solar Panels",
-      description: "Renowned worldwide for high-efficiency HIT® and half-cut solar modules, delivering superior performance in all conditions.",
-      website: "https://panasonic.com/solar"
-    },
-    {
-      id: "novasys",
-      name: "Novasys",
-      category: "Solar Panels", 
-      description: "Reliable and affordable solar panels specifically designed and optimized for Indian weather conditions.",
-      website: "https://novasys.com"
-    },
-    {
-      id: "sunpower",
-      name: "SunPower (Maxeon)",
-      category: "Solar Panels",
-      description: "Premium solar modules offering industry-leading efficiency ratings and comprehensive long-term warranties.",
-      website: "https://sunpower.maxeon.com"
-    },
-    {
-      id: "feston",
-      name: "Feston",
-      category: "Inverters",
-      description: "Advanced on-grid and hybrid inverters featuring smart monitoring capabilities and robust performance.",
-      website: "https://feston.com"
-    },
-    {
-      id: "enphase",
-      name: "Enphase",
-      category: "Inverters",
-      description: "Revolutionary microinverter technology enabling safer and smarter solar installations with module-level monitoring.",
-      website: "https://enphase.com"
-    },
-    {
-      id: "fimer-abb",
-      name: "FIMER-ABB",
-      category: "Inverters",
-      description: "Globally trusted brand delivering robust string inverters ideal for large-scale solar installations.",
-      website: "https://fimer.com"
-    },
-    {
-      id: "fuji",
-      name: "Fuji Electric",
-      category: "Inverters",
-      description: "High-performance inverters engineered specifically for demanding industrial applications.",
-      website: "https://fujielectric.com"
-    },
-    
-    {
-      id: "secure",
-      name: "Secure Energy Meters",
-      category: "Energy Meters",
-      description: "Comprehensive range of smart prepaid meters, ABT meters and digital panel meters for precise solar monitoring.",
-      website: "https://securemeters.com"
-    },
-    {
-      id: "storage",
-      name: "Energy Storage Solutions",
-      category: "Storage & Accessories",
-      description: "Premium lithium-ion and lead acid battery systems providing reliable energy storage for all applications.",
-    },
-    {
-      id: "bos",
-      name: "Mounting & BOS",
-      category: "Storage & Accessories",
-      description: "High-quality mounting structures and balance of system components ensuring installation durability and safety.",
-    }
-  ];
+  useEffect(() => {
+    const supabase = createClient();
+    supabase
+      .from("brands")
+      .select("*")
+      .order("name", { ascending: true })
+      .then(({ data }) => {
+        if (data) setBrands(data);
+        setLoadingData(false);
+      });
+  }, []);
 
-  const filteredBrands = selectedCategory === "All" 
-    ? brands 
-    : brands.filter(brand => brand.category === selectedCategory);
+  const filteredBrands = selectedCategory === "All"
+    ? brands
+    : brands.filter((brand) => brand.category === selectedCategory);
 
   const features = [
     {
@@ -174,6 +118,9 @@ const BrandsPage = () => {
       {/* Brands Grid */}
       <section className="py-16 lg:py-24 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {loadingData ? (
+            <div className="text-center py-20 text-gray-400">Loading brands…</div>
+          ) : (
           <motion.div 
             layout
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
@@ -228,6 +175,7 @@ const BrandsPage = () => {
               ))}
             </AnimatePresence>
           </motion.div>
+          )}
         </div>
       </section>
 

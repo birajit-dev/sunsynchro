@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import LeadCaptureWrapper from "./components/LeadCaptureWrapper";
+import SiteChrome from "./components/SiteChrome";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -264,12 +262,7 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased bg-white text-gray-900">
-        <Navbar />
-        <main>
-          {children}
-        </main>
-        <Footer />
-        <LeadCaptureWrapper />
+        <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
   );

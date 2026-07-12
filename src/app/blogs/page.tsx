@@ -1,14 +1,30 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { HiCalendar, HiUser, HiClock, HiArrowRight, HiChevronLeft, HiChevronRight } from "react-icons/hi";
 import Link from "next/link";
-import { blogPosts } from "../../data/blogs";
+import { createClient } from "../../lib/supabase/client";
+import type { BlogPost } from "../../lib/types";
 import Image from "next/image";
 
 const BlogsPage = () => {
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [loadingData, setLoadingData] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 6;
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase
+      .from("blog_posts")
+      .select("*")
+      .eq("published", true)
+      .order("publish_date", { ascending: false })
+      .then(({ data }) => {
+        if (data) setBlogPosts(data as BlogPost[]);
+        setLoadingData(false);
+      });
+  }, []);
 
   // Calculate pagination
   const totalPages = Math.ceil(blogPosts.length / postsPerPage);
@@ -54,6 +70,10 @@ const BlogsPage = () => {
       {/* Blog Posts Grid */}
       <section className="py-12 lg:py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {loadingData ? (
+            <div className="text-center py-20 text-gray-400">Loading posts…</div>
+          ) : (
+          <>
           <AnimatePresence mode="wait">
             <motion.div
               key={currentPage}
@@ -120,7 +140,7 @@ const BlogsPage = () => {
                           </div>
                           <div className="flex items-center">
                             <HiClock className="w-4 h-4 mr-1" />
-                            {post.readTime}
+                            {post.read_time}
                           </div>
                         </div>
                       </div>
@@ -128,7 +148,7 @@ const BlogsPage = () => {
                       <div className="flex items-center justify-between">
                         <div className="flex items-center text-sm text-gray-500">
                           <HiCalendar className="w-4 h-4 mr-1" />
-                          {formatDate(post.publishDate)}
+                          {formatDate(post.publish_date)}
                         </div>
                         
                         <div className="flex items-center text-green-600 font-medium group-hover:text-green-700 transition-colors">
@@ -144,6 +164,7 @@ const BlogsPage = () => {
           </AnimatePresence>
 
           {/* Pagination */}
+
           {totalPages > 1 && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -189,6 +210,8 @@ const BlogsPage = () => {
                 <HiChevronRight className="w-5 h-5" />
               </button>
             </motion.div>
+          )}
+          </>
           )}
         </div>
       </section>

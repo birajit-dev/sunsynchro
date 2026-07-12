@@ -1,16 +1,26 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { blogPosts } from "../../data/blogs";
+import { createClient } from "../../lib/supabase/client";
+import type { BlogPost } from "../../lib/types";
 import { HiClock, HiUser, HiArrowRight, HiTag } from "react-icons/hi";
 
 const BlogPreview = () => {
-  // Get the latest 3 featured blog posts
-  const featuredPosts = blogPosts
-    .filter(post => post.featured)
-    .slice(0, 3);
+  const [featuredPosts, setFeaturedPosts] = useState<BlogPost[]>([]);
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase
+      .from("blog_posts")
+      .select("id, title, slug, excerpt, image, author, read_time, category, tags, featured, published, publish_date")
+      .eq("published", true)
+      .eq("featured", true)
+      .order("publish_date", { ascending: false })
+      .limit(3)
+      .then(({ data }) => { if (data) setFeaturedPosts(data as BlogPost[]); });
+  }, []);
 
   return (
     <section className="py-16 lg:py-24 bg-white">
@@ -90,7 +100,7 @@ const BlogPreview = () => {
                     </div>
                     <div className="flex items-center">
                       <HiClock className="w-4 h-4 mr-1" />
-                      {post.readTime}
+                      {post.read_time}
                     </div>
                   </div>
 

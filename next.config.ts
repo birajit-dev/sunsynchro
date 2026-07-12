@@ -9,6 +9,13 @@ const nextConfig: NextConfig = {
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     qualities: [75, 80, 85, 90, 95, 100],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'mezdzqmygafpzkpolevt.supabase.co',
+        pathname: '/storage/v1/object/public/**',
+      },
+    ],
   },
   compress: true,
   poweredByHeader: false,
