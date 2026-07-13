@@ -1,4 +1,4 @@
-import { createClient } from './supabase/client'
+import { tryCreateClient } from './supabase/client'
 
 export type LeadSource =
   | 'website_lead_modal'
@@ -17,7 +17,12 @@ export type LeadInput = {
 
 /** Persist a lead to Supabase. Throws on failure. */
 export async function submitLead(input: LeadInput) {
-  const supabase = createClient()
+  const supabase = tryCreateClient()
+  if (!supabase) {
+    throw new Error(
+      'Lead form is not connected. Missing Supabase environment variables on the server.'
+    )
+  }
 
   const row = {
     name: input.name.trim(),

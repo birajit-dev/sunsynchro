@@ -2,11 +2,11 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "../../../lib/supabase/client";
+import { hasSupabaseEnv } from "../../../lib/supabase/env";
 import { HiSun, HiMail, HiLockClosed, HiEye, HiEyeOff } from "react-icons/hi";
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const supabase = createClient();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,6 +19,15 @@ export default function AdminLoginPage() {
     setLoading(true);
     setError("");
 
+    if (!hasSupabaseEnv()) {
+      setError(
+        "Supabase is not configured in this deployment. Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY, then redeploy."
+      );
+      setLoading(false);
+      return;
+    }
+
+    const supabase = createClient();
     const { error: authError } = await supabase.auth.signInWithPassword({
       email,
       password,

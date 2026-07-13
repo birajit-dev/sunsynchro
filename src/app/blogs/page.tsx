@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { HiCalendar, HiUser, HiClock, HiArrowRight, HiChevronLeft, HiChevronRight } from "react-icons/hi";
 import Link from "next/link";
-import { createClient } from "../../lib/supabase/client";
+import { fetchPublishedBlogs } from "../../lib/cms/public";
 import type { BlogPost } from "../../lib/types";
 import Image from "next/image";
 
@@ -14,16 +14,10 @@ const BlogsPage = () => {
   const postsPerPage = 6;
 
   useEffect(() => {
-    const supabase = createClient();
-    supabase
-      .from("blog_posts")
-      .select("*")
-      .eq("published", true)
-      .order("publish_date", { ascending: false })
-      .then(({ data }) => {
-        if (data) setBlogPosts(data as BlogPost[]);
-        setLoadingData(false);
-      });
+    fetchPublishedBlogs().then((data) => {
+      setBlogPosts(data);
+      setLoadingData(false);
+    });
   }, []);
 
   // Calculate pagination

@@ -19,7 +19,7 @@ import {
 } from "react-icons/hi";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { createClient } from "../../../lib/supabase/client";
+import { fetchBlogBySlug, fetchRelatedBlogs } from "../../../lib/cms/public";
 import type { BlogPost } from "../../../lib/types";
 
 interface BlogPostPageProps {
@@ -46,31 +46,21 @@ const BlogPostPage = ({ params }: BlogPostPageProps) => {
 
   useEffect(() => {
     if (!slug) return;
-    const supabase = createClient();
-    supabase
-      .from("blog_posts")
-      .select("*")
-      .eq("slug", slug)
-      .eq("published", true)
-      .single()
-      .then(({ data, error }) => {
-        if (error || !data) {
-          setNotFoundPage(true);
-        } else {
-          setPost(data as BlogPost);
-          // Fetch related posts
-          supabase
-            .from("blog_posts")
-            .select("id, title, slug, image, read_time, category, excerpt")
-            .eq("published", true)
-            .neq("slug", slug)
-            .limit(2)
-            .then(({ data: related }) => {
-              if (related) setRelatedPosts(related as BlogPost[]);
-            });
-        }
+    let cancelled = false;
+    (async () => {
+      const found = await fetchBlogBySlug(slug);
+      if (cancelled) return;
+      if (!found) {
+        setNotFoundPage(true);
         setLoading(false);
-      });
+        return;
+      }
+      setPost(found);
+      const related = await fetchRelatedBlogs(slug, 2);
+      if (!cancelled) setRelatedPosts(related);
+      setLoading(false);
+    })();
+    return () => { cancelled = true; };
   }, [slug]);
 
   // Handle scroll events for reading progress and scroll-to-top button

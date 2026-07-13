@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { HiExternalLink, HiCheckCircle, HiShieldCheck, HiSun, HiChip, HiLightningBolt, HiCube } from "react-icons/hi";
-import { createClient } from "../../lib/supabase/client";
+import { fetchPublicBrands } from "../../lib/cms/public";
 import type { Brand } from "../../lib/types";
 
 const BrandsPage = () => {
@@ -12,15 +12,10 @@ const BrandsPage = () => {
   const [loadingData, setLoadingData] = useState(true);
 
   useEffect(() => {
-    const supabase = createClient();
-    supabase
-      .from("brands")
-      .select("*")
-      .order("name", { ascending: true })
-      .then(({ data }) => {
-        if (data) setBrands(data);
-        setLoadingData(false);
-      });
+    fetchPublicBrands().then((data) => {
+      setBrands(data);
+      setLoadingData(false);
+    });
   }, []);
 
   const filteredBrands = selectedCategory === "All"

@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { createClient } from "../../lib/supabase/client";
+import { fetchPublicProducts } from "../../lib/cms/public";
 import type { Product } from "../../lib/types";
 import { HiDownload, HiStar, HiInformationCircle, HiMail, HiCheckCircle } from "react-icons/hi";
 import Image from "next/image";
@@ -12,15 +12,10 @@ const ProductsPage = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   useEffect(() => {
-    const supabase = createClient();
-    supabase
-      .from("products")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .then(({ data }) => {
-        if (data) setProducts(data);
-        setLoadingData(false);
-      });
+    fetchPublicProducts().then((data) => {
+      setProducts(data);
+      setLoadingData(false);
+    });
   }, []);
 
   const openProductModal = (product: Product) => {

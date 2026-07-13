@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { createClient } from "../../lib/supabase/client";
+import { fetchFeaturedBlogs } from "../../lib/cms/public";
 import type { BlogPost } from "../../lib/types";
 import { HiClock, HiUser, HiArrowRight, HiTag } from "react-icons/hi";
 
@@ -11,15 +11,7 @@ const BlogPreview = () => {
   const [featuredPosts, setFeaturedPosts] = useState<BlogPost[]>([]);
 
   useEffect(() => {
-    const supabase = createClient();
-    supabase
-      .from("blog_posts")
-      .select("id, title, slug, excerpt, image, author, read_time, category, tags, featured, published, publish_date")
-      .eq("published", true)
-      .eq("featured", true)
-      .order("publish_date", { ascending: false })
-      .limit(3)
-      .then(({ data }) => { if (data) setFeaturedPosts(data as BlogPost[]); });
+    fetchFeaturedBlogs(3).then(setFeaturedPosts);
   }, []);
 
   return (
