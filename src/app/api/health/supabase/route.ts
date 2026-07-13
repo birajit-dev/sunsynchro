@@ -15,9 +15,10 @@ export async function GET() {
     hasUrl: Boolean(url),
     hasAnonKey: Boolean(key),
     urlHost: url ? safeHost(url) : null,
+    browserProxy: '/supabase/*',
     hint: hasSupabaseEnv()
-      ? 'Env present on server. If the browser still fails, redeploy so NEXT_PUBLIC_* is inlined into client bundles.'
-      : 'Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in your host Environment Variables, then Redeploy.',
+      ? 'Env OK. Browser traffic is proxied via /supabase to avoid QUIC errors. Redeploy after this change.'
+      : 'Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY, then Redeploy.',
   })
 }
 

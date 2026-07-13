@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/, "");
+
 const nextConfig: NextConfig = {
   images: {
     formats: ['image/avif', 'image/webp'],
@@ -22,6 +24,19 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   experimental: {
     optimizePackageImports: ['framer-motion', 'react-icons'],
+  },
+  /**
+   * Proxy browser → /supabase/* → real Supabase project.
+   * Avoids Chrome ERR_QUIC_PROTOCOL_ERROR when talking directly to *.supabase.co over HTTP/3.
+   */
+  async rewrites() {
+    if (!supabaseUrl) return [];
+    return [
+      {
+        source: "/supabase/:path*",
+        destination: `${supabaseUrl}/:path*`,
+      },
+    ];
   },
 };
 

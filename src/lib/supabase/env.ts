@@ -3,7 +3,7 @@
  * on the host (Vercel / Netlify / etc.) and the app redeployed.
  */
 export function getSupabaseEnv() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/, '')
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
   if (!url || !anonKey) {
@@ -22,4 +22,14 @@ export function hasSupabaseEnv() {
     process.env.NEXT_PUBLIC_SUPABASE_URL &&
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
   )
+}
+
+/**
+ * Browser clients use a same-origin proxy (/supabase → real project)
+ * so Chrome does not hit *.supabase.co over QUIC/HTTP3.
+ * Server-side code keeps the real Supabase URL.
+ */
+export function getBrowserSupabaseUrl(realUrl: string) {
+  if (typeof window === 'undefined') return realUrl
+  return `${window.location.origin}/supabase`
 }
