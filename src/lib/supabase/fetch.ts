@@ -89,14 +89,14 @@ export async function supabaseFetch(
         const chunks: Buffer[] = []
         res.on('data', (chunk) => chunks.push(chunk))
         res.on('end', () => {
-          let body = Buffer.concat(chunks)
+          let body: Buffer = Buffer.concat(chunks)
           const encoding = String(res.headers['content-encoding'] || '')
             .toLowerCase()
             .trim()
           try {
-            if (encoding === 'gzip') body = gunzipSync(body)
-            else if (encoding === 'deflate') body = inflateSync(body)
-            else if (encoding === 'br') body = brotliDecompressSync(body)
+            if (encoding === 'gzip') body = Buffer.from(gunzipSync(body))
+            else if (encoding === 'deflate') body = Buffer.from(inflateSync(body))
+            else if (encoding === 'br') body = Buffer.from(brotliDecompressSync(body))
           } catch {
             /* keep raw body */
           }
@@ -115,7 +115,7 @@ export async function supabaseFetch(
             }
           }
           resolve(
-            new Response(body, {
+            new Response(new Uint8Array(body), {
               status: res.statusCode ?? 502,
               statusText: res.statusMessage,
               headers: responseHeaders,
