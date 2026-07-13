@@ -1,10 +1,19 @@
 import { createBrowserClient } from '@supabase/ssr'
 import type { SupabaseClient } from '@supabase/supabase-js'
-import { getBrowserSupabaseUrl, getSupabaseEnv, hasSupabaseEnv } from './env'
+import {
+  getBrowserSupabaseUrl,
+  getSupabaseAuthStorageKey,
+  getSupabaseEnv,
+  hasSupabaseEnv,
+} from './env'
 
 function createBrowserSupabase() {
-  const { url, anonKey } = getSupabaseEnv()
-  return createBrowserClient(getBrowserSupabaseUrl(url), anonKey)
+  const { anonKey } = getSupabaseEnv()
+  const storageKey = getSupabaseAuthStorageKey()
+
+  return createBrowserClient(getBrowserSupabaseUrl(), anonKey, {
+    auth: storageKey ? { storageKey } : undefined,
+  })
 }
 
 /** Throws if env is missing — use for admin flows that require Supabase. */

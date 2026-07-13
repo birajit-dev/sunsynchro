@@ -24,12 +24,33 @@ export function hasSupabaseEnv() {
   )
 }
 
+/** Project ref from https://<ref>.supabase.co — used for stable auth cookie keys. */
+export function getSupabaseProjectRef() {
+  const raw = process.env.NEXT_PUBLIC_SUPABASE_URL
+  if (!raw) return null
+  try {
+    const host = new URL(raw).hostname
+    const ref = host.split('.')[0]
+    return ref || null
+  } catch {
+    return null
+  }
+}
+
+export function getSupabaseAuthStorageKey() {
+  const ref = getSupabaseProjectRef()
+  return ref ? `sb-${ref}-auth-token` : undefined
+}
+
 /**
- * Browser clients use a same-origin proxy (/supabase → real project)
- * so Chrome does not hit *.supabase.co over QUIC/HTTP3.
- * Server-side code keeps the real Supabase URL.
+ * Browser talks to same-origin `/api/supabase` so:
+ * - Production Chrome avoids QUIC/HTTP3 bugs to *.supabase.co
+ * - Localhost works even when system DNS poisons supabase.co
+ *   (the API route resolves via 1.1.1.1 and proxies).
  */
-export function getBrowserSupabaseUrl(realUrl: string) {
-  if (typeof window === 'undefined') return realUrl
-  return `${window.location.origin}/supabase`
+export function getBrowserSupabaseUrl() {
+  if (typeof window === 'undefined') {
+    return getSupabaseEnv().url
+  }
+  return `${window.location.origin}/api/supabase`
 }

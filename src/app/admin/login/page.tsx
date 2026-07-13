@@ -27,18 +27,36 @@ export default function AdminLoginPage() {
       return;
     }
 
-    const supabase = createClient();
-    const { error: authError } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    try {
+      const supabase = createClient();
+      const { error: authError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    if (authError) {
-      setError(authError.message);
+      if (authError) {
+        const networkish =
+          authError.message === "Failed to fetch" ||
+          authError.status === 0 ||
+          /fetch|network|proxy/i.test(authError.message);
+        setError(
+          networkish
+            ? "Cannot reach Supabase from this network. Open /api/health/supabase — if reachable is false, switch Wi‑Fi/VPN and retry."
+            : authError.message
+        );
+        setLoading(false);
+      } else {
+        router.push("/admin");
+        router.refresh();
+      }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Sign-in failed";
+      setError(
+        /fetch|network|EPROTO|SSL/i.test(msg)
+          ? "Cannot reach Supabase from this network. Try VPN or another Wi‑Fi, then retry."
+          : msg
+      );
       setLoading(false);
-    } else {
-      router.push("/admin");
-      router.refresh();
     }
   };
 
