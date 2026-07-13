@@ -1,4 +1,3 @@
-import { tryCreateClient } from '../supabase/client'
 import type { BlogPost, Brand, Product } from '../types'
 import { products as staticProducts } from '../../data/products'
 import { brands as staticBrands } from '../../data/brands'
@@ -37,68 +36,53 @@ function mapStaticBrand(b: (typeof staticBrands)[number]): Brand {
 }
 
 /**
- * Load public CMS data from Supabase, with static fallback so the marketing
- * site still works if production env vars were not set at build time.
+ * Same-origin CMS APIs (Node + DNS-bypass). Works on localhost and Netlify
+ * without the browser talking to *.supabase.co (QUIC / network issues).
+ */
+async function cmsGet<T>(path: string): Promise<{ data: T | null; ok: boolean }> {
+  try {
+    const base =
+      typeof window !== 'undefined'
+        ? ''
+        : process.env.NEXT_PUBLIC_SITE_URL ||
+          process.env.URL ||
+          'http://localhost:8880'
+    const res = await fetch(`${base}${path}`, {
+      cache: 'no-store',
+      headers: { Accept: 'application/json' },
+    })
+    if (!res.ok) return { data: null, ok: false }
+    const json = (await res.json()) as { data?: T }
+    return { data: (json.data as T) ?? null, ok: true }
+  } catch (err) {
+    console.warn('[cms] request failed:', path, err)
+    return { data: null, ok: false }
+  }
+}
+
+/**
+ * Load public CMS data from /api/cms/*.
+ * Static src/data/* is only used when the API is unavailable (not when DB is empty).
  */
 export async function fetchPublicProducts(): Promise<Product[]> {
-  const supabase = tryCreateClient()
-  if (!supabase) {
-    console.warn('[cms] Supabase env missing — using static products')
-    return staticProducts.map(mapStaticProduct)
-  }
-
-  const { data, error } = await supabase
-    .from('products')
-    .select('*')
-    .order('created_at', { ascending: false })
-
-  if (error) {
-    console.warn('[cms] products fetch failed:', error.message)
-    return staticProducts.map(mapStaticProduct)
-  }
-  if (!data?.length) return staticProducts.map(mapStaticProduct)
-  return data as Product[]
+  const { data, ok } = await cmsGet<Product[]>('/api/cms/products')
+  if (ok) return data ?? []
+  console.warn('[cms] products API unavailable — using static products')
+  return staticProducts.map(mapStaticProduct)
 }
 
 export async function fetchPublicBrands(): Promise<Brand[]> {
-  const supabase = tryCreateClient()
-  if (!supabase) {
-    console.warn('[cms] Supabase env missing — using static brands')
-    return staticBrands.map(mapStaticBrand)
-  }
-
-  const { data, error } = await supabase
-    .from('brands')
-    .select('*')
-    .order('name', { ascending: true })
-
-  if (error) {
-    console.warn('[cms] brands fetch failed:', error.message)
-    return staticBrands.map(mapStaticBrand)
-  }
-  if (!data?.length) return staticBrands.map(mapStaticBrand)
-  return data as Brand[]
+  const { data, ok } = await cmsGet<Brand[]>('/api/cms/brands')
+  if (ok) return data ?? []
+  console.warn('[cms] brands API unavailable — using static brands')
+  return staticBrands.map(mapStaticBrand)
 }
 
 export async function fetchPublishedBlogs(): Promise<BlogPost[]> {
-  const supabase = tryCreateClient()
-  if (!supabase) {
-    console.warn('[cms] Supabase env missing — using static blogs')
-    return staticBlogs.map(mapStaticBlog)
-  }
-
-  const { data, error } = await supabase
-    .from('blog_posts')
-    .select('*')
-    .eq('published', true)
-    .order('publish_date', { ascending: false })
-
-  if (error) {
-    console.warn('[cms] blogs fetch failed:', error.message)
-    return staticBlogs.map(mapStaticBlog)
-  }
-  if (!data?.length) return staticBlogs.map(mapStaticBlog)
-  return data as BlogPost[]
+  const { data, ok } = await cmsGet<BlogPost[]>('/api/cms/blogs')
+  if (ok) return data ?? []
+  console.warn('[cms] blogs API unavailable — using static blogs')
+  return staticBlogs.map(mapStaticBlog)
 }
 
 export async function fetchFeaturedBlogs(limit = 3): Promise<BlogPost[]> {
@@ -107,26 +91,10 @@ export async function fetchFeaturedBlogs(limit = 3): Promise<BlogPost[]> {
 }
 
 export async function fetchBlogBySlug(slug: string): Promise<BlogPost | null> {
-  const supabase = tryCreateClient()
-  if (!supabase) {
-    const found = staticBlogs.find((p) => p.slug === slug)
-    return found ? mapStaticBlog(found) : null
-  }
-
-  const { data, error } = await supabase
-    .from('blog_posts')
-    .select('*')
-    .eq('slug', slug)
-    .eq('published', true)
-    .maybeSingle()
-
-  if (error) {
-    console.warn('[cms] blog by slug failed:', error.message)
-    const found = staticBlogs.find((p) => p.slug === slug)
-    return found ? mapStaticBlog(found) : null
-  }
-  if (data) return data as BlogPost
-
+  const { data, ok } = await cmsGet<BlogPost | null>(
+    `/api/cms/blogs/${encodeURIComponent(slug)}`
+  )
+  if (ok) return data
   const found = staticBlogs.find((p) => p.slug === slug)
   return found ? mapStaticBlog(found) : null
 }

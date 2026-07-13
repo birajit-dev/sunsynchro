@@ -47,10 +47,12 @@ export async function GET() {
     healthStatus,
     reachError,
     hint: !hasSupabaseEnv()
-      ? 'On Netlify: Site configuration → Environment variables → add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY, then Trigger deploy. Local .env is not used in production.'
+      ? 'On Netlify: Site configuration → Environment variables → add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY (Build + Deploy scopes), then Trigger deploy. Local .env is never uploaded.'
       : reachable
-        ? 'Env OK. Production browser talks to Supabase directly; localhost uses /api/supabase.'
+        ? 'Env OK. Public pages use /api/cms/*; browser Supabase uses /api/supabase proxy.'
         : 'Env is set but Supabase is unreachable from this server.',
+    publicCms: '/api/cms/products|/api/cms/brands|/api/cms/blogs',
+    browserProxy: '/api/supabase/*',
   })
 }
 
