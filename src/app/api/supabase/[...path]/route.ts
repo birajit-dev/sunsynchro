@@ -4,7 +4,8 @@ import { supabaseFetch } from '../../../../lib/supabase/fetch'
 
 export const runtime = 'nodejs'
 
-const HOP_BY_HOP = new Set([
+/** Headers that must not be forwarded to Supabase. */
+const SKIP_REQUEST_HEADERS = new Set([
   'connection',
   'keep-alive',
   'proxy-authenticate',
@@ -14,6 +15,25 @@ const HOP_BY_HOP = new Set([
   'transfer-encoding',
   'upgrade',
   'host',
+  'content-length',
+  // Browser compression breaks our proxy if we strip content-encoding on the way back.
+  'accept-encoding',
+  // Do not forward the Next.js site cookies to Supabase.
+  'cookie',
+  'origin',
+  'referer',
+])
+
+const SKIP_RESPONSE_HEADERS = new Set([
+  'connection',
+  'keep-alive',
+  'proxy-authenticate',
+  'proxy-authorization',
+  'te',
+  'trailers',
+  'transfer-encoding',
+  'upgrade',
+  'content-encoding',
   'content-length',
 ])
 
@@ -25,20 +45,21 @@ async function proxy(request: NextRequest, path: string[]) {
     )
   }
 
-  const { url: baseUrl } = getSupabaseEnv()
+  const { url: baseUrl, anonKey } = getSupabaseEnv()
   const target = new URL(`${baseUrl}/${path.join('/')}`)
   target.search = request.nextUrl.search
 
   const headers = new Headers()
   request.headers.forEach((value, key) => {
-    if (HOP_BY_HOP.has(key.toLowerCase())) return
+    if (SKIP_REQUEST_HEADERS.has(key.toLowerCase())) return
     headers.set(key, value)
   })
 
-  // Ensure apikey is present for Supabase REST/Auth.
   if (!headers.has('apikey')) {
-    headers.set('apikey', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
+    headers.set('apikey', anonKey)
   }
+  // Force plain responses so the browser can parse JSON.
+  headers.set('accept-encoding', 'identity')
 
   const init: RequestInit = {
     method: request.method,
@@ -54,14 +75,13 @@ async function proxy(request: NextRequest, path: string[]) {
     const upstream = await supabaseFetch(target, init)
     const responseHeaders = new Headers()
     upstream.headers.forEach((value, key) => {
-      if (HOP_BY_HOP.has(key.toLowerCase())) return
-      // Avoid compressed double-decoding issues through Next.
-      if (key.toLowerCase() === 'content-encoding') return
-      if (key.toLowerCase() === 'content-length') return
+      if (SKIP_RESPONSE_HEADERS.has(key.toLowerCase())) return
       responseHeaders.set(key, value)
     })
+    responseHeaders.set('cache-control', 'no-store')
 
-    return new NextResponse(upstream.body, {
+    const body = await upstream.arrayBuffer()
+    return new NextResponse(body, {
       status: upstream.status,
       statusText: upstream.statusText,
       headers: responseHeaders,
@@ -71,7 +91,7 @@ async function proxy(request: NextRequest, path: string[]) {
     return NextResponse.json(
       {
         error: message,
-        hint: 'Could not reach Supabase from this server. Check DNS/network.',
+        hint: 'Could not reach Supabase from this server.',
       },
       { status: 502 }
     )
@@ -105,7 +125,14 @@ export async function DELETE(request: NextRequest, ctx: Ctx) {
   return proxy(request, path)
 }
 
-export async function OPTIONS(request: NextRequest, ctx: Ctx) {
-  const { path } = await ctx.params
-  return proxy(request, path)
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 204,
+    headers: {
+      'access-control-allow-origin': '*',
+      'access-control-allow-methods': 'GET,POST,PUT,PATCH,DELETE,OPTIONS',
+      'access-control-allow-headers':
+        'authorization,apikey,content-type,x-client-info,x-supabase-api-version',
+    },
+  })
 }

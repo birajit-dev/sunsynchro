@@ -1,6 +1,7 @@
 import dns from 'node:dns'
 import https from 'node:https'
 import http from 'node:http'
+import { gunzipSync, inflateSync, brotliDecompressSync } from 'node:zlib'
 import { URL } from 'node:url'
 
 /**
@@ -58,11 +59,13 @@ export async function supabaseFetch(
 
   const headers: Record<string, string> = {}
   request.headers.forEach((value, key) => {
+    if (key.toLowerCase() === 'accept-encoding') return
     headers[key] = value
   })
   if (!headers.host && !headers.Host) {
     headers.Host = url.host
   }
+  headers['accept-encoding'] = 'identity'
 
   const bodyBuffer =
     request.method === 'GET' || request.method === 'HEAD'
@@ -86,10 +89,25 @@ export async function supabaseFetch(
         const chunks: Buffer[] = []
         res.on('data', (chunk) => chunks.push(chunk))
         res.on('end', () => {
-          const body = Buffer.concat(chunks)
+          let body = Buffer.concat(chunks)
+          const encoding = String(res.headers['content-encoding'] || '')
+            .toLowerCase()
+            .trim()
+          try {
+            if (encoding === 'gzip') body = gunzipSync(body)
+            else if (encoding === 'deflate') body = inflateSync(body)
+            else if (encoding === 'br') body = brotliDecompressSync(body)
+          } catch {
+            /* keep raw body */
+          }
+
           const responseHeaders = new Headers()
           for (const [key, value] of Object.entries(res.headers)) {
             if (value === undefined) continue
+            const lower = key.toLowerCase()
+            if (lower === 'content-encoding' || lower === 'content-length') {
+              continue
+            }
             if (Array.isArray(value)) {
               value.forEach((v) => responseHeaders.append(key, v))
             } else {

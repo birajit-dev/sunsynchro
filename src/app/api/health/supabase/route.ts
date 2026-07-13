@@ -46,11 +46,10 @@ export async function GET() {
     reachable,
     healthStatus,
     reachError,
-    browserProxy: '/api/supabase/*',
     hint: !hasSupabaseEnv()
-      ? 'Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY, then redeploy.'
+      ? 'On Netlify: Site configuration → Environment variables → add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY, then Trigger deploy. Local .env is not used in production.'
       : reachable
-        ? 'Env OK. Browser uses /api/supabase proxy; server uses DNS-bypass fetch.'
+        ? 'Env OK. Production browser talks to Supabase directly; localhost uses /api/supabase.'
         : 'Env is set but Supabase is unreachable from this server.',
   })
 }

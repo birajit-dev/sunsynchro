@@ -43,14 +43,19 @@ export function getSupabaseAuthStorageKey() {
 }
 
 /**
- * Browser talks to same-origin `/api/supabase` so:
- * - Production Chrome avoids QUIC/HTTP3 bugs to *.supabase.co
- * - Localhost works even when system DNS poisons supabase.co
- *   (the API route resolves via 1.1.1.1 and proxies).
+ * Browser Supabase base URL:
+ * - Production (Netlify / etc.): talk directly to the project URL.
+ *   Free Netlify does not need a custom proxy; env vars must be set in
+ *   Netlify → Site configuration → Environment variables, then Redeploy.
+ * - Localhost: use `/api/supabase` so poisoned system DNS still works
+ *   (API route resolves via 1.1.1.1 and proxies).
  */
 export function getBrowserSupabaseUrl() {
-  if (typeof window === 'undefined') {
-    return getSupabaseEnv().url
-  }
-  return `${window.location.origin}/api/supabase`
+  const { url } = getSupabaseEnv()
+  if (typeof window === 'undefined') return url
+
+  const host = window.location.hostname
+  const isLocal = host === 'localhost' || host === '127.0.0.1'
+  if (isLocal) return `${window.location.origin}/api/supabase`
+  return url
 }

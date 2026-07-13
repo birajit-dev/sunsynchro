@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { createClient } from "../../../lib/supabase/client";
 import { hasSupabaseEnv } from "../../../lib/supabase/env";
 import { HiSun, HiMail, HiLockClosed, HiEye, HiEyeOff } from "react-icons/hi";
 
@@ -19,43 +18,47 @@ export default function AdminLoginPage() {
     setLoading(true);
     setError("");
 
+    const onLocal =
+      typeof window !== "undefined" &&
+      (window.location.hostname === "localhost" ||
+        window.location.hostname === "127.0.0.1");
+
     if (!hasSupabaseEnv()) {
       setError(
-        "Supabase is not configured in this deployment. Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY, then redeploy."
+        onLocal
+          ? "Missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY in .env or .env.local. Restart npm run dev after editing."
+          : "Local .env is not used on Netlify (gitignored). Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in Netlify → Environment variables, then Trigger deploy."
       );
       setLoading(false);
       return;
     }
 
     try {
-      const supabase = createClient();
-      const { error: authError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+      const res = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
       });
+      const payload = (await res.json().catch(() => ({}))) as {
+        error?: string;
+        hint?: string;
+      };
 
-      if (authError) {
-        const networkish =
-          authError.message === "Failed to fetch" ||
-          authError.status === 0 ||
-          /fetch|network|proxy/i.test(authError.message);
+      if (!res.ok) {
         setError(
-          networkish
-            ? "Cannot reach Supabase from this network. Open /api/health/supabase — if reachable is false, switch Wi‑Fi/VPN and retry."
-            : authError.message
+          [payload.error || "Sign-in failed", payload.hint]
+            .filter(Boolean)
+            .join(" ")
         );
         setLoading(false);
-      } else {
-        router.push("/admin");
-        router.refresh();
+        return;
       }
+
+      router.push("/admin");
+      router.refresh();
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Sign-in failed";
-      setError(
-        /fetch|network|EPROTO|SSL/i.test(msg)
-          ? "Cannot reach Supabase from this network. Try VPN or another Wi‑Fi, then retry."
-          : msg
-      );
+      setError(`Login failed: ${msg}`);
       setLoading(false);
     }
   };

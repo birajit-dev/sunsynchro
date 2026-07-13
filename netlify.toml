@@ -1,0 +1,14 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Optional same-origin proxy (used on localhost; production browser talks to Supabase directly).
+# Uncomment if you see Chrome QUIC errors to *.supabase.co in production:
+# [[redirects]]
+#   from = "/api/supabase/*"
+#   to = "https://mezdzqmygafpzkpolevt.supabase.co/:splat"
+#   status = 200
+#   force = true

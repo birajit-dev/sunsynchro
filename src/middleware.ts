@@ -6,8 +6,9 @@ import {
 
 /**
  * Edge middleware must not call Supabase over the network.
- * Poisoned DNS / TLS failures hang for ~30s and break /admin/login.
- * We only read the access token from cookies (same key the clients use).
+ * Session cookies from @supabase/ssr look like:
+ *   sb-<ref>-auth-token = base64-<base64url(JSON session)>
+ * or chunked: sb-<ref>-auth-token.0, .1, ...
  */
 function getAccessTokenFromCookies(request: NextRequest): string | null {
   const storageKey = getSupabaseAuthStorageKey()
@@ -17,37 +18,31 @@ function getAccessTokenFromCookies(request: NextRequest): string | null {
   const chunked = request.cookies
     .getAll()
     .filter((c) => c.name.startsWith(`${storageKey}.`))
-    .sort((a, b) => a.name.localeCompare(b.name))
+    .sort((a, b) => {
+      const ai = Number(a.name.split('.').pop())
+      const bi = Number(b.name.split('.').pop())
+      return ai - bi
+    })
     .map((c) => c.value)
     .join('')
 
   const raw = chunked || direct
   if (!raw) return null
 
-  try {
-    // Prefer JSON session payload; fall back to raw JWT.
-    const decoded = raw.startsWith('eyJ')
-      ? raw
-      : decodeSessionPayload(raw)
-    return decoded
-  } catch {
-    return null
-  }
+  return extractAccessToken(raw)
 }
 
-function base64UrlDecode(value: string): string {
+function base64UrlToString(value: string): string {
   const b64 = value.replace(/-/g, '+').replace(/_/g, '/')
   const pad = b64.length % 4 === 0 ? '' : '='.repeat(4 - (b64.length % 4))
   const normalized = b64 + pad
   if (typeof atob === 'function') {
     return atob(normalized)
   }
-  // Node fallback (local middleware tooling)
   return Buffer.from(normalized, 'base64').toString('utf8')
 }
 
-function decodeSessionPayload(raw: string): string | null {
-  // Cookie may be URL-encoded JSON, base64 JSON, or base64url.
+function extractAccessToken(raw: string): string | null {
   let text = raw
   try {
     text = decodeURIComponent(raw)
@@ -55,8 +50,21 @@ function decodeSessionPayload(raw: string): string | null {
     /* keep raw */
   }
 
-  const tryParse = (s: string) => {
-    const parsed = JSON.parse(s) as {
+  // @supabase/ssr cookieEncoding: "base64url" → values start with "base64-"
+  if (text.startsWith('base64-')) {
+    try {
+      text = base64UrlToString(text.slice('base64-'.length))
+    } catch {
+      return null
+    }
+  }
+
+  if (text.startsWith('eyJ')) {
+    return text
+  }
+
+  try {
+    const parsed = JSON.parse(text) as {
       access_token?: string
       currentSession?: { access_token?: string }
     }
@@ -65,16 +73,6 @@ function decodeSessionPayload(raw: string): string | null {
       parsed.currentSession?.access_token ||
       null
     )
-  }
-
-  try {
-    return tryParse(text)
-  } catch {
-    /* not plain JSON */
-  }
-
-  try {
-    return tryParse(base64UrlDecode(text))
   } catch {
     return null
   }
@@ -84,12 +82,10 @@ function isAccessTokenValid(token: string): boolean {
   try {
     const parts = token.split('.')
     if (parts.length < 2) return false
-    const payload = JSON.parse(base64UrlDecode(parts[1])) as {
+    const payload = JSON.parse(base64UrlToString(parts[1])) as {
       exp?: number
-      role?: string
     }
     if (!payload.exp) return false
-    // 30s clock skew
     return payload.exp * 1000 > Date.now() - 30_000
   } catch {
     return false
@@ -125,7 +121,6 @@ export async function middleware(request: NextRequest) {
   const token = getAccessTokenFromCookies(request)
   const loggedIn = Boolean(token && isAccessTokenValid(token))
 
-  // Drop expired / corrupt session cookies so clients don't keep retrying refresh.
   if (token && !loggedIn) {
     clearAuthCookies(response, request)
   }
